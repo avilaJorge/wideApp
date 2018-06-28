@@ -1,0 +1,49 @@
+<!--
+  Generated template for the MeetupPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Meetup Groups</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card *ngFor="let item of cardItems">
+    <ion-item>
+      <ion-avatar item-start>
+        <img [src]="item.organizer_photo">
+      </ion-avatar>
+      <h2>{{item.name}}</h2>
+      <p>{{item.city}}</p>
+    </ion-item>
+    <img [src]="item.key_photo">
+    <ion-card-content>
+      <div [innerHTML]="item.description"></div>
+    </ion-card-content>
+    <ion-row>
+      <ion-col>
+        <button ion-button color="primary" clear small icon-start>
+          <ion-icon name='thumbs-up'></ion-icon>
+          12 Likes
+        </button>
+      </ion-col>
+      <ion-col>
+        <button ion-button color="primary" clear small icon-start>
+          <ion-icon name='text'></ion-icon>
+          4 Comments
+        </button>
+      </ion-col>
+      <ion-col center text-center>
+        <ion-note>
+          11h ago
+        </ion-note>
+      </ion-col>
+    </ion-row>
+  </ion-card>
+</ion-content>
