@@ -8,17 +8,15 @@ page-tabs {
     //padding: 6px 4px 2px;
     opacity: 0.9;
   }*/
-  /*// From https://forum.ionicframework.com/t/anyway-to-custom-the-tabbars-icon-with-my-own-svg-file/46131/10
+  // From https://forum.ionicframework.com/t/anyway-to-custom-the-tabbars-icon-with-my-own-svg-file/46131/10
   // Hacks for font awesome icons in tabbar
   // see https://forum.ionicframework.com/t/anyway-to-custom-the-tabbars-icon-with-my-own-svg-file/46131/2
   // the content code of each fa-icon can be found here: 'node_modules/font-awesome/css/font-awesome.css'
-  .fa-icons-general {
+  /*.fa-icons-general {
     display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     text-rendering: auto;
-    width: 12px;
-    height: 12px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transform: translate(0, 0);
@@ -28,7 +26,7 @@ page-tabs {
   .ion-ios-meetup-outline::before,
   .ion-md-meetup::before {
     @extend .fa-icons-general;
-    content: url(../../assets/icon/meetup.svg);
+    content: url(assets/icon/meetup.svg);
   }
 
   .ion-ios-fa-cutlery::before,
@@ -51,17 +49,17 @@ page-tabs {
     @extend .fa-icons-general;
     content: "\f073";
   }*/
-  .ion-ios-meetup,
+  /*.ion-ios-meetup,
   .ion-ios-meetup-outline,
   .ion-md-meetup {
-    content: url(../../assets/icon/meetup_circle.svg);
+    content: url(../../assets/icon/meetup.svg);
     width: 56px;
     height: 56px;
     padding: 6px 4px 2px;
     margin: 5px;
     //filter: grayscale(100%);
     opacity: 0.9;
-  }
+  }*/
   /*.ion-ios-meetup,
   .ion-ios-meetup-outline,
   .ion-md-meetup {

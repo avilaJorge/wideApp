@@ -21,9 +21,9 @@ export class TabsPage {
   tab4Title = " ";
 
   constructor(public navCtrl: NavController, public translateService: TranslateService) {
-    translateService.get(['TAB1_TITLE', 'Meetup Cards', 'TAB2_TITLE', 'TAB3_TITLE']).subscribe(values => {
+    translateService.get(['TAB1_TITLE', 'Meetup', 'TAB2_TITLE', 'TAB3_TITLE']).subscribe(values => {
       this.tab1Title = values['TAB1_TITLE'];
-      this.tab2Title = values['Meetup Cards'];
+      this.tab2Title = values['Meetup'];
       this.tab3Title = values['TAB2_TITLE'];
       this.tab4Title = values['TAB3_TITLE'];
     });
