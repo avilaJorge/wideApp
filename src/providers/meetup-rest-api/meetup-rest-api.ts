@@ -18,31 +18,18 @@ export class MeetupRestApi {
     categories: '2/categories'
   };
 
-  test_opts = [
-    'sign',
-    'photo-host',
-    'zip',
-    'fallback_suggestions',
-    'text',
-    'radius',
-    'category',
-    'order',
-    'page',
-    'key'
-  ];
-
-  test_params = [
-    'true',
-    'public',
-    '92092',
-    'true',
-    'walking',
-    '25',
-    '9',
-    'most_active',
-    '20',
-    this.apiKey
-  ];
+  group_params = {
+    'sign': 'true',
+    'photo-host': 'public',
+    'zip': '92092',
+    'fallback_suggestions': 'true',
+    'text': 'walking',
+    'radius': '25',
+    'category': '9,32',
+    'order': 'most_active',
+    'page': '20',
+    'key': this.apiKey
+  }
 
   constructor(public http: HttpClient) {
     console.log('Hello MeetupDataProvider Provider');
@@ -59,7 +46,8 @@ export class MeetupRestApi {
     if (params) {
       reqOpts.params = new HttpParams();
       for (let k in params) {
-        reqOpts.params = reqOpts.params.set(reqOpts[k], params[k]);
+        //reqOpts.params = reqOpts.params.set(reqOpts[k], params[k]);
+        reqOpts.params = reqOpts.params.set(k, params[k]);
       }
     }
 
@@ -93,7 +81,8 @@ export class MeetupRestApi {
   }
 
   getGroups() {
-    let resp_val = this.get(this.endpoints.find_groups, this.test_params, this.test_opts);
+    //let resp_val = this.get(this.endpoints.find_groups, this.test_params, this.test_opts);
+    let resp_val = this.get(this.endpoints.find_groups, this.group_params);
     console.log("Printing out response data");
     console.log(resp_val);
     return resp_val;

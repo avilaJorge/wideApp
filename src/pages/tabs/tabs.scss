@@ -1,3 +1,80 @@
 page-tabs {
+  /*.ion-ios-customicon,
+  .ion-md-customicon {
+    content: url(../../assets/icon/meetup.svg);
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    //padding: 6px 4px 2px;
+    opacity: 0.9;
+  }*/
+  /*// From https://forum.ionicframework.com/t/anyway-to-custom-the-tabbars-icon-with-my-own-svg-file/46131/10
+  // Hacks for font awesome icons in tabbar
+  // see https://forum.ionicframework.com/t/anyway-to-custom-the-tabbars-icon-with-my-own-svg-file/46131/2
+  // the content code of each fa-icon can be found here: 'node_modules/font-awesome/css/font-awesome.css'
+  .fa-icons-general {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    width: 12px;
+    height: 12px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate(0, 0);
+  }
 
+  .ion-ios-meetup::before,
+  .ion-ios-meetup-outline::before,
+  .ion-md-meetup::before {
+    @extend .fa-icons-general;
+    content: url(../../assets/icon/meetup.svg);
+  }
+
+  .ion-ios-fa-cutlery::before,
+  .ion-ios-fa-cutlery-outline::before,
+  .ion-md-fa-cutlery::before {
+    @extend .fa-icons-general;
+    content: "\f0f5";
+  }
+
+  .ion-ios-fa-graduation-cap::before,
+  .ion-ios-fa-graduation-cap-outline::before,
+  .ion-md-fa-graduation-cap::before {
+    @extend .fa-icons-general;
+    content: "\f19d";
+  }
+
+  .ion-ios-fa-calendar::before,
+  .ion-ios-fa-calendar-outline::before,
+  .ion-md-fa-calendar::before {
+    @extend .fa-icons-general;
+    content: "\f073";
+  }*/
+  .ion-ios-meetup,
+  .ion-ios-meetup-outline,
+  .ion-md-meetup {
+    content: url(../../assets/icon/meetup_circle.svg);
+    width: 56px;
+    height: 56px;
+    padding: 6px 4px 2px;
+    margin: 5px;
+    //filter: grayscale(100%);
+    opacity: 0.9;
+  }
+  /*.ion-ios-meetup,
+  .ion-ios-meetup-outline,
+  .ion-md-meetup {
+    content: url(../../assets/icon/meetup.svg);
+    font-family: "application-icon" !important;
+    font-style: normal !important;
+    font-weight: normal !important;
+    font-variant: normal !important;
+    text-transform: none !important;
+    speak: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    content: "\50";
+  }*/
 }

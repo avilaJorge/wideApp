@@ -48,6 +48,7 @@ export class MeetupListPage {
             data[prop].group_photo ? data[prop].group_photo.photo_link : '',
           description: data[prop].description
         });
+
       }
       console.log(this.cardItems);
     })
