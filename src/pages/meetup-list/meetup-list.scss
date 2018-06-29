@@ -1,0 +1,28 @@
+$fade-color: #8f8f8f;
+
+page-meetup {
+  .card {
+    max-width: 600px;
+  }
+
+  .key_photo {
+    max-width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+  }
+
+  .description {
+    max-height: 150px;
+    //object-fit: cover;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: -webkit-linear-gradient(#000000 75px, white);
+    //background: -webkit-linear-gradient(transparent 125px, $fade-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    //padding-bottom: 10px;
+    //white-space: nowrap;
+    //background: -webkit-linear-gradient(#ffffff 90%, #f7f7f7);
+    //background: linear-gradient(transparent 100px, white);
+  }
+}

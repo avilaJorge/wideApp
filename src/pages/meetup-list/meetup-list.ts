@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MeetupRestApi } from '../../providers/meetup-rest-api/meetup-rest-api';
+import { Toast } from '@ionic-native/toast';
 
 /**
  * Generated class for the MeetupPage page.
@@ -12,17 +13,26 @@ import { MeetupRestApi } from '../../providers/meetup-rest-api/meetup-rest-api';
 @IonicPage()
 @Component({
   selector: 'page-meetup',
-  templateUrl: 'meetup.html',
+  templateUrl: 'meetup-list.html',
 })
-export class MeetupPage {
+export class MeetupListPage {
   cardItems = new Array();
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public meetupRest: MeetupRestApi) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public meetupRest: MeetupRestApi, private toast: Toast) {
     this.getGroups();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MeetupPage');
+  }
+
+  showMeetupInfo(item) {
+    this.toast.show('Card was clicked!', '5000', 'center').subscribe(
+      toast => {
+        console.log(toast);
+      }
+    );
   }
 
   getGroups() {
@@ -34,7 +44,8 @@ export class MeetupPage {
           organizer_photo: data[prop].organizer.photo ? data[prop].organizer.photo.thumb_link : 'assets/imgs/no_user1.png',
           name: data[prop].name,
           city: data[prop].city,
-          key_photo: data[prop].key_photo ? data[prop].key_photo.photo_link : data[prop].group_photo ? data[prop].group_photo.photo_link : '',
+          key_photo: data[prop].key_photo ? data[prop].key_photo.photo_link :
+            data[prop].group_photo ? data[prop].group_photo.photo_link : '',
           description: data[prop].description
         });
       }

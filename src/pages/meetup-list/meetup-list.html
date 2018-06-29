@@ -14,7 +14,7 @@
 
 
 <ion-content>
-  <ion-card *ngFor="let item of cardItems">
+  <ion-card (click)="showMeetupInfo(item)" *ngFor="let item of cardItems">
     <ion-item>
       <ion-avatar item-start>
         <img [src]="item.organizer_photo">
@@ -22,19 +22,19 @@
       <h2>{{item.name}}</h2>
       <p>{{item.city}}</p>
     </ion-item>
-    <img [src]="item.key_photo">
-    <ion-card-content>
+    <img class="key_photo" [src]="item.key_photo">
+    <ion-card-content class="description">
       <div [innerHTML]="item.description"></div>
     </ion-card-content>
-    <ion-row>
+    <ion-row class="bottom_row">
       <ion-col>
-        <button ion-button color="primary" clear small icon-start>
+        <button ion-button color="primary" clear small icon-start (click)="thumbsUpClick()">
           <ion-icon name='thumbs-up'></ion-icon>
           12 Likes
         </button>
       </ion-col>
       <ion-col>
-        <button ion-button color="primary" clear small icon-start>
+        <button ion-button color="primary" clear small icon-start (click)="commentsClick()">
           <ion-icon name='text'></ion-icon>
           4 Comments
         </button>

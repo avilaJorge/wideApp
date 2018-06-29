@@ -8,11 +8,11 @@ import { IonicStorageModule, Storage } from '@ionic/storage';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { Toast } from '@ionic-native/toast';
 
 import { Items } from '../mocks/providers/items';
-import { Settings, User, Api } from '../providers';
+import { Settings, User, Api, MeetupRestApi, Meetups } from '../providers';
 import { MyApp } from './app.component';
-import { MeetupRestApi } from '../providers/meetup-rest-api/meetup-rest-api';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -58,15 +58,17 @@ export function provideSettings(storage: Storage) {
   ],
   providers: [
     Api,
+    MeetupRestApi,
     Items,
+    Meetups,
     User,
     Camera,
+    Toast,
     SplashScreen,
     StatusBar,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    MeetupRestApi
   ]
 })
 export class AppModule { }

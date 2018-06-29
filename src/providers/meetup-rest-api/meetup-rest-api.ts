@@ -51,7 +51,6 @@ export class MeetupRestApi {
   get(endpoint: string, params?: any, reqOpts?: any) {
     if (!reqOpts) {
       reqOpts = {
-        headers: new HttpHeaders(),
         params: new HttpParams()
       };
     }
@@ -62,12 +61,6 @@ export class MeetupRestApi {
       for (let k in params) {
         reqOpts.params = reqOpts.params.set(reqOpts[k], params[k]);
       }
-
-      reqOpts.headers = new HttpHeaders({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
-        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token'
-      });
     }
 
 
