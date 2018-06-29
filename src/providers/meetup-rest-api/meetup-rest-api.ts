@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
 export class MeetupRestApi {
   url: string = 'https://api.meetup.com';
   urlv2: string = 'https://api.meetup.com/2';
-  apiKey: string = '3397a10b4c7d5764234a662434e76';
+  static apiKey: string = '3397a10b4c7d5764234a662434e76';
 
   endpoints = {
     find_groups: 'find/groups',
@@ -28,7 +28,7 @@ export class MeetupRestApi {
     'category': '9,32',
     'order': 'most_active',
     'page': '20',
-    'key': this.apiKey
+    'key': MeetupRestApi.apiKey
   }
 
   constructor(public http: HttpClient) {

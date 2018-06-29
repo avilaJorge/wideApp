@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { MeetupRestApi } from '../../providers/meetup-rest-api/meetup-rest-api';
 import { Toast } from '@ionic-native/toast';
+
+import { MeetupRestApi } from '../../providers/meetup-rest-api/meetup-rest-api';
+import { Meetups } from '../../providers';
 
 /**
  * Generated class for the MeetupPage page.
@@ -19,6 +21,7 @@ export class MeetupListPage {
   cardItems = new Array();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
+    public meetups: Meetups,
     public meetupRest: MeetupRestApi, private toast: Toast) {
     this.getGroups();
   }
