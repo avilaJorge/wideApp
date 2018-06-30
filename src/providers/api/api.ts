@@ -22,11 +22,22 @@ export class Api {
     if (params) {
       reqOpts.params = new HttpParams();
       for (let k in params) {
+        //reqOpts.params = reqOpts.params.set(reqOpts[k], params[k]);
         reqOpts.params = reqOpts.params.set(k, params[k]);
       }
     }
 
-    return this.http.get(this.url + '/' + endpoint, reqOpts);
+
+    console.log("Printing reqOpts");
+    console.log(reqOpts);
+
+    return new Promise(resolve => {
+      this.http.get(this.url + '/' + endpoint, reqOpts).subscribe(data => {
+        resolve(data);
+      }, err => {
+        console.log(err);
+      });
+    });
   }
 
   post(endpoint: string, body: any, reqOpts?: any) {
