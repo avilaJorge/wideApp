@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { Meetups } from '../../providers';
+
 /**
  * Generated class for the MeetupDetailPage page.
  *
@@ -14,8 +16,13 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'meetup-detail.html',
 })
 export class MeetupDetailPage {
+  meetup: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    meetups: Meetups) {
+
+    this.meetup = navParams.get('meetup') || meetups.defaultMeetup;
   }
 
   ionViewDidLoad() {

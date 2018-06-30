@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 
-import { MeetupRestApi } from '../../providers/meetup-rest-api/meetup-rest-api';
+import { Meetup } from '../../models/meetup';
 import { Meetups } from '../../providers';
 
 /**
@@ -22,7 +22,6 @@ export class MeetupListPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public meetups: Meetups,
-    public meetupRest: MeetupRestApi,
     public toastCtrl: ToastController) {
 
     this.cardItems = meetups.query();
@@ -33,13 +32,17 @@ export class MeetupListPage {
     console.log('ionViewDidLoad MeetupPage');
   }
 
-  showMeetupInfo(item) {
+  showMeetupInfo(meetup: Meetup) {
     let toast = this.toastCtrl.create({
       message: "Card was clicked",
       duration: 1000,
       position: 'bottom'
     });
     toast.present();
+
+    this.navCtrl.push('MeetupDetailPage', {
+      meetup: meetup
+    });
   }
 
   //getGroups() {

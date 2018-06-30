@@ -13,6 +13,13 @@ import { MeetupRestApi } from '../meetup-rest-api/meetup-rest-api';
 @Injectable()
 export class Meetups {
   meetups: Meetup[] = [];
+  defaultMeetup: any = {
+    'organizer_photo': '',
+    'name': '',
+    'city': '',
+    'key_photo': '',
+    'description': 'No Meetup Information Available'
+  }
 
   endpoints = {
     find_groups: 'find/groups',
@@ -29,7 +36,6 @@ export class Meetups {
     'category': '9,32',
     'order': 'most_active',
     'page': '20',
-    'key': ''
   }
 
   constructor(public api: MeetupRestApi) {

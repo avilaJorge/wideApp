@@ -11,7 +11,6 @@ import { Api } from '../api/api';
 @Injectable()
 export class MeetupRestApi extends Api {
   url: string = 'https://api.meetup.com';
-  //urlv2: string = 'https://api.meetup.com/2';
   apiKey: string = '3397a10b4c7d5764234a662434e76';
 
   //endpoints = {

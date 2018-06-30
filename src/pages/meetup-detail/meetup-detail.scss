@@ -1,3 +1,21 @@
 page-meetup-detail {
+  .meetup-profile {
+    width: 100%;
+    background-position: center center;
+    background-size: cover;
+    height: 250px;
+  }
 
+  .meetup-name,
+  .meetup-city {
+    margin-left: 15px;
+    margin-right: 10px;
+    margin-top: 1px;
+  }
+
+  .meetup-info {
+    margin: 2px, 10px, 2px, 15px;
+    background: white;
+    //position: absolute;
+  }
 }
