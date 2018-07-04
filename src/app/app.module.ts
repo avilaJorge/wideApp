@@ -13,7 +13,7 @@ import { Toast } from '@ionic-native/toast';
 import { Items } from '../mocks/providers/items';
 import { Settings, User, Api, MeetupRestApi, Meetups, GetItDoneRestApi } from '../providers';
 import { MyApp } from './app.component';
-import { ReportsProvider } from '../providers/reports/reports';
+import { Reports } from '../providers/reports/reports';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -63,6 +63,7 @@ export function provideSettings(storage: Storage) {
     GetItDoneRestApi,
     Items,
     Meetups,
+    Reports,
     User,
     Camera,
     Toast,
@@ -71,7 +72,6 @@ export function provideSettings(storage: Storage) {
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    ReportsProvider,
   ]
 })
 export class AppModule { }

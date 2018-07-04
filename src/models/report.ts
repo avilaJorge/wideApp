@@ -15,6 +15,8 @@ export class Report {
       // @ts-ignore
       this[f] = fields[f];
     }
+    this['street'] = this['address'].split(',', 3)[0];
+    console.log("Address is " + this['street']);
   }
 
 }
