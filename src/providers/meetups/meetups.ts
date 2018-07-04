@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Meetup } from '../../models/meetup';
@@ -55,7 +54,6 @@ export class Meetups {
   }
 
   add(meetup: Meetup) {
-
   }
 
   delete(meetup: Meetup) {
