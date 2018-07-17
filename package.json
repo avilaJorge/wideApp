@@ -22,7 +22,8 @@
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/camera": "^4.3.3",
-    "@ionic-native/core": "4.8.0",
+    "@ionic-native/core": "^4.9.2",
+    "@ionic-native/google-maps": "^4.8.2",
     "@ionic-native/splash-screen": "4.8.0",
     "@ionic-native/status-bar": "4.8.0",
     "@ionic-native/toast": "^4.9.0",
@@ -30,9 +31,9 @@
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "@types/node": "^10.3.6",
-    "cordova-android": "7.0.0",
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-googlemaps": "^2.3.6",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
     "cordova-plugin-ionic-webview": "^1.1.19",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -41,9 +42,11 @@
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
     "meetup-api": "^1.4.32",
+    "minimist": "^1.2.0",
     "rxjs": "5.5.11",
     "socks": "^2.2.0",
     "sw-toolbox": "3.6.0",
+    "xml2js": "^0.4.19",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
@@ -59,10 +62,14 @@
       "cordova-plugin-ionic-webview": {},
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-x-toast": {},
-      "cordova-plugin-camera": {}
+      "cordova-plugin-camera": {},
+      "cordova-plugin-googlemaps": {
+        "API_KEY_FOR_ANDROID": "AIzaSyCr5vlRJG60Y4pGq1ee2XKDzx5FsQnHYdU",
+        "API_KEY_FOR_IOS": "AIzaSyCr5vlRJG60Y4pGq1ee2XKDzx5FsQnHYdU",
+        "PLAY_SERVICES_VERSION": "15.0.1",
+        "ANDROID_SUPPORT_V4_VERSION": "26.1.0"
+      }
     },
-    "platforms": [
-      "android"
-    ]
+    "platforms": []
   }
 }
