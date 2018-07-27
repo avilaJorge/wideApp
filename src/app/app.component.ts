@@ -27,7 +27,7 @@ import { Settings } from '../providers';
   <ion-nav #content [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage = FirstRunPage;
+  rootPage: any;
 
   @ViewChild(Nav) nav: Nav;
 
@@ -48,6 +48,7 @@ export class MyApp {
 
   constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config, private statusBar: StatusBar, private splashScreen: SplashScreen) {
     platform.ready().then(() => {
+      this.rootPage = FirstRunPage;
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();

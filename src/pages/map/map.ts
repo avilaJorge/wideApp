@@ -7,7 +7,8 @@ import {
   GoogleMapOptions,
   CameraPosition,
   MarkerOptions,
-  Marker
+  Marker,
+  ILatLng
 } from '@ionic-native/google-maps';
 
 /**
@@ -24,6 +25,9 @@ import {
 })
 export class MapPage {
 
+  latitude = 32.873891;
+  longitude = -117.226361;
+
   map: GoogleMap;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
@@ -34,13 +38,25 @@ export class MapPage {
     this.loadMap();
   }
 
+  onButtonClick(event) {
+    let cameraPos: CameraPosition<ILatLng> = {
+      target: {
+        lat: this.latitude,
+        lng: this.longitude
+      },
+      zoom: 20,
+      tilt: 30
+    };
+    this.map.moveCamera(cameraPos);
+  }
+
   loadMap() {
 
     let mapOptions: GoogleMapOptions = {
       camera: {
         target: {
-          lat: 32.8717299,
-          lng: -117.22644549999995
+          lat: this.latitude,
+          lng: this.longitude
         },
         zoom: 18,
         tilt: 30
@@ -54,8 +70,8 @@ export class MapPage {
       icon: 'blue',
       animation: 'DROP',
       position: {
-        lat: 32.8717299,
-        lng: -117.22644549999995
+        lat: this.latitude,
+        lng: this.longitude
       }
     });
     marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
