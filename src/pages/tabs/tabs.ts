@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
 import { Tab1Root, Tab2Root, Tab3Root, Tab4Root } from '../';
@@ -20,12 +19,11 @@ export class TabsPage {
   tab3Title = " ";
   tab4Title = " ";
 
-  constructor(public navCtrl: NavController, public translateService: TranslateService) {
-    translateService.get(['Meetup', 'MapMyWalk', 'Get It Done', 'TAB3_TITLE']).subscribe(values => {
-      this.tab1Title = values['Meetup'];
-      this.tab2Title = values['MapMyWalk'];
-      this.tab3Title = values['Get It Done'];
-      this.tab4Title = values['TAB3_TITLE'];
-    });
+  constructor(public navCtrl: NavController) {
+
+    this.tab1Title = 'Meetup';
+    this.tab2Title = 'MapMyWalk';
+    this.tab3Title = 'Get It Done';
+    this.tab4Title = 'Settings';
   }
 }

@@ -1,0 +1,75 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons left>
+      <button
+        ion-button
+        menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title text-center>Sign Up</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form #signUpRef="ngForm" (submit)="doSignup()">
+    <ion-list>
+
+      <ion-item>
+        <ion-label floating>Name</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="account.name"
+          name="name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input
+          required
+          type="email"
+          [(ngModel)]="account.email"
+          name="email"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input
+          required
+          type="text"
+          [(ngModel)]="account.username"
+          name="username"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input
+          required
+          type="password"
+          [(ngModel)]="account.password"
+          [minlength]="6"
+          name="password"></ion-input>
+      </ion-item>
+
+      <div padding>
+        <button
+          ion-button
+          color="primary"
+          [disabled]="!signUpRef.valid"
+          block>Sign Up</button>
+      </div>
+      <hr>
+      <h6 text-center>Or sign up with Google</h6>
+      <div padding>
+        <button
+          ion-button
+          color="accent"
+          block>Log In with Google</button>
+      </div>
+
+    </ion-list>
+  </form>
+</ion-content>
