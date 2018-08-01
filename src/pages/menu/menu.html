@@ -6,6 +6,10 @@
   </ion-header>
   <ion-content>
     <ion-list>
+      <ion-item *ngIf="isAuthenticated">
+        <ion-label>Currently Logged in User</ion-label>
+        <ion-label>{{ currentlyLoggedInUser }}</ion-label>
+      </ion-item>
       <div
         *ngIf="!isAuthenticated">
         <button

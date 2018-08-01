@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+
+import { AuthService } from "../../../providers";
+import {firebaseConfig, mockAccount} from "../../../environment/environment";
+import {HttpClient} from "@angular/common/http";
 
 @IonicPage()
 @Component({
@@ -9,11 +13,14 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class MeetupMainPage {
 
   isAuthenticated: boolean = false;
-  meetupGroupPage = 'MeetupListPage';
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams) {
-  }
+              private http: HttpClient,
+              private alertCtrl: AlertController,
+              public navParams: NavParams,
+              public authService: AuthService) {}
+
+
 
 
   ionViewDidLoad() {
@@ -29,6 +36,30 @@ export class MeetupMainPage {
   }
 
   onViewFriends() {
+    this.authService.getActiveUser().getIdToken()
+      .then((token: string) => {
+        const userId = this.authService.getActiveUser().uid;
+        this.http.put(
+          firebaseConfig.databaseURL + '/' + userId + '/account.json?auth=' + token,
+          mockAccount
+        ).subscribe(() => {
+          console.log("Success! Firebase database accessed!");
+        }, (error) => {
+          const alert = this.alertCtrl.create({
+            title: "An error occured when trying to access the database",
+            message: error.message,
+            buttons: [{text: 'Ok'}]
+          });
+          alert.present();
+        });
+      })
+      .catch((error) => {
+        const alert = this.alertCtrl.create({
+          title: "Could not get user Id token",
+          message: error.message,
+          buttons: [{text: 'Ok'}]
+        }); alert.present();
+      });
 
   }
 }

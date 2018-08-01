@@ -18,4 +18,8 @@ export class AuthService {
   signOut(): Promise<void> {
     return this.fireAuth.auth.signOut();
   }
+
+  getActiveUser() {
+    return this.fireAuth.auth.currentUser;
+  }
 }

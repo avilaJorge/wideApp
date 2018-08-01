@@ -6,6 +6,7 @@ import {IonicPage,
 
 import { MainPage } from '../../index';
 import { AuthService } from '../../../providers';
+import {mockAccount, User} from "../../../environment/environment";
 
 @IonicPage()
 @Component({
@@ -13,15 +14,8 @@ import { AuthService } from '../../../providers';
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  // The account fields for the login form.
-  // If you're using the username field with or without email, make
-  // sure to add it to the type
-  account: { name: string, username: string, email: string, password: string } = {
-    name: 'Test Human',
-    username: 'testHuman99',
-    email: 'test@example.com',
-    password: 'testpassword'
-  };
+
+  account: User = mockAccount;
 
   constructor(public navCtrl: NavController,
               public toastCtrl: ToastController,

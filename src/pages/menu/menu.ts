@@ -24,6 +24,7 @@ export class MenuPage {
 
   pages: PageList;
   private isAuthenticated: boolean = false;
+  currentlyLoggedInUser: string;
 
   constructor(public menuCtrl: MenuController,
               private authService: AuthService,
@@ -39,8 +40,11 @@ export class MenuPage {
       console.log('Auth state has changed!');
       console.log(user);
       if(user) {
+        this.currentlyLoggedInUser = this.authService.getActiveUser().uid;
+        console.log(this.authService.getActiveUser());
         this.isAuthenticated = true;
       } else {
+        this.currentlyLoggedInUser = '';
         this.isAuthenticated = false;
       }
       this.rootPage = MainPage;

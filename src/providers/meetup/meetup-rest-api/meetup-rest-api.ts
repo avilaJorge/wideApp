@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '../../api/api';
+import {meetupConfig} from "../../../environment/environment";
 
 /*
   Generated class for the MeetupRestApi provider.
@@ -11,7 +12,6 @@ import { Api } from '../../api/api';
 @Injectable()
 export class MeetupRestApi extends Api {
   url: string = 'https://api.meetup.com';
-  apiKey: string = '3397a10b4c7d5764234a662434e76';
 
   //endpoints = {
   //  find_groups: 'find/groups',
@@ -37,7 +37,7 @@ export class MeetupRestApi extends Api {
   }
 
   get(endpoint: string, params?: any, reqOpts?: any) {
-    params['key'] = this.apiKey;
+    params['key'] = meetupConfig.apiKey;
     return super.get(endpoint, params, reqOpts);
   }
 

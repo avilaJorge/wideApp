@@ -20,20 +20,11 @@ import {
 import { MyApp } from './app.component';
 import { Reports } from '../providers/reports/reports';
 import { MenuPage } from "../pages/menu/menu";
+import { firebaseConfig } from "../environment/environment";
 
 import { AngularFireModule } from "angularfire2";
-import { AngularFireDatabaseModule, AngularFireDatabase } from "angularfire2/database";
 import { AngularFireAuth, AngularFireAuthModule } from "angularfire2/auth";
-
-
-export const firebaseConfig = {
-  apiKey: "AIzaSyD1rrQ_0rEsmEMQSf7YMFckom7XSjAQpuk",
-  authDomain: "wide-app.firebaseapp.com",
-  databaseURL: "https://wide-app.firebaseio.com",
-  projectId: "wide-app",
-  storageBucket: "wide-app.appspot.com",
-  messagingSenderId: "1037117039704"
-};
+import {AngularFireStorageModule} from "angularfire2/storage";
 
 export function provideSettings(storage: Storage) {
   /**
@@ -61,8 +52,8 @@ export function provideSettings(storage: Storage) {
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -73,7 +64,6 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     AngularFireAuth,
-    AngularFireDatabase,
     AuthService,
     Api,
     MeetupRestApi,
