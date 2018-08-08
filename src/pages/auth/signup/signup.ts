@@ -4,9 +4,9 @@ import {IonicPage,
         NavController,
         ToastController} from 'ionic-angular';
 
-import { MainPage } from '../../index';
 import { AuthService } from '../../../providers';
 import {mockAccount, User} from "../../../environment/environment";
+import {Subscription} from "rxjs";
 
 @IonicPage()
 @Component({
@@ -16,6 +16,7 @@ import {mockAccount, User} from "../../../environment/environment";
 export class SignupPage {
 
   account: User = mockAccount;
+  private authStatusSub: Subscription;
 
   constructor(public navCtrl: NavController,
               public toastCtrl: ToastController,
@@ -33,11 +34,11 @@ export class SignupPage {
       .then((data) => {
         console.log(data);
         loading.dismiss();
-        this.navCtrl.push(MainPage);
+        this.navCtrl.push('AccountPage');
       })
       .catch((error) => {
         loading.dismiss();
-        this.navCtrl.push(MainPage);
+        this.navCtrl.push('AccountPage');
         // Unable to sign up
         let toast = this.toastCtrl.create({
           message: 'Unable to sign you up at this time.  ' + error,
@@ -45,6 +46,27 @@ export class SignupPage {
           position: 'top'
         });
         toast.present();
+    });
+  }
+
+  onGoogleSignIn() {
+    const loading = this.loadingCtr.create({
+      content: 'Signing you up ... ',
+      spinner: 'dots'
+    }); loading.present();
+    this.authService.signInGoogle().then((isAuth) => {
+      loading.dismiss();
+      this.navCtrl.push('AccountPage');
+    }).catch((error) => {
+      loading.dismiss();
+      this.navCtrl.push('AccountPage');
+      // Unable to sign up
+      let toast = this.toastCtrl.create({
+        message: 'Unable to sign you up at this time.  ' + error,
+        duration: 3000,
+        position: 'top'
+      });
+      toast.present();
     });
   }
 }

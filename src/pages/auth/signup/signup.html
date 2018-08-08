@@ -1,13 +1,6 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-buttons left>
-      <button
-        ion-button
-        menuToggle>
-        <ion-icon name="menu"></ion-icon>
-      </button>
-    </ion-buttons>
     <ion-title text-center>Sign Up</ion-title>
   </ion-navbar>
 
@@ -59,6 +52,7 @@
           ion-button
           color="primary"
           [disabled]="!signUpRef.valid"
+          large
           block>Sign Up</button>
       </div>
       <hr>
@@ -67,6 +61,8 @@
         <button
           ion-button
           color="accent"
+          large
+          (click)="onGoogleSignIn()"
           block>Log In with Google</button>
       </div>
 
