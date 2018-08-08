@@ -15,7 +15,7 @@
         <ion-label floating>Name</ion-label>
         <ion-input
           type="text"
-          [(ngModel)]="account.name"
+          [(ngModel)]="account.userName"
           name="name"></ion-input>
       </ion-item>
 
@@ -29,12 +29,10 @@
       </ion-item>
 
       <ion-item>
-        <ion-label floating>Username</ion-label>
-        <ion-input
-          required
-          type="text"
-          [(ngModel)]="account.username"
-          name="username"></ion-input>
+        <ion-label floating>Group</ion-label>
+        <ion-select [(ngModel)]="selectedGroup" name="groupName" required>
+          <ion-option *ngFor="let group of groups" [value]="group.value">{{group.name}}</ion-option>
+        </ion-select>
       </ion-item>
 
       <ion-item>
@@ -42,7 +40,7 @@
         <ion-input
           required
           type="password"
-          [(ngModel)]="account.password"
+          [(ngModel)]="password"
           [minlength]="6"
           name="password"></ion-input>
       </ion-item>
@@ -53,19 +51,28 @@
           color="primary"
           [disabled]="!signUpRef.valid"
           large
+          type="submit"
           block>Sign Up</button>
-      </div>
-      <hr>
-      <h6 text-center>Or sign up with Google</h6>
-      <div padding>
-        <button
-          ion-button
-          color="accent"
-          large
-          (click)="onGoogleSignIn()"
-          block>Log In with Google</button>
       </div>
 
     </ion-list>
+  </form>
+  <hr>
+  <h6 text-center>Or sign up with Google.  Just select a group.</h6>
+  <form #signUpGoogleRef="ngForm" (submit)="onGoogleSignIn()">
+    <ion-item>
+      <ion-label floating>Group</ion-label>
+      <ion-select [(ngModel)]="selectedGroup" name="selectedGroup" required>
+        <ion-option *ngFor="let group of groups" [value]="group.value">{{group.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <div padding>
+      <button
+        ion-button
+        color="accent"
+        large
+        type="submit"
+        block>Log In with Google</button>
+    </div>
   </form>
 </ion-content>

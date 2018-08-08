@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 
 import { AuthService } from "../../../providers";
-import {firebaseConfig, mockAccount} from "../../../environment/environment";
+import { firebaseConfig } from "../../../environment/environment";
 import {HttpClient} from "@angular/common/http";
 
 @IonicPage()
@@ -40,8 +40,7 @@ export class MeetupMainPage {
       .then((token: string) => {
         const userId = this.authService.getActiveUser().uid;
         this.http.put(
-          firebaseConfig.databaseURL + '/' + userId + '/account.json?auth=' + token,
-          mockAccount
+          firebaseConfig.databaseURL + '/' + userId + '/account.json?auth=' + token, {}
         ).subscribe(() => {
           console.log("Success! Firebase database accessed!");
         }, (error) => {

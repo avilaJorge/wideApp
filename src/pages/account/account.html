@@ -28,7 +28,7 @@
     <button ion-button color="primary" block large (click)="onSignUp()">Sign Up</button>
   </div>
   <div *ngIf="isAuthenticated">
-
+    <h4 text-center>Hello {{ user.displayName }}!</h4>
   </div>
 
 </ion-content>

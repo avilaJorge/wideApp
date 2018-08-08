@@ -20,6 +20,7 @@ export class AccountPage {
 
   private isAuthenticated: boolean = false;
   private authStatusSub: Subscription;
+  private user;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -27,9 +28,11 @@ export class AccountPage {
 
   ionViewDidLoad() {
     this.isAuthenticated = this.authService.isAuth;
+    this.user = this.authService.getActiveUser();
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
         this.isAuthenticated = isAuth;
+        this.user = this.authService.getActiveUser();
       });
     console.log('ionViewDidLoad AccountPage');
   }
@@ -43,6 +46,9 @@ export class AccountPage {
   }
 
   onSignOut() {
+    console.log('onSignOut(): User was logged out!');
+    this.isAuthenticated = false;
+    this.user = null;
     this.authService.signOut();
   }
 

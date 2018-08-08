@@ -1,11 +1,13 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { AngularFireAuth } from "angularfire2/auth";
 import { Subject } from "rxjs";
 import * as firebase from "firebase";
 
 import { User } from "../../models/user.model";
 import { Settings } from "..";
+import {catchError, tap} from "rxjs/operators";
+import {AlertController} from "ionic-angular";
 
 @Injectable()
 export class AuthService {
@@ -22,6 +24,7 @@ export class AuthService {
 
   constructor(private fireAuth: AngularFireAuth,
               private http: HttpClient,
+              private alertCtrl: AlertController,
               private settings: Settings) {
     this.settings.load().then(() => {
       this.settingsReady = true;
@@ -56,7 +59,7 @@ export class AuthService {
     return this.isAuthenticated;
   }
 
-  signUpEmail(email: string, password: string): Promise<boolean> {
+  signUpEmail(email: string, password: string, user: User): Promise<boolean> {
     return this.fireAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((data) => {
         console.log(data);
@@ -68,6 +71,7 @@ export class AuthService {
             this.isAuthenticated = true;
             this.userId = data.user.uid;
             this.userPhoto = data.user.photoURL;
+            this.createUser(user);
             this.authStatusListener.next(true);
             this.saveAuthData(token, this.userPhoto, this.userId);
             return true;
@@ -112,7 +116,7 @@ export class AuthService {
     if (authInformation.userId === '') {
       return authInformation;
     }
-    console.log('autoAuthUser(): Auth information exists')
+    console.log('autoAuthUser(): Auth information exists');
     this.token = authInformation.token;
     this.userPhoto = authInformation.userPhoto;
     this.userId = authInformation.userId;
@@ -137,24 +141,32 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
-  signInGoogle(): Promise<boolean> {
+  signInGoogle(group: string): Promise<boolean> {
     const provider = new firebase.auth.GoogleAuthProvider();
     return this.fireAuth.auth.signInWithRedirect(provider)
       .then(() => { return this.fireAuth.auth.getRedirectResult(); })
       .then((result) => {
         return result.user.getIdToken().then( (token) => {
-          console.log('We made it in here!');
-          console.log(result);
-          console.log(token);
+          console.log('Sign in with Google was successful!');
           this.token = token;
           if (token) {
-            if (result.additionalUserInfo.isNewUser) {
-              this.createUser();
-            }
             this.currentlyLoggedInUser = result.user;
             this.isAuthenticated = true;
             this.userId = result.user.uid;
             this.userPhoto = result.user.photoURL;
+            //if (result.additionalUserInfo.isNewUser) {
+            if (true) {
+              const userData = new User({
+                googleUID: result.user.uid,
+                userName: result.user.displayName,
+                photoURL: result.user.photoURL,
+                email: result.user.email,
+                // TODO: Need to figure out if this is necessary.
+                authExpires: '',
+                groupName: group
+              });
+              this.createUser(userData);
+            }
             this.authStatusListener.next(true);
             this.saveAuthData(token, this.userPhoto, this.userId);
             return true;
@@ -169,11 +181,28 @@ export class AuthService {
   }
 
   getActiveUser() {
-    return this.fireAuth.auth.currentUser;
+    return this.currentlyLoggedInUser;
   }
 
-  createUser() {
-    //return this.http.post(this.url + 'auth/user')
+  createUser(user: User) {
+    console.log("Made it into the create user function!!!!!!!!");
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token,
+        'Content-Type': 'application/json'
+      }),
+    };
+    this.http.post(this.url + 'auth/user', user, httpOptions)
+      .subscribe(() => {
+        console.log('Success!  User data was sent to Firebase Realtime Database');
+      }, (error) => {
+        const alert = this.alertCtrl.create({
+          title: "An error occured when trying to access the database",
+          message: error.message,
+          buttons: [{text: 'Ok'}]
+        });
+        alert.present();
+      })
   }
 
   private saveAuthData(token: any, userPhoto: string, userId: string) {
@@ -200,4 +229,5 @@ export class AuthService {
     this.settings.setValue('userPhoto', '');
     this.settings.setValue('userId', '');
   }
+
 }
