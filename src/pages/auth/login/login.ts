@@ -3,6 +3,7 @@ import {IonicPage, LoadingController, NavController, ToastController} from 'ioni
 
 import {AuthService} from "../../../providers";
 import {User} from "../../../models/user.model";
+import {Subscription} from "rxjs";
 
 @IonicPage()
 @Component({
@@ -29,39 +30,46 @@ export class LoginPage {
     authExpires: '',
     groupName: null
   });
+
   password: string = 'puppies';
-  isAuthenticated: boolean = false;
   private selectedGroup: number = null;
+  private authStatusSub: Subscription;
+  private loading = this.loadingCtrl.create({
+    content: 'Signing you in... ',
+    spinner: 'dots'
+  });
 
   constructor(public navCtrl: NavController,
               public toastCtrl: ToastController,
               private authService: AuthService,
               private loadingCtrl: LoadingController) {}
 
-  // Attempt to login in through our User service
-  doLogin() {
-    this.authService.signInEmail(this.account.email, this.password)
-      .then((success) => {
-        console.log(success);
-        if (success) {
-          this.isAuthenticated = true;
+
+
+  ionViewDidLoad() {
+    this.authStatusSub = this.authService.getAuthStatusListener()
+      .subscribe((isAuthenticated) => {
+        if (isAuthenticated) {
+          console.log("User was logged in!");
+          this.loading.dismiss();
           this.navCtrl.push('AccountPage');
         } else {
           let toast = this.toastCtrl.create({
-            message: "An error occured while loggin you in.",
+            message: 'Unable to sign you up at this time.',
             duration: 3000,
             position: 'top'
-          });  toast.present();
+          });
+          toast.present();
+          console.log("User was not logged in!");
+          this.loading.dismiss();
         }
-      })
-      .catch((err) => {
-        // Unable to log in
-        let toast = this.toastCtrl.create({
-          message: err,
-          duration: 3000,
-          position: 'top'
-        });  toast.present();
-    });
+      });
+  }
+
+  // Attempt to login in through our User service
+  doLogin() {
+    this.authService.signInEmail(this.account.email, this.password);
+    this.loading.present();
   }
 
   onGoogleSignIn() {
@@ -76,23 +84,7 @@ export class LoginPage {
       return;
     }
 
-    const loading = this.loadingCtrl.create({
-      content: 'Signing you up ... ',
-      spinner: 'dots'
-    }); loading.present();
-    this.authService.signInGoogle(this.groups[this.selectedGroup].name).then((isAuth) => {
-      loading.dismiss();
-      this.navCtrl.push('AccountPage');
-    }).catch((error) => {
-      loading.dismiss();
-      this.navCtrl.push('AccountPage');
-      // Unable to sign up
-      let toast = this.toastCtrl.create({
-        message: 'Unable to sign you up at this time.  ' + error,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-    });
+    this.authService.signInGoogle(this.groups[this.selectedGroup].name);
+    this.loading.present();
   }
 }

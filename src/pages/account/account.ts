@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from "rxjs";
 
 import { AuthService } from "../../providers";
+import { User } from "../../models/user.model";
 
 /**
  * Generated class for the AccountPage page.
@@ -20,7 +21,7 @@ export class AccountPage {
 
   private isAuthenticated: boolean = false;
   private authStatusSub: Subscription;
-  private user;
+  private user: User;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,

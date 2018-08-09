@@ -36,7 +36,7 @@ export class MeetupMainPage {
   }
 
   onViewFriends() {
-    this.authService.getActiveUser().getIdToken()
+/*    this.authService.getActiveUser().getIdToken()
       .then((token: string) => {
         const userId = this.authService.getActiveUser().uid;
         this.http.put(
@@ -58,7 +58,7 @@ export class MeetupMainPage {
           message: error.message,
           buttons: [{text: 'Ok'}]
         }); alert.present();
-      });
+      });*/
 
   }
 }

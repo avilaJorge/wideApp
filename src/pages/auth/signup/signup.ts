@@ -37,36 +37,39 @@ export class SignupPage {
 
   password: string = 'puppies';
   private authStatusSub: Subscription;
+  private loading = this.loadingCtrl.create({
+    content: 'Signing you in... ',
+    spinner: 'dots'
+  });
 
   constructor(public navCtrl: NavController,
               public toastCtrl: ToastController,
               private authService: AuthService,
-              public loadingCtr: LoadingController) {}
+              public loadingCtrl: LoadingController) {}
 
+  ionViewDidLoad() {
+    this.authStatusSub = this.authService.getAuthStatusListener()
+      .subscribe((isAuthenticated) => {
+        if (isAuthenticated) {
+          console.log("User was logged in!");
+          this.loading.dismiss();
+          this.navCtrl.push('AccountPage');
+        } else {
+          let toast = this.toastCtrl.create({
+            message: 'Unable to sign you up at this time.',
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+          console.log("User was not logged in!");
+          this.loading.dismiss();
+        }
+      });
+  }
   doSignup() {
-
-    const loading = this.loadingCtr.create({
-      content: 'Signing you up ... ',
-      spinner: 'dots'
-    }); loading.present();
     this.account.groupName = this.groups[this.selectedGroup].name;
-    this.authService.signUpEmail(this.account.email, this.password, this.account)
-      .then((data) => {
-        console.log(data);
-        loading.dismiss();
-        this.navCtrl.push('AccountPage');
-      })
-      .catch((error) => {
-        loading.dismiss();
-        this.navCtrl.push('AccountPage');
-        // Unable to sign up
-        let toast = this.toastCtrl.create({
-          message: 'Unable to sign you up at this time.  ' + error,
-          duration: 3000,
-          position: 'top'
-        });
-        toast.present();
-    });
+    this.authService.signUpEmail(this.account.email, this.password, this.account);
+    this.loading.present();
   }
 
   onGoogleSignIn() {
@@ -81,25 +84,8 @@ export class SignupPage {
       return;
     }
 
-    const loading = this.loadingCtr.create({
-      content: 'Signing you up ... ',
-      spinner: 'dots'
-    }); loading.present();
-
     this.account.groupName = this.groups[this.selectedGroup].name;
-    this.authService.signInGoogle(this.groups[this.selectedGroup].name).then((isAuth) => {
-      loading.dismiss();
-      this.navCtrl.push('AccountPage');
-    }).catch((error) => {
-      loading.dismiss();
-      this.navCtrl.push('AccountPage');
-      // Unable to sign up
-      let toast = this.toastCtrl.create({
-        message: 'Unable to sign you up at this time.  ' + error,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present();
-    });
+    this.authService.signInGoogle(this.groups[this.selectedGroup].name);
+    this.loading.present();
   }
 }
