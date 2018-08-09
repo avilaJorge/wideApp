@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import {IonicPage,
-        LoadingController,
-        NavController,
-        ToastController} from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, ToastController } from 'ionic-angular';
+import { Subscription } from "rxjs";
 
 import { AuthService } from '../../../providers';
-import {Subscription} from "rxjs";
-import {User} from "../../../models/user.model";
+import { User } from "../../../models/user.model";
 
 @IonicPage()
 @Component({
