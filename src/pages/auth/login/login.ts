@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, LoadingController, NavController, ToastController} from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, ToastController, ViewController} from 'ionic-angular';
 
 import {AuthService} from "../../../providers";
 import {User} from "../../../models/user.model";
@@ -40,7 +40,8 @@ export class LoginPage {
   });
 
   constructor(public navCtrl: NavController,
-              public toastCtrl: ToastController,
+              private viewCtrl: ViewController,
+              private toastCtrl: ToastController,
               private authService: AuthService,
               private loadingCtrl: LoadingController) {}
 
@@ -52,7 +53,7 @@ export class LoginPage {
         if (isAuthenticated) {
           console.log("User was logged in!");
           this.loading.dismiss();
-          this.navCtrl.push('AccountPage');
+          this.viewCtrl.dismiss(true);
         } else {
           let toast = this.toastCtrl.create({
             message: 'Unable to sign you up at this time.',

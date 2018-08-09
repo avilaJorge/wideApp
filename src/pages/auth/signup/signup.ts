@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, ToastController } from 'ionic-angular';
+import {IonicPage, LoadingController, NavController, ToastController, ViewController} from 'ionic-angular';
 import { Subscription } from "rxjs";
 
 import { AuthService } from '../../../providers';
@@ -41,8 +41,9 @@ export class SignupPage {
 
   constructor(public navCtrl: NavController,
               public toastCtrl: ToastController,
+              private viewCtrl: ViewController,
               private authService: AuthService,
-              public loadingCtrl: LoadingController) {}
+              private loadingCtrl: LoadingController) {}
 
   ionViewDidLoad() {
     this.authStatusSub = this.authService.getAuthStatusListener()
@@ -50,7 +51,7 @@ export class SignupPage {
         if (isAuthenticated) {
           console.log("User was logged in!");
           this.loading.dismiss();
-          this.navCtrl.push('AccountPage');
+          this.viewCtrl.dismiss(true);
         } else {
           let toast = this.toastCtrl.create({
             message: 'Unable to sign you up at this time.',

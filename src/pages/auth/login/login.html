@@ -8,7 +8,7 @@
 
 
 <ion-content>
-  <form (submit)="doLogin()">
+  <form #signInEmail="ngForm" (submit)="doLogin()">
     <ion-list>
 
       <ion-item>
@@ -42,7 +42,7 @@
   </form>
   <hr>
   <h6 text-center>Or sign up with Google.  Just select a group.</h6>
-  <form #signUpGoogleRef="ngForm" (submit)="onGoogleSignIn()">
+  <form #signInGoogle="ngForm" (submit)="onGoogleSignIn()">
     <ion-item>
       <ion-label floating>Group</ion-label>
       <ion-select [(ngModel)]="selectedGroup" name="selectedGroup" required>
