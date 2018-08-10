@@ -24,7 +24,8 @@ import { firebaseConfig } from "../environment/environment";
 
 import { AngularFireModule } from "angularfire2";
 import { AngularFireAuth, AngularFireAuthModule } from "angularfire2/auth";
-import {AngularFireStorageModule} from "angularfire2/storage";
+import { AngularFireStorageModule } from "angularfire2/storage";
+import { AddLogEntryPage } from "../pages/add-log-entry/add-log-entry";
 
 export function provideSettings(storage: Storage) {
   /**
@@ -44,7 +45,8 @@ export function provideSettings(storage: Storage) {
 @NgModule({
   declarations: [
     MyApp,
-    MenuPage
+    MenuPage,
+    AddLogEntryPage
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,8 @@ export function provideSettings(storage: Storage) {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    MenuPage
+    MenuPage,
+    AddLogEntryPage
   ],
   providers: [
     SplashScreen,

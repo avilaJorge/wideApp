@@ -8,6 +8,14 @@
 
   <ion-navbar>
     <ion-title>Logs</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        icon-only
+        [navPush]="addLogEntryPage">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

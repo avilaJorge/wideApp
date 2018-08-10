@@ -3,15 +3,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Config, Platform } from 'ionic-angular';
 
-import {AuthService, Settings} from '../providers';
-import {MainPage} from "../pages";
+import { AuthService, Settings } from '../providers';
+import { MainPage } from "../pages";
 
 @Component({
-  template: `<page-menu></page-menu>`
+  template: `<ion-nav #content [root]="root"></ion-nav>`
 })
 export class MyApp {
-
-  root: any;
+  root: any = MainPage;
 
   constructor(platform: Platform,
               settings: Settings,

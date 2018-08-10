@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import {AddLogEntryPage} from "../add-log-entry/add-log-entry";
-
 /**
- * Generated class for the LogsPage page.
+ * Generated class for the AddLogEntryPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -12,18 +10,16 @@ import {AddLogEntryPage} from "../add-log-entry/add-log-entry";
 
 @IonicPage()
 @Component({
-  selector: 'page-logs',
-  templateUrl: 'logs.html',
+  selector: 'page-add-log-entry',
+  templateUrl: 'add-log-entry.html',
 })
-export class LogsPage {
-
-  addLogEntryPage: any = AddLogEntryPage
+export class AddLogEntryPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LogsPage');
+    console.log('ionViewDidLoad AddLogEntryPage');
   }
 
 }
