@@ -7,11 +7,12 @@ import * as firebase from "firebase";
 import { User } from "../../models/user.model";
 import { Settings } from "..";
 import { AlertController } from "ionic-angular";
+import { backendURL } from "../../environment/environment";
 
 @Injectable()
 export class AuthService {
 
-  url: string = 'https://us-central1-wide-app.cloudfunctions.net/app/';
+  url: string = backendURL;
   private settingsReady: boolean = false;
   private token: string;
   private isAuthenticated = false;
@@ -211,7 +212,7 @@ export class AuthService {
     return this.http.get(this.url + 'auth/user/' + userId, httpOptions);
   }
 
-  private getHttpHeader(): HttpHeaders {
+  getHttpHeader(): HttpHeaders {
     return new HttpHeaders({
       'Authorization': 'Bearer ' + this.token,
       'Content-Type': 'application/json'
