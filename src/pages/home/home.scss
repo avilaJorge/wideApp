@@ -1,3 +1,9 @@
 page-home {
-
+  .chart-wrapper {
+    width: 95%;
+    display: inline-block;
+  }
+  canvas {
+    height: 400px;
+  }
 }

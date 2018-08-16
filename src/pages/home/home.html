@@ -14,7 +14,15 @@
 
 
 <ion-content padding>
-  <section class="chart-wrapper">
-    <canvas #barChart></canvas>
-  </section>
+    <section (click)="onChartClick()" class="chart-wrapper">
+      <canvas #barChart></canvas>
+    </section>
+
+    <ion-card *ngFor="let entry of log">
+      <ion-card-content>
+        <ion-card-title>
+          {{entry.date.substring(5, 7)}}/{{entry.date.substring(8,10)}}:     {{entry.steps}} steps
+        </ion-card-title>
+      </ion-card-content>
+    </ion-card>
 </ion-content>
