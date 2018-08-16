@@ -5,7 +5,7 @@ import { Observable, Subject } from "rxjs";
 import * as firebase from "firebase";
 
 import { User } from "../../models/user.model";
-import { Settings } from "..";
+import { LogsService, Settings } from "..";
 import { AlertController } from "ionic-angular";
 import { backendURL } from "../../environment/environment";
 
@@ -16,7 +16,7 @@ export class AuthService {
   private settingsReady: boolean = false;
   private token: string;
   private isAuthenticated = false;
-  private currentlyLoggedInUser: User;
+  private currentlyLoggedInUser: User = null;
   private authStatusListener = new Subject<boolean>();
 
   constructor(private fireAuth: AngularFireAuth,

@@ -3,7 +3,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Config, Platform } from 'ionic-angular';
 
-import { AuthService, Settings } from '../providers';
+import {AuthService, LogsService, Settings} from '../providers';
 import { MainPage } from "../pages";
 
 @Component({
@@ -17,7 +17,8 @@ export class MyApp {
               private config: Config,
               private statusBar: StatusBar,
               private splashScreen: SplashScreen,
-              private authService: AuthService) {
+              private authService: AuthService,
+              private logService: LogsService) {
 
     platform.ready().then(() => {
       this.root = MainPage;
