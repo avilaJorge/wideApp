@@ -19,7 +19,6 @@ export class LogsService {
     private authService: AuthService,
     private settings: Settings
   ) {
-    console.log("Constructor for LogsService");
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
           if (isAuth) {
@@ -53,17 +52,23 @@ export class LogsService {
 
   initializeUserLog(currUser: User) {
     if (currUser) {
-      this.http.get(backendURL + 'log/' + this.currUser.googleUID, {headers: this.authService.getHttpHeader()})
-        .subscribe((data) => {
-          this.log = [];
-          for (let entry in data) {
-            this.log.push(data[entry]);
-          }
-          console.log(data);
-        }, (error) => {
-          console.log("Error getting user log from database!");
-          console.log(error);
-        });
+      this.settings.getValue('log').then((logData) => {
+        if (logData) {
+          this.log = JSON.parse(logData);
+        }
+        this.http.get(backendURL + 'log/' + this.currUser.googleUID, {headers: this.authService.getHttpHeader()})
+          .subscribe((data) => {
+            this.log = [];
+            for (let entry in data) {
+              this.log.push(data[entry]);
+            }
+            this.settings.setValue('log', JSON.stringify(this.log));
+          }, (error) => {
+            console.log("Error getting user log from database!");
+            console.log(error);
+          });
+      });
+
     }
 
   }
