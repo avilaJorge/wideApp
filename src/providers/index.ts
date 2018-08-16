@@ -7,3 +7,4 @@ export { Meetups } from './meetup/meetups/meetups';
 export { GetItDoneRestApi } from './getitdone-rest-api/getitdone-rest-api';
 export { Reports } from './reports/reports';
 export { AuthService } from './auth/auth.service';
+export { LogsService } from './logs/logs.service';

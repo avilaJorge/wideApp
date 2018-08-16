@@ -55,6 +55,10 @@ export class AuthService {
     });
   }
 
+  getToken() {
+    return this.token;
+  }
+
   get isAuth() {
     return this.isAuthenticated;
   }

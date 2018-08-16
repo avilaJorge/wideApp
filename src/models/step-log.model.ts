@@ -1,16 +1,14 @@
-export class StepLog {
+export class StepEntry {
 
   date: string;
   steps: number;
   description: string;
   goal: number;
-  weekGoal: number;
 
-  constructor(fields: any) {
-    this.date = fields.date;
-    this.steps = fields.steps;
-    this.description = fields.description;
-    this.goal = fields.goal;
-    this.weekGoal = fields.weekGoal;
+  constructor(date:string, steps: number, goal: number, description: string) {
+    this.date = date;
+    this.steps = steps;
+    this.description = description;
+    this.goal = goal;
   }
 }

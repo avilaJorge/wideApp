@@ -15,7 +15,8 @@ import {
   MeetupRestApi,
   Meetups,
   GetItDoneRestApi,
-  AuthService
+  AuthService,
+  LogsService
 } from '../providers';
 import { MyApp } from './app.component';
 import { Reports } from '../providers/reports/reports';
@@ -68,6 +69,7 @@ export function provideSettings(storage: Storage) {
     StatusBar,
     AngularFireAuth,
     AuthService,
+    LogsService,
     Api,
     MeetupRestApi,
     GetItDoneRestApi,

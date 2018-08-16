@@ -22,5 +22,13 @@
 
 
 <ion-content padding>
-
+  <ion-card *ngFor="let entry of log">
+    <ion-card-content>
+      <ion-card-title>
+        {{entry.date}}:     {{entry.steps}} steps
+      </ion-card-title>
+      <h4>Goal: {{entry.goal}}</h4>
+      <p>{{entry.description}}</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
