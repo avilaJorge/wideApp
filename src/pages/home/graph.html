@@ -1,0 +1,60 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+    </ion-buttons>
+    <ion-title></ion-title>
+    <ion-toolbar no-border-top>
+      <ion-segment [(ngModel)]="chartType">
+        <ion-segment-button value="steps">
+          1 Month Steps
+        </ion-segment-button>
+        <ion-segment-button value="attendance">
+          1 Month Attendance
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <section [hidden]="chartType != 'steps'" class="chart-wrapper">
+    <canvas #lineChart></canvas>
+  </section>
+  <div [hidden]="chartType == 'steps'">
+    <div class="calendar-header">
+      <ion-row class="calendar-month">
+        <ion-col col-2 ><ion-icon name="arrow-back"></ion-icon></ion-col>
+        <ion-col col-8>{{currentMonth}} {{currentYear}}</ion-col>
+        <ion-col col-2 ><ion-icon name="arrow-forward"></ion-icon></ion-col>
+      </ion-row>
+    </div>
+    <div class="calendar-body">
+      <ion-grid>
+        <ion-row class="calendar-weekday">
+          <ion-col>Su</ion-col>
+          <ion-col>Mo</ion-col>
+          <ion-col>Tu</ion-col>
+          <ion-col>We</ion-col>
+          <ion-col>Th</ion-col>
+          <ion-col>Fr</ion-col>
+          <ion-col>Sa</ion-col>
+        </ion-row>
+        <ion-row class="calendar-date">
+          <!--<ion-col col-1 *ngFor="" class="last-month">{{lastDay}}</ion-col>-->
+          <ion-col col-1 class="day-cell" *ngFor="let day of attendance">
+            <span class="currentDate">{{day.date}}</span>
+            <!--<span class="currentDate" *ngIf="currentDate === day.date; else otherDate">{{day}}</span>-->
+            <!--<ng-template #otherDate class="otherDate">{{day.date}}</ng-template>-->
+            <ion-icon *ngIf="day.present" name="checkmark-circle"></ion-icon>
+          </ion-col>
+          <!--<ion-col col-1 *ngFor="let nextDay of daysInNextMonth" class="next-month">{{nextDay}}</ion-col>-->
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+  <button ion-button color="danger" full (click)="dismiss()">Close</button>
+
+</ion-content>

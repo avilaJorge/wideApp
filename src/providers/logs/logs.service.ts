@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Subscription } from "rxjs";
 
 import { StepEntry } from "../../models/step-log.model";
@@ -7,12 +7,16 @@ import { backendURL } from "../../environment/environment";
 import { AuthService, Settings } from "..";
 import { User } from "../../models/user.model";
 
+const thirtyDayLimit:number = 30;
 
 @Injectable()
 export class LogsService {
   private log: StepEntry[] = [];
+  private logObjects: any = null;
   private currUser: User;
   private authStatusSub: Subscription;
+  private thirtyDates: string[] = [];
+  private thirtyDatesData: {date: string, data: StepEntry}[] = [];
 
   constructor(
     private http: HttpClient,
@@ -29,9 +33,20 @@ export class LogsService {
           }
         },
         (error) => {console.log(error)});
+
+    const today = new Date();
+    let i = thirtyDayLimit;
+    while(i > 0) {
+      const date = new Date();
+      date.setDate(today.getDate() - i);
+      this.thirtyDates.push(date.toISOString().substring(0,10));
+      i--;
+    }
+    console.log(this.thirtyDates);
   }
 
   ionViewDidLoad() {
+
   }
 
   addEntry(date: string, steps: string, goal: string, description: string) {
@@ -58,11 +73,13 @@ export class LogsService {
         }
         this.http.get(backendURL + 'log/' + this.currUser.googleUID, {headers: this.authService.getHttpHeader()})
           .subscribe((data) => {
+            this.logObjects = data;
             this.log = [];
             for (let entry in data) {
               this.log.push(data[entry]);
             }
             this.settings.setValue('log', JSON.stringify(this.log));
+            this.initThirtyDates(this.logObjects);
           }, (error) => {
             console.log("Error getting user log from database!");
             console.log(error);
@@ -73,6 +90,25 @@ export class LogsService {
 
   }
 
+  initThirtyDates(logData: any) {
+    this.thirtyDatesData = [];
+    for(let date of this.thirtyDates) {
+      this.thirtyDatesData.push({date: date, data: logData[date] || new StepEntry(date,0,0,'')});
+    }
+    console.log(this.thirtyDatesData);
+  }
+
+  getThirtyDatesData() {
+    return this.thirtyDatesData;
+  }
+
+  getThirtyDates() {
+    return this.thirtyDates;
+  }
+
+  getLogObjects() {
+    return this.logObjects;
+  }
 
   getLog() {
     return [...this.log];

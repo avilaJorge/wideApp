@@ -5,7 +5,7 @@ import { Observable, Subject } from "rxjs";
 import * as firebase from "firebase";
 
 import { User } from "../../models/user.model";
-import { LogsService, Settings } from "..";
+import { Settings } from "..";
 import { AlertController } from "ionic-angular";
 import { backendURL } from "../../environment/environment";
 
@@ -13,7 +13,6 @@ import { backendURL } from "../../environment/environment";
 export class AuthService {
 
   url: string = backendURL;
-  private settingsReady: boolean = false;
   private token: string;
   private isAuthenticated = false;
   private currentlyLoggedInUser: User = null;
@@ -25,7 +24,6 @@ export class AuthService {
               private settings: Settings) {
 
     this.settings.load().then(() => {
-      this.settingsReady = true;
       this.autoAuthUser();
       fireAuth.auth.onAuthStateChanged((user) => {
         if (user) {
