@@ -5,6 +5,7 @@ import { Config, Platform } from 'ionic-angular';
 
 import { AuthService, LogsService, Settings } from '../providers';
 import { FirstRunPage, MainPage } from "../pages";
+import { AngularFireAuth } from "angularfire2/auth";
 
 @Component({
   template: `<ion-nav #content [root]="root"></ion-nav>`
@@ -18,6 +19,7 @@ export class MyApp {
               private statusBar: StatusBar,
               private splashScreen: SplashScreen,
               private authService: AuthService,
+              private fireAuth: AngularFireAuth,
               private logService: LogsService) {
 
     platform.ready().then(() => {
@@ -34,6 +36,12 @@ export class MyApp {
         }
         this.statusBar.styleDefault();
         this.splashScreen.hide();
+      });
+      fireAuth.auth.onAuthStateChanged((user) => {
+        if (!user) {
+          this.root = FirstRunPage;
+          console.log('user logout was detected in app component');
+        }
       });
     });
   }
