@@ -3,14 +3,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Config, Platform } from 'ionic-angular';
 
-import {AuthService, LogsService, Settings} from '../providers';
-import { MainPage } from "../pages";
+import { AuthService, LogsService, Settings } from '../providers';
+import { FirstRunPage, MainPage } from "../pages";
 
 @Component({
   template: `<ion-nav #content [root]="root"></ion-nav>`
 })
 export class MyApp {
-  root: any = MainPage;
+  root: any = FirstRunPage;
 
   constructor(platform: Platform,
               settings: Settings,
@@ -21,7 +21,7 @@ export class MyApp {
               private logService: LogsService) {
 
     platform.ready().then(() => {
-      this.root = MainPage;
+      //this.root = MainPage;
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
