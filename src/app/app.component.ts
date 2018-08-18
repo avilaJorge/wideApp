@@ -21,10 +21,20 @@ export class MyApp {
               private logService: LogsService) {
 
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+      settings.load().then((data) => {
+        console.log("Got settings loaded.  Now printing return from load!");
+        console.log(data);
+        // Okay, so the platform is ready and our plugins are available.
+        // Here you can do any higher level native things you might need.
+        const isAuth = this.authService.autoAuthUser(data);
+        console.log(isAuth);
+        if (isAuth) {
+          console.log("IsAuth");
+          this.root = MainPage;
+        }
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
+      });
     });
   }
 }

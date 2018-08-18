@@ -23,34 +23,32 @@ export class AuthService {
               private alertCtrl: AlertController,
               private settings: Settings) {
 
-    this.settings.load().then(() => {
-      this.autoAuthUser();
-      fireAuth.auth.onAuthStateChanged((user) => {
-        if (user) {
-          user.getIdToken().then((token) => {
-            this.token = token;
-            this.settings.setValue('token', token);
+    fireAuth.auth.onAuthStateChanged((user) => {
+     if (user) {
+        user.getIdToken().then((token) => {
+          this.token = token;
+          this.settings.setValue('token', token);
+        });
+        this.dbGetUser(user.uid)
+          .subscribe((dbUser) => {
+            console.log("OnAuthStateChanged called!");
+            console.log('User data was retrieved from Firebase');
+            this.currentlyLoggedInUser = dbUser;
+            this.isAuthenticated = true;
+            this.authStatusListener.next(true);
+            this.settings.setValue('user', dbUser);
+          }, (error) => {
+            console.log(error);
+            this.authStatusListener.next(false);
           });
-          this.dbGetUser(user.uid)
-            .subscribe((dbUser) => {
-              console.log("OnAuthStateChanged called!");
-              console.log('User data was retrieved from Firebase');
-              this.currentlyLoggedInUser = dbUser;
-              this.isAuthenticated = true;
-              this.authStatusListener.next(true);
-              this.settings.setValue('user', dbUser);
-            }, (error) => {
-              console.log(error);
-              this.authStatusListener.next(false);
-            });
-        } else {
-          this.token = '';
-          this.isAuthenticated = false;
-          this.currentlyLoggedInUser = null;
-          this.authStatusListener.next(false);
-          this.clearAuthData();
-        }
-      });
+      } else {
+        console.log('onAuthStateChanged detected the logout');
+        this.token = '';
+        this.isAuthenticated = false;
+        this.currentlyLoggedInUser = null;
+        this.authStatusListener.next(false);
+        this.clearAuthData();
+      }
     });
   }
 
@@ -120,17 +118,16 @@ export class AuthService {
 
   }
 
-  autoAuthUser(): {token:string, user: User} {
-    const authInformation = this.getAuthData();
-    if (authInformation.token === '') {
-      return null;
+  autoAuthUser(localData): boolean {
+    if (!localData.token || (localData.token == '' )) {
+      return false;
     }
     console.log('autoAuthUser(): Auth information exists');
-    this.token = authInformation.token;
+    this.token = localData.token;
     this.isAuthenticated = true;
-    this.currentlyLoggedInUser = authInformation.user;
+    this.currentlyLoggedInUser = localData.user;
     this.authStatusListener.next(true);
-    return authInformation;
+    return true;
   }
 
 

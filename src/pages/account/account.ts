@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, ModalController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import { Subscription } from "rxjs";
 
 import { AuthService } from "../../providers";
@@ -25,36 +25,18 @@ export class AccountPage {
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
-              private authService: AuthService,
-              private modalCtrl: ModalController) {}
+              private authService: AuthService) {}
 
   ionViewDidLoad() {
     this.isAuthenticated = this.authService.isAuth;
     this.user = this.authService.getActiveUser();
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
+        console.log('AuthStatusSub called in AccountPage');
         this.isAuthenticated = isAuth;
         this.user = this.authService.getActiveUser();
       });
     console.log('ionViewDidLoad AccountPage');
-  }
-
-  onLogin() {
-    const addModal = this.modalCtrl.create('LoginPage');
-    addModal.onDidDismiss((isAuth) => {
-      this.isAuthenticated = isAuth;
-      this.user = this.authService.getActiveUser();
-    });
-    addModal.present();
-  }
-
-  onSignUp() {
-    const addModal = this.modalCtrl.create('SignupPage');
-    addModal.onDidDismiss((isAuth) => {
-      this.isAuthenticated = isAuth;
-      this.user = this.authService.getActiveUser();
-    });
-    addModal.present();
   }
 
   onSignOut() {
@@ -62,6 +44,7 @@ export class AccountPage {
     this.isAuthenticated = false;
     this.user = null;
     this.authService.signOut();
+    this.navCtrl.setRoot('WelcomePage');
   }
 
   ionViewWillLeave() {

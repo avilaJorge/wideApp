@@ -4,6 +4,7 @@ import {IonicPage, LoadingController, NavController, ToastController, ViewContro
 import {AuthService} from "../../../providers";
 import {User} from "../../../models/user.model";
 import {Subscription} from "rxjs";
+import { MainPage } from "../../index";
 
 @IonicPage()
 @Component({
@@ -40,7 +41,6 @@ export class LoginPage {
   });
 
   constructor(public navCtrl: NavController,
-              private viewCtrl: ViewController,
               private toastCtrl: ToastController,
               private authService: AuthService,
               private loadingCtrl: LoadingController) {}
@@ -53,7 +53,7 @@ export class LoginPage {
         if (isAuthenticated) {
           console.log("User was logged in!");
           this.loading.dismiss();
-          this.viewCtrl.dismiss(true);
+          this.navCtrl.setRoot(MainPage);
         } else {
           let toast = this.toastCtrl.create({
             message: 'Unable to sign you up at this time.',
@@ -87,5 +87,9 @@ export class LoginPage {
 
     this.authService.signInGoogle(this.groups[this.selectedGroup].name);
     this.loading.present();
+  }
+
+  ionViewWillLeave() {
+    this.authStatusSub.unsubscribe();
   }
 }
