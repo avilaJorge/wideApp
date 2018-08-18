@@ -64,10 +64,15 @@
     </ion-row>
     <hr>
     <ion-row>
+      <ion-col col-3>
+        <h2 text-right>Note: </h2>
+      </ion-col> <ion-col col-1></ion-col>
       <ion-col>
-        <h2>Note: {{entry.description}}</h2>
+        <h2>{{entry.description}}</h2>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <button ion-button color="danger" full (click)="dismiss()">Close</button>
 
 </ion-content>

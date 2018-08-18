@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 import { StepEntry } from "../../models/step-log.model";
 
@@ -21,7 +21,8 @@ export class LogEntryPage {
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams) {
+    public navParams: NavParams,
+    private viewCtrl: ViewController) {
 
     this.entry = this.navParams.get('entry');
   }
@@ -29,6 +30,10 @@ export class LogEntryPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad LogEntryPage');
     console.log(this.entry);
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 
 }
