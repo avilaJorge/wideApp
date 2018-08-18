@@ -8,7 +8,8 @@ import { LogsService, Settings } from "../../providers";
 const hoverColor: string = 'rgb(0, 0, 255)';
 const barColor: string = 'rgb(9, 137, 126)';
 const background: string = 'rgb(9, 11, 105)';
-const lineColor: string = 'rgb(255, 255, 0)';
+const lineColor: string = 'rgb(0, 0, 0)';
+const backColor: string = 'rgb(192,192,192)';
 const sevenDayLimit: number = 7;
 const thirtyDayLimit: number = 30;
 const monthDateIndex: number = 5;
@@ -24,7 +25,6 @@ export class HomePage {
 
   private log: StepEntry[] = [];
   private barChartEl: any = null;
-  private mixedChartEl: any = null;
   private chartLabels: any = [];
   private chartValues: number[] = [];
   private chartGoals: number[] = [];
@@ -81,8 +81,14 @@ export class HomePage {
             duration: 2000,
             easing: 'eastInQuart',
             backgroundColor: barColor,
-            hoverBackgroundColor : this.hoverColors
+            hoverBackgroundColor: this.hoverColors
           }]
+          // }, {
+          //   data: this.chartGoals,
+          //   type: 'line',
+          //   borderColor: backColor,
+          //   fill: true
+          // }]
         },
         options: {
           maintainAspectRatio: false,

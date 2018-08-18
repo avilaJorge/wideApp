@@ -22,7 +22,7 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let entry of log">
+  <ion-card *ngFor="let entry of log" (click)="onEntryClick(entry)">
     <ion-card-content>
       <ion-card-title>
         {{entry.date.substring(5, 7)}}/{{entry.date.substring(8,10)}}:     {{entry.steps}} steps

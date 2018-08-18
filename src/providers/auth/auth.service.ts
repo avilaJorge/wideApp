@@ -41,13 +41,6 @@ export class AuthService {
             console.log(error);
             this.authStatusListener.next(false);
           });
-      } else {
-        console.log('onAuthStateChanged detected the logout');
-        this.token = '';
-        this.isAuthenticated = false;
-        this.currentlyLoggedInUser = null;
-        this.authStatusListener.next(false);
-        this.clearAuthData();
       }
     });
   }

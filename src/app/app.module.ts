@@ -28,6 +28,7 @@ import { AngularFireAuth, AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFireStorageModule } from "angularfire2/storage";
 import { AddLogEntryPage } from "../pages/add-log-entry/add-log-entry";
 import { GraphPage } from "../pages/home/home";
+import { LogEntryPage } from "../pages/log-entry/log-entry";
 
 export function provideSettings(storage: Storage) {
   /**
@@ -49,7 +50,8 @@ export function provideSettings(storage: Storage) {
     MyApp,
     MenuPage,
     AddLogEntryPage,
-    GraphPage
+    GraphPage,
+    LogEntryPage
   ],
   imports: [
     BrowserModule,
@@ -65,7 +67,8 @@ export function provideSettings(storage: Storage) {
     MyApp,
     MenuPage,
     AddLogEntryPage,
-    GraphPage
+    GraphPage,
+    LogEntryPage
   ],
   providers: [
     SplashScreen,

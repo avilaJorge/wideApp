@@ -11,7 +11,7 @@ import { AngularFireAuth } from "angularfire2/auth";
   template: `<ion-nav #content [root]="root"></ion-nav>`
 })
 export class MyApp {
-  root: any = FirstRunPage;
+  root: any;
 
   constructor(platform: Platform,
               settings: Settings,
@@ -33,6 +33,8 @@ export class MyApp {
         if (isAuth) {
           console.log("IsAuth");
           this.root = MainPage;
+        } else {
+          this.root = FirstRunPage;
         }
         this.statusBar.styleDefault();
         this.splashScreen.hide();

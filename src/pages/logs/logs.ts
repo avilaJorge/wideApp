@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 
-import {AddLogEntryPage} from "../add-log-entry/add-log-entry";
-import {LogsService} from "../../providers";
-import {StepEntry} from "../../models/step-log.model";
+import { AddLogEntryPage } from "../add-log-entry/add-log-entry";
+import { LogsService } from "../../providers";
+import { StepEntry } from "../../models/step-log.model";
+import { LogEntryPage } from "../log-entry/log-entry";
 
 /**
  * Generated class for the LogsPage page.
@@ -22,7 +23,11 @@ export class LogsPage {
   addLogEntryPage: any = AddLogEntryPage;
   log: StepEntry[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private logService: LogsService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private logService: LogsService,
+    private modalCtrl: ModalController) {
   }
 
   ionViewDidLoad() {
@@ -34,4 +39,9 @@ export class LogsPage {
     console.log('ionViewWillEnter LogsPage');
   }
 
+  onEntryClick(entry: StepEntry) {
+    console.log('Entry clicked!!!' + entry);
+    let entryModal = this.modalCtrl.create(LogEntryPage, {entry: entry});
+    entryModal.present();
+  }
 }
