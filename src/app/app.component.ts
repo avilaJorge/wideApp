@@ -21,7 +21,6 @@ export class MyApp {
               private logService: LogsService) {
 
     platform.ready().then(() => {
-      //this.root = MainPage;
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();

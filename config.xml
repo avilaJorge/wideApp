@@ -93,11 +93,11 @@
     <plugin name="cordova-universal-links-plugin" spec="^1.2.1" />
     <plugin name="cordova-plugin-browsertab" spec="^0.2.0" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
-    <engine name="android" spec="~7.0.0" />
     <universal-links>
         <host name="wide.page.link" scheme="https" />
         <host name="wide-app.firebaseapp.com" scheme="https">
             <path url="/__/auth/callback" />
         </host>
     </universal-links>
+    <engine name="android" spec="7.0.0" />
 </widget>
