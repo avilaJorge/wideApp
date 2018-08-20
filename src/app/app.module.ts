@@ -16,7 +16,8 @@ import {
   Meetups,
   GetItDoneRestApi,
   AuthService,
-  LogsService
+  LogService,
+  FirebaseService
 } from '../providers';
 import { MyApp } from './app.component';
 import { Reports } from '../providers/reports/reports';
@@ -26,8 +27,9 @@ import { firebaseConfig } from "../environment/environment";
 import { AngularFireModule } from "angularfire2";
 import { AngularFireAuth, AngularFireAuthModule } from "angularfire2/auth";
 import { AngularFireStorageModule } from "angularfire2/storage";
+import { AngularFirestoreModule } from "angularfire2/firestore";
+
 import { AddLogEntryPage } from "../pages/add-log-entry/add-log-entry";
-import { GraphPage } from "../pages/home/home";
 import { LogEntryPage } from "../pages/log-entry/log-entry";
 
 export function provideSettings(storage: Storage) {
@@ -50,7 +52,6 @@ export function provideSettings(storage: Storage) {
     MyApp,
     MenuPage,
     AddLogEntryPage,
-    GraphPage,
     LogEntryPage
   ],
   imports: [
@@ -60,6 +61,7 @@ export function provideSettings(storage: Storage) {
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
+    AngularFirestoreModule,
     AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
@@ -67,15 +69,15 @@ export function provideSettings(storage: Storage) {
     MyApp,
     MenuPage,
     AddLogEntryPage,
-    GraphPage,
     LogEntryPage
   ],
   providers: [
     SplashScreen,
     StatusBar,
     AngularFireAuth,
+    FirebaseService,
     AuthService,
-    LogsService,
+    LogService,
     Api,
     MeetupRestApi,
     GetItDoneRestApi,

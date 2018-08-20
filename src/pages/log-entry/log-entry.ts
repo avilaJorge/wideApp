@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
 import { StepEntry } from "../../models/step-log.model";
+import { monthNames } from "../home/home";
 
 /**
  * Generated class for the LogEntryPage page.
@@ -16,7 +17,7 @@ import { StepEntry } from "../../models/step-log.model";
   templateUrl: 'log-entry.html',
 })
 export class LogEntryPage {
-
+  monthNames = monthNames;
   entry: StepEntry;
 
   constructor(

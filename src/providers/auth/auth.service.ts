@@ -5,7 +5,7 @@ import { Observable, Subject } from "rxjs";
 import * as firebase from "firebase";
 
 import { User } from "../../models/user.model";
-import { Settings } from "..";
+import { FirebaseService, Settings } from "..";
 import { AlertController } from "ionic-angular";
 import { backendURL } from "../../environment/environment";
 
@@ -21,7 +21,8 @@ export class AuthService {
   constructor(private fireAuth: AngularFireAuth,
               private http: HttpClient,
               private alertCtrl: AlertController,
-              private settings: Settings) {
+              private settings: Settings,
+              private firebaseService: FirebaseService) {
 
     fireAuth.auth.onAuthStateChanged((user) => {
      if (user) {
@@ -33,6 +34,7 @@ export class AuthService {
           .subscribe((dbUser) => {
             console.log("OnAuthStateChanged called!");
             console.log('User data was retrieved from Firebase');
+            console.log(dbUser);
             this.currentlyLoggedInUser = dbUser;
             this.isAuthenticated = true;
             this.authStatusListener.next(true);
@@ -181,23 +183,27 @@ export class AuthService {
   }
 
   dbCreateUser(user: User) {
-    const httpOptions = { headers: this.getHttpHeader() };
-    this.http.post(this.url + 'auth/user', user, httpOptions)
-      .subscribe(() => {
-        console.log('Success!  User data was sent to Firebase Realtime Database');
-      }, (error) => {
-        const alert = this.alertCtrl.create({
-          title: "An error occured when trying to access the database",
-          message: error.message,
-          buttons: [{text: 'Ok'}]
-        });
-        alert.present();
-      });
+    this.firebaseService.createUser(user).then((res) => {
+      console.log(res);
+    });
+    // const httpOptions = { headers: this.getHttpHeader() };
+    // this.http.post(this.url + 'auth/user', user, httpOptions)
+    //   .subscribe(() => {
+    //     console.log('Success!  User data was sent to Firebase Realtime Database');
+    //   }, (error) => {
+    //     const alert = this.alertCtrl.create({
+    //       title: "An error occured when trying to access the database",
+    //       message: error.message,
+    //       buttons: [{text: 'Ok'}]
+    //     });
+    //     alert.present();
+    //   });
   }
 
-  dbGetUser(userId: string): Observable<any>{
-    const httpOptions = { headers: this.getHttpHeader() };
-    return this.http.get(this.url + 'auth/user/' + userId, httpOptions);
+  dbGetUser(userId: string): Observable<any> {
+    return this.firebaseService.getUser(userId);
+    // const httpOptions = { headers: this.getHttpHeader() };
+    // return this.http.get(this.url + 'auth/user/' + userId, httpOptions);
   }
 
   getHttpHeader(): HttpHeaders {

@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Logs</ion-title>
+    <ion-title>Log</ion-title>
     <ion-buttons end>
       <button
         ion-button
@@ -22,11 +22,19 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let entry of log" (click)="onEntryClick(entry)">
-    <ion-card-content>
-      <ion-card-title>
-        {{entry.date.substring(5, 7)}}/{{entry.date.substring(8,10)}}:     {{entry.steps}} steps
-      </ion-card-title>
-    </ion-card-content>
-  </ion-card>
+  <div class="log-list">
+
+    <ion-list>
+      <button class="list-item" ion-item *ngFor="let entry of log" (click)="onEntryClick(entry)">
+        <ion-row class="content-row">
+          <ion-col width-50 class="entry-date">
+            {{entry.date.substring(5, 7)}}/{{entry.date.substring(8,10)}}:
+          </ion-col>
+          <ion-col width-50 class="entry-steps">
+            {{entry.steps}} steps
+          </ion-col>
+        </ion-row>
+      </button>
+    </ion-list>
+  </div>
 </ion-content>

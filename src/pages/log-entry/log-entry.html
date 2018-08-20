@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title></ion-title>
+    <ion-title>{{ monthNames[entry.date.substring(5,7)]}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -72,7 +72,8 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
-  <button ion-button color="danger" full (click)="dismiss()">Close</button>
-
 </ion-content>
+
+<ion-footer>
+  <button ion-button color="primary" full (click)="dismiss()">Close</button>
+</ion-footer>

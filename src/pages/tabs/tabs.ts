@@ -25,7 +25,7 @@ export class TabsPage {
   constructor(public navCtrl: NavController) {
 
     this.tab1Title = 'Home';
-    this.tab2Title = 'Messages';
+    this.tab2Title = 'News';
     this.tab3Title = 'Log';
     this.tab4Title = 'Events';
     this.tab5Title = 'Account';

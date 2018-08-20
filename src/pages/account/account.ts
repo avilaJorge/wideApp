@@ -44,7 +44,6 @@ export class AccountPage {
     this.isAuthenticated = false;
     this.user = null;
     this.authService.signOut();
-    this.navCtrl.setRoot('WelcomePage');
   }
 
   ionViewWillLeave() {

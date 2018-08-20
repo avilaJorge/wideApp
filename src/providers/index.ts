@@ -1,4 +1,5 @@
 export { Api } from './api/api';
+export { FirebaseService } from './firebase/firebase-integration.service';
 export { Items } from '../mocks/providers/items';
 export { Settings } from './settings/settings';
 export { User } from './user/user';
@@ -7,4 +8,4 @@ export { Meetups } from './meetup/meetups/meetups';
 export { GetItDoneRestApi } from './getitdone-rest-api/getitdone-rest-api';
 export { Reports } from './reports/reports';
 export { AuthService } from './auth/auth.service';
-export { LogsService } from './logs/logs.service';
+export { LogService } from './logs/logs.service';

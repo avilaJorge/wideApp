@@ -2,15 +2,18 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from "rxjs";
 
-import { StepEntry } from "../../models/step-log.model";
+import { StepEntry, EntryDate } from "../../models/step-log.model";
 import { backendURL } from "../../environment/environment";
 import { AuthService, Settings } from "..";
 import { User } from "../../models/user.model";
+import { monthNames } from "../../pages/home/home";
+import { FirebaseService } from "..";
 
 const thirtyDayLimit:number = 30;
 
 @Injectable()
-export class LogsService {
+export class LogService {
+
   private log: StepEntry[] = [];
   private logObjects: any = null;
   private currUser: User;
@@ -21,7 +24,8 @@ export class LogsService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private settings: Settings
+    private settings: Settings,
+    private firebaseService: FirebaseService
   ) {
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
@@ -45,24 +49,29 @@ export class LogsService {
     console.log(this.thirtyDates);
   }
 
-  ionViewDidLoad() {
-
-  }
-
-  addEntry(date: string, steps: string, goal: string, description: string) {
+  addEntry(date: string, steps: string, goal: string, note: string) {
     const goalNum = parseInt(goal, 10);
     const stepsNum = parseInt(steps, 10);
-    const stepEntry = new StepEntry(date, stepsNum, goalNum, description);
+    const stepEntry: StepEntry = {
+      date: this.getEntryDate(date),
+      steps: stepsNum,
+      goal: goalNum,
+      note: note
+    };
     this.log.push(stepEntry);
-    this.http.post(
-      backendURL + 'log/' + this.currUser.googleUID + '/' + date,
-      stepEntry,
-      { headers: this.authService.getHttpHeader() })
-      .subscribe(() => {
-        console.log('The step log entry was successfully stored in the database!')
-      }, (error) => {
-        console.log('An error occurred while attempting to store the log entry in the database');
+    this.firebaseService.createStepEntry(stepEntry)
+      .then((res) => {
+        console.log(res);
       });
+    // this.http.post(
+    //   backendURL + 'log/' + this.currUser.googleUID + '/' + date,
+    //   stepEntry,
+    //   { headers: this.authService.getHttpHeader() })
+    //   .subscribe(() => {
+    //     console.log('The step log entry was successfully stored in the database!')
+    //   }, (error) => {
+    //     console.log('An error occurred while attempting to store the log entry in the database');
+    //   });
   }
 
   initializeUserLog(currUser: User) {
@@ -93,7 +102,9 @@ export class LogsService {
   initThirtyDates(logData: any) {
     this.thirtyDatesData = [];
     for(let date of this.thirtyDates) {
-      this.thirtyDatesData.push({date: date, data: logData[date] || new StepEntry(date,0,0,'')});
+      this.thirtyDatesData.push(
+        {date: date, data: logData[date] ||
+            {date: this.getEntryDate(date), steps: 0, goal: 0, note: ''} });
     }
     console.log(this.thirtyDatesData);
   }
@@ -111,6 +122,20 @@ export class LogsService {
   }
 
   getLog() {
+    console.log(this.log);
+    if (this.log.length <= 0) return [];
     return [...this.log];
+  }
+
+  getEntryDate(dateStr: string): EntryDate {
+    const monthNum = parseInt(dateStr.substring(5,7), 10);
+    let entryDate: EntryDate = {
+      rawDate: dateStr,
+      month: monthNames[monthNum - 1],
+      monthNum: monthNum,
+      day: parseInt(dateStr.substring(8, 10), 10),
+      year: parseInt(dateStr.substring(0, 4), 10)
+    };
+    return entryDate;
   }
 }

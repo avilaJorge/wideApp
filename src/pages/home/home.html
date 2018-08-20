@@ -14,6 +14,7 @@
 
 
 <ion-content padding>
+  <div *ngIf="log.length > 0">
     <section (click)="onChartClick()" class="chart-wrapper">
       <canvas #barChart></canvas>
     </section>
@@ -25,4 +26,8 @@
         </ion-card-title>
       </ion-card-content>
     </ion-card>
+  </div>
+  <div *ngIf="log.length <= 0">
+    Enter a log entry to begin seeing your progress.
+  </div>
 </ion-content>

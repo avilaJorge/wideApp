@@ -1,14 +1,15 @@
+export class EntryDate {
+  rawDate: string;
+  month: string;
+  monthNum: number;
+  day: number;
+  year: number;
+}
+
 export class StepEntry {
 
-  date: string;
+  date: EntryDate;
   steps: number;
-  description: string;
+  note: string;
   goal: number;
-
-  constructor(date:string, steps: number, goal: number, description: string) {
-    this.date = date;
-    this.steps = steps;
-    this.description = description;
-    this.goal = goal;
-  }
 }

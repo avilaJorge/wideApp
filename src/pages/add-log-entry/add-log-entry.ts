@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
 
-import { LogsService } from "../../providers";
+import { LogService } from "../../providers";
 
 /**
  * Generated class for the AddLogEntryPage page.
@@ -18,7 +18,7 @@ import { LogsService } from "../../providers";
 })
 export class AddLogEntryPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private logService: LogsService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private logService: LogService) {
   }
 
   ionViewDidLoad() {

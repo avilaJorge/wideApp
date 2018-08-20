@@ -1,4 +1,9 @@
 page-tabs {
+  .tabbar a[aria-selected=true] {
+    border: 1px;
+    border-style: solid;
+
+  }
   /*.ion-ios-customicon,
   .ion-md-customicon {
     content: url(../../assets/icon/meetup.svg);
