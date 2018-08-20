@@ -7,71 +7,29 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{ monthNames[entry.date.substring(5,7)]}}</ion-title>
+    <ion-title text-center>{{ entry.date.month }} {{ entry.date.day }}, {{ entry.date.year }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label fixed>Date</ion-label>
-    <div item-content>{{entry.date}}</div>
-  </ion-item>
 
   <ion-item>
     <ion-label fixed>Steps</ion-label>
-    <div item-content>{{entry.steps}}</div>
+    <div class="item-steps" item-content>{{entry.steps}}</div>
   </ion-item>
 
   <ion-item>
-    <ion-label fixed>Goal For Day</ion-label>
-    <div item-content>{{entry.goal}}</div>
+    <ion-label fixed>Goal</ion-label>
+    <div class="item-goal" item-content>{{entry.goal}}</div>
   </ion-item>
 
   <ion-item>
     <ion-label fixed>Note</ion-label>
-    <div item-content>{{entry.description}}</div>
+    <div class="item-note" item-content>{{entry.note}}</div>
   </ion-item>
 
-  <ion-grid>
-    <hr>
-    <ion-row>
-      <ion-col col-3>
-        <h2 text-right>Date: </h2>
-      </ion-col> <ion-col col-1></ion-col>
-      <ion-col>
-        <h2>{{entry.date}}</h2>
-      </ion-col>
-    </ion-row>
-    <hr>
-    <ion-row>
-      <ion-col col-3>
-        <h2 text-right>Steps: </h2>
-      </ion-col> <ion-col col-1></ion-col>
-      <ion-col>
-        <h2>{{entry.steps}}</h2>
-      </ion-col>
-    </ion-row>
-    <hr>
-    <ion-row>
-      <ion-col col-3>
-        <h2 text-right>Goal: </h2>
-      </ion-col> <ion-col col-1></ion-col>
-      <ion-col>
-        <h2>{{entry.goal}}</h2>
-      </ion-col>
-    </ion-row>
-    <hr>
-    <ion-row>
-      <ion-col col-3>
-        <h2 text-right>Note: </h2>
-      </ion-col> <ion-col col-1></ion-col>
-      <ion-col>
-        <h2>{{entry.description}}</h2>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
 </ion-content>
 
 <ion-footer>

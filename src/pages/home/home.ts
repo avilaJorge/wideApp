@@ -4,7 +4,6 @@ import { Chart } from 'chart.js';
 
 import { StepEntry, EntryDate } from "../../models/step-log.model";
 import { Settings } from "../../providers";
-import { GraphPage } from "./graph/graph";
 
 export const hoverColor: string = 'rgb(0, 0, 255)';
 export const barColor: string = 'rgb(9, 137, 126)';
@@ -33,11 +32,8 @@ export class HomePage {
   private hoverColors: any = [];
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    private settings: Settings,
-    private modalCtrl: ModalController) {
-  }
+    private modalCtrl: ModalController,
+    private settings: Settings) {}
 
   ionViewDidLoad() {
     this.settings.getValue('log').then((log) => {
@@ -53,6 +49,16 @@ export class HomePage {
     });
     console.log('ionViewDidLoad HomePage');
   }
+
+  ionViewWillEnter() {
+    this.settings.getValue('log').then((log) => {
+      if(log) {
+        console.log(log);
+        this.log = JSON.parse(log);
+      }
+    });
+  }
+
 
   initChartData() {
     console.log(this.log);
@@ -134,7 +140,7 @@ export class HomePage {
 
   onChartClick() {
     console.log("Graph was clicked!");
-    let graphModal = this.modalCtrl.create(GraphPage, {log: this.log});
+    let graphModal = this.modalCtrl.create('GraphPage', {log: this.log});
     graphModal.present();
   }
 }

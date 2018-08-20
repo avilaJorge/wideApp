@@ -1,9 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
 import { Subscription } from "rxjs";
 
 import { StepEntry, EntryDate } from "../../models/step-log.model";
-import { backendURL } from "../../environment/environment";
 import { AuthService, Settings } from "..";
 import { User } from "../../models/user.model";
 import { monthNames } from "../../pages/home/home";
@@ -22,14 +20,16 @@ export class LogService {
   private thirtyDatesData: {date: string, data: StepEntry}[] = [];
 
   constructor(
-    private http: HttpClient,
     private authService: AuthService,
     private settings: Settings,
     private firebaseService: FirebaseService
   ) {
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
+          console.log('AuthStatusChange in LOGSERVICE!!!!!');
+          console.log('isAuth is ' + isAuth);
           if (isAuth) {
+            console.log(this.authService.getActiveUser());
             this.currUser = this.authService.getActiveUser();
             if (this.currUser) {
               this.initializeUserLog(this.currUser);
@@ -59,43 +59,36 @@ export class LogService {
       note: note
     };
     this.log.push(stepEntry);
-    this.firebaseService.createStepEntry(stepEntry)
+    this.settings.setValue('log', JSON.stringify((this.log)));
+    this.firebaseService.createStepEntry(this.currUser.googleUID, stepEntry)
       .then((res) => {
         console.log(res);
       });
-    // this.http.post(
-    //   backendURL + 'log/' + this.currUser.googleUID + '/' + date,
-    //   stepEntry,
-    //   { headers: this.authService.getHttpHeader() })
-    //   .subscribe(() => {
-    //     console.log('The step log entry was successfully stored in the database!')
-    //   }, (error) => {
-    //     console.log('An error occurred while attempting to store the log entry in the database');
-    //   });
   }
 
   initializeUserLog(currUser: User) {
     if (currUser) {
-      this.settings.getValue('log').then((logData) => {
-        if (logData) {
-          this.log = JSON.parse(logData);
-        }
-        this.http.get(backendURL + 'log/' + this.currUser.googleUID, {headers: this.authService.getHttpHeader()})
-          .subscribe((data) => {
-            this.logObjects = data;
-            this.log = [];
-            for (let entry in data) {
-              this.log.push(data[entry]);
-            }
-            this.settings.setValue('log', JSON.stringify(this.log));
-            this.initThirtyDates(this.logObjects);
-          }, (error) => {
-            console.log("Error getting user log from database!");
-            console.log(error);
-          });
-      });
-
+      this.currUser = currUser;
+      this.firebaseService.getStepLog(this.currUser.googleUID)
+        .subscribe((data) => {
+          this.logObjects = [];
+          this.log = [];
+          for (let entry of data) {
+            this.log.push(entry.stepEntry);
+            this.logObjects[entry.stepEntry.date.rawDate] = entry.stepEntry;
+          }
+          console.log(this.log);
+          // this.settings.setValue('log', JSON.stringify(this.log));
+          this.initThirtyDates(this.logObjects);
+        }, (error) => {
+          console.log("Error getting user log from database!");
+          console.log(error);
+        });
     }
+
+  }
+
+  initLogService() {
 
   }
 
@@ -138,4 +131,5 @@ export class LogService {
     };
     return entryDate;
   }
+
 }

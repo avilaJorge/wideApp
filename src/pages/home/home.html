@@ -14,20 +14,32 @@
 
 
 <ion-content padding>
+  <section (click)="onChartClick()" class="chart-wrapper">
+    <canvas #barChart></canvas>
+  </section>
   <div *ngIf="log.length > 0">
-    <section (click)="onChartClick()" class="chart-wrapper">
-      <canvas #barChart></canvas>
-    </section>
-
-    <ion-card *ngFor="let entry of log">
-      <ion-card-content>
-        <ion-card-title>
-          {{entry.date.substring(5, 7)}}/{{entry.date.substring(8,10)}}:     {{entry.steps}} steps
-        </ion-card-title>
-      </ion-card-content>
-    </ion-card>
+    <ion-list>
+      <ion-list-header>
+        <ion-row class="header-row">
+          <ion-col width-30>Date</ion-col>
+          <ion-col width-70 text-center>Step Count</ion-col>
+        </ion-row>
+      </ion-list-header>
+      <button class="list-item" ion-item *ngFor="let entry of log">
+        <ion-row class="content-row">
+          <ion-col width-50 class="entry-date">
+            {{entry.date.month}} {{entry.date.day}}
+          </ion-col>
+          <ion-col width-50 class="entry-steps">
+            {{entry.steps}} steps
+          </ion-col>
+        </ion-row>
+      </button>
+    </ion-list>
   </div>
   <div *ngIf="log.length <= 0">
     Enter a log entry to begin seeing your progress.
   </div>
+
+
 </ion-content>

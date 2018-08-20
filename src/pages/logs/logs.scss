@@ -1,25 +1,27 @@
 page-logs {
 
-  .log-list {
+  .content-row {
+    align-items: center;
 
-    .list-item {
-
-      .content-row {
-        align-items: center;
-
-        .entry-date {
-          font-size: x-large;
-          font-style: italic;
-          font-weight: bolder;
-
-        }
-
-        .entry-steps {
-          font-size: x-large;
-          font-family: "Segoe UI", "Noto Sans", sans-serif;
-        }
-      }
+    .entry-date {
+      font-size: x-large;
+      font-style: italic;
+      font-weight: bolder;
     }
+
+    .entry-steps {
+      font-size: x-large;
+      font-family: "Segoe UI", "Noto Sans", sans-serif;
+    }
+  }
+
+  .header-row {
+    padding-left: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: large;
+    color: black;
+    //background-color: #eeeeee;
   }
 
   ion-modal,

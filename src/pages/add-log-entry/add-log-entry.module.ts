@@ -4,10 +4,10 @@ import { AddLogEntryPage } from './add-log-entry';
 
 @NgModule({
   declarations: [
-    AddLogEntryPage,
+    AddLogEntryPage
   ],
   imports: [
     IonicPageModule.forChild(AddLogEntryPage),
-  ],
+  ]
 })
 export class AddLogEntryPageModule {}

@@ -123,9 +123,9 @@ export class FirebaseService {
     })
   }
 
-  createStepEntry(stepEntry: StepEntry) {
+  createStepEntry(userId: string, stepEntry: StepEntry) {
     return new Promise<any>((resolve, reject) => {
-      this.afs.collection('/step-logs').add({
+      this.afs.collection('/users').doc(userId).collection('/step-log').add({
         stepEntry
       })
       .then(
@@ -133,6 +133,10 @@ export class FirebaseService {
           err => reject(err)
       );
     });
+  }
+
+  getStepLog(userId: string) {
+    return this.afs.collection('/users').doc(userId).collection('/step-log').valueChanges().pipe(take(1));
   }
 
   createUser(user: User) {

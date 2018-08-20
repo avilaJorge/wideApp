@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Add Post</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div class="post-example-view">
+    <form class="sample-form post-form" [formGroup]="post_form" (ngSubmit)="createPost()">
+      <section class="form-section">
+        <ion-item>
+          <ion-input type="text" placeholder="Title: e.g. Krabby Patty" formControlName="title"></ion-input>
+        </ion-item>
+        <button *ngIf="!selected_image" ion-button block large class="upload-image-button" (click)="openImagePicker()">
+          <ion-icon name="camera"></ion-icon>
+          <h3 class="button-title">Upload An Image</h3>
+        </button>
+        <ion-img *ngIf="selected_image"  [src]="selected_image" alt="this is the image" ></ion-img>
+      </section>
+      <ion-item>
+        <ion-textarea rows="7" placeholder="Write a description or something..." formControlName="description"></ion-textarea>
+      </ion-item>
+      <section class="form-section">
+        <button ion-button block icon-end class="choose-category-button" (click)="chooseCategory()">
+          Choose Category
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </section>
+    </form>
+  </div>
+</ion-content>

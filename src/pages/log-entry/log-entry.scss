@@ -2,4 +2,16 @@ page-log-entry {
   ion-footer button {
     margin: 0 !important;
   }
+
+  ion-label {
+    font-size: larger;
+  }
+
+  .item-steps, .item-goal {
+    font-size: x-large;
+  }
+
+  .item-note {
+    font-size: large;
+  }
 }

@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Camera } from '@ionic-native/camera';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -31,6 +31,10 @@ import { AngularFirestoreModule } from "angularfire2/firestore";
 
 import { AddLogEntryPage } from "../pages/add-log-entry/add-log-entry";
 import { LogEntryPage } from "../pages/log-entry/log-entry";
+import { FeedService } from "../pages/feed/feed.service";
+import { SocialSharing } from "@ionic-native/social-sharing";
+import { Crop } from "@ionic-native/crop";
+import { ImagePicker } from "@ionic-native/image-picker";
 
 export function provideSettings(storage: Storage) {
   /**
@@ -52,7 +56,15 @@ export function provideSettings(storage: Storage) {
     MyApp,
     MenuPage,
     AddLogEntryPage,
-    LogEntryPage
+    LogEntryPage,
+    //custom components
+    // BackgroundImage,
+    // ShowHideContainer,
+    // ShowHideInput,
+    // ColorRadio,
+    // CounterInput,
+    // Rating,
+    // GoogleMap
   ],
   imports: [
     BrowserModule,
@@ -75,20 +87,26 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     AngularFireAuth,
+    { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     FirebaseService,
     AuthService,
     LogService,
+    Camera,
+    Crop,
+    ImagePicker,
+    Toast,
+    FeedService,
+    SocialSharing,
     Api,
     MeetupRestApi,
     GetItDoneRestApi,
     Items,
     Meetups,
     Reports,
-    Camera,
-    Toast,
-    { provide: Settings, useFactory: provideSettings, deps: [Storage] },
+
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class AppModule { }

@@ -33,14 +33,17 @@ export class LogsPage {
   ionViewDidLoad() {
     this.log = this.logService.getLog();
     console.log('ionViewDidLoad LogsPage');
+    console.log(this.log);
   }
 
   ionViewWillEnter() {
+    this.log = this.logService.getLog();
     console.log('ionViewWillEnter LogsPage');
   }
 
   onEntryClick(entry: StepEntry) {
     console.log('Entry clicked!!!' + entry);
+    console.log(entry);
     let entryModal = this.modalCtrl.create(LogEntryPage, {entry: entry}, { cssClass: 'inset-modal' });
     entryModal.present();
   }
