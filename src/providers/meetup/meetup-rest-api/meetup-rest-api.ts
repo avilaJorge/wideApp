@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '../../api/api';
-import {meetupConfig} from "../../../environment/environment";
+import { meetupConfig } from "../../../environment/environment";
+import { map } from "rxjs/operators";
+import { Meetup } from "../../../pages/events/meetup.model";
 
 /*
   Generated class for the MeetupRestApi provider.
@@ -10,8 +12,9 @@ import {meetupConfig} from "../../../environment/environment";
   and Angular DI.
 */
 @Injectable()
-export class MeetupRestApi extends Api {
-  url: string = 'https://api.meetup.com';
+export class MeetupRestApi {
+  url: string = 'https://api.meetup.com/';
+  group: string = 'San-Diegos-plan2BFIT-Walking-Group'
 
   //endpoints = {
   //  find_groups: 'find/groups',
@@ -32,13 +35,26 @@ export class MeetupRestApi extends Api {
   //}
 
   constructor(public http: HttpClient) {
-    super(http);
     console.log('Hello MeetupDataProvider Provider');
   }
 
-  get(endpoint: string, params?: any, reqOpts?: any) {
-    params['key'] = meetupConfig.apiKey;
-    return super.get(endpoint, params, reqOpts);
+  // get(endpoint: string, params?: any, reqOpts?: any) {
+  //   params['key'] = meetupConfig.apiKey;
+  //   return super.get(endpoint, params, reqOpts);
+  // }
+
+  getEvents() {
+    const options = { params: new HttpParams()
+        .set('photo-host', 'public')
+        .set('page', '20')
+        .set('sig_id', '87508102')
+        .set('sig', '5d282060610d3e49511efd2bac5ffbbdfe56da3a')};
+
+    return this.http.jsonp<{meta: any, data: Meetup[]}>
+    (this.url + this.group + '/events?' + options.params.toString(), 'callback')
+      .toPromise()
+      .then(response => response.data as Meetup[]);
+
   }
 
 

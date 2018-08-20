@@ -36,18 +36,18 @@ export class Meetups {
     'order': 'most_active',
     'page': '20',
   }
-
-  constructor(public api: MeetupRestApi) {
-    console.log('Hello MeetupsProvider Provider');
-
-    this.api.get(this.endpoints.find_groups, this.group_params).then(data => {
-      for (let index in data) {
-        console.log(data[index]);
-        this.meetups.push(new Meetup(data[index]));
-      }
-    });
-    console.log(this.meetups);
-  }
+  //
+  // constructor(public api: MeetupRestApi) {
+  //   console.log('Hello MeetupsProvider Provider');
+  //
+  //   this.api.get(this.endpoints.find_groups, this.group_params).then(data => {
+  //     for (let index in data) {
+  //       console.log(data[index]);
+  //       this.meetups.push(new Meetup(data[index]));
+  //     }
+  //   });
+  //   console.log(this.meetups);
+  // }
 
   query(params?: any) {
     return this.meetups;

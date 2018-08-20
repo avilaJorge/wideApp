@@ -12,7 +12,7 @@ export class FeedService {
   constructor(private firebaseService: FirebaseService, public http: HttpClient) {}
 
   getPosts(): Promise<FeedPostModel[]> {
-    return this.http.get('./assets/example_data/feed.json')
+    return this.http.get<{feed: any}>('./assets/example_data/feed.json')
                .toPromise()
                .then(response => response.feed as FeedPostModel[])
                .catch(this.handleError);

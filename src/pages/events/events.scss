@@ -1,3 +1,15 @@
 page-events {
 
+  .event-day {
+    font-weight: bold;
+  }
+  .event-month {
+    position: relative;
+    text-align: center;
+  }
+  .item-title, place {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }

@@ -78,7 +78,7 @@ export class LogService {
             this.logObjects[entry.stepEntry.date.rawDate] = entry.stepEntry;
           }
           console.log(this.log);
-          // this.settings.setValue('log', JSON.stringify(this.log));
+          this.settings.setValue('log', JSON.stringify(this.log));
           this.initThirtyDates(this.logObjects);
         }, (error) => {
           console.log("Error getting user log from database!");

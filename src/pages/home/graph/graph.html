@@ -45,10 +45,13 @@
         <ion-row class="calendar-date">
           <!--<ion-col col-1 *ngFor="" class="last-month">{{lastDay}}</ion-col>-->
           <ion-col col-1 class="day-cell" *ngFor="let day of attendance">
-            <span class="currentDate">{{day.date}}</span>
+            <ion-row><span class="otherDate">{{day.date}}</span></ion-row>
+            <ion-row>
+              <ion-icon *ngIf="day.present" name="checkmark-circle"></ion-icon>
+            </ion-row>
             <!--<span class="currentDate" *ngIf="currentDate === day.date; else otherDate">{{day}}</span>-->
             <!--<ng-template #otherDate class="otherDate">{{day.date}}</ng-template>-->
-            <ion-icon *ngIf="day.present" name="checkmark-circle"></ion-icon>
+
           </ion-col>
           <!--<ion-col col-1 *ngFor="let nextDay of daysInNextMonth" class="next-month">{{nextDay}}</ion-col>-->
         </ion-row>

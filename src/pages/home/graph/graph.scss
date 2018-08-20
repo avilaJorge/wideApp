@@ -38,14 +38,14 @@ page-graph {
     border-radius: 30px;
   }
   .calendar-header {
-    background-color: #1a732d;
+    background-color: color($colors, primary);
     color: #FFFFFF;
   }
   .event-bullet {
     margin: 2px auto;
     height: 5px;
     width: 5px;
-    background-color: green;
+    background-color: color($colors, primary);
     border-radius: 30px;
   }
   .selected-date {
@@ -69,12 +69,12 @@ page-graph {
     }
     .calendar-weekday {
       font-weight: bold;
-      border-bottom: solid 1px #1a732d;
-      background-color: #26ab56;
+      border-bottom: solid 1px color($colors, primary);
+      background-color: color($colors, primary);
     }
     .calendar-date {
-      border-top: solid 1px #1a732d;
-      border-bottom: solid 1px #1a732d;
+      border-top: solid 1px color($colors, primary);
+      border-bottom: solid 1px color($colors, primary);
     }
   }
 }
