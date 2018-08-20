@@ -186,24 +186,10 @@ export class AuthService {
     this.firebaseService.createUser(user).then((res) => {
       console.log(res);
     });
-    // const httpOptions = { headers: this.getHttpHeader() };
-    // this.http.post(this.url + 'auth/user', user, httpOptions)
-    //   .subscribe(() => {
-    //     console.log('Success!  User data was sent to Firebase Realtime Database');
-    //   }, (error) => {
-    //     const alert = this.alertCtrl.create({
-    //       title: "An error occured when trying to access the database",
-    //       message: error.message,
-    //       buttons: [{text: 'Ok'}]
-    //     });
-    //     alert.present();
-    //   });
   }
 
   dbGetUser(userId: string): Observable<any> {
     return this.firebaseService.getUser(userId);
-    // const httpOptions = { headers: this.getHttpHeader() };
-    // return this.http.get(this.url + 'auth/user/' + userId, httpOptions);
   }
 
   getHttpHeader(): HttpHeaders {

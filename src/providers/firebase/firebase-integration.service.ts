@@ -146,12 +146,6 @@ export class FirebaseService {
 
   getUser(userId: string) {
     return this.afs.collection('/users').doc(userId).valueChanges().pipe(take(1));
-    // return new Promise<any>( (resolve, reject) => {
-    //   this.afs.collection('/users').doc(userId).ref.get()
-    //     .then(
-    //       (res) => resolve(res),
-    //       (err) => reject(err));
-    // });
   }
 
 
