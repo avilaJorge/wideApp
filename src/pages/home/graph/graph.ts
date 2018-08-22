@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
 import { StepEntry } from "../../../models/step-log.model";
@@ -24,7 +24,7 @@ export class GraphPage {
   @ViewChild('barChart') barChart;
 
   private clickedEntry: {date: string, data: StepEntry}= null;
-  private attendance: {date: string, present: boolean}[] = [];
+  private attendance: {date: string, present: boolean, data: {date: string, data: StepEntry}}[] = [];
   private lineChartEl: any = null;
   private chartLabels: any = [];
   private chartValues: number[] = [];
@@ -38,7 +38,8 @@ export class GraphPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
-    private logService: LogService) {
+    private logService: LogService,
+    private modalCtrl: ModalController) {
 
     const whatever = this.navParams.get('log');
   }
@@ -46,6 +47,20 @@ export class GraphPage {
   ionViewDidLoad() {
     this.initChartData();
     this.createBarChart();
+    this.initCalendarData();
+  }
+
+  initCalendarData() {
+    let logData = this.logService.getThirtyDatesData();
+    let i = logData.length - thirtyDayLimit;
+    while(i < logData.length) {
+      this.attendance.push({
+        date: logData[i].date.substring(monthDateIndex + 3),
+        present: logData[i].data.steps > 0 ? true : false,
+        data: logData[i]
+      });
+      i++;
+    }
   }
 
   initChartData() {
@@ -59,10 +74,6 @@ export class GraphPage {
       }
       this.chartValues.push(logData[i].data.steps);
       this.chartGoals.push(logData[i].data.goal);
-      this.attendance.push({
-        date: logData[i].date.substring(monthDateIndex + 3),
-        present: logData[i].data.steps > 0 ? true : false
-      });
       i++;
     }
     console.log(this.chartGoals);
@@ -158,4 +169,13 @@ export class GraphPage {
     this.viewCtrl.dismiss();
   }
 
+  onDateClick(day: { date: string; present: boolean; data: { date: string; data: StepEntry } }, index: number) {
+    console.log(day);
+    console.log(index);
+    let entryModal = this.modalCtrl.create('LogEntryPage', {entry: day.data}, { cssClass: 'inset-modal' });
+    entryModal.onDidDismiss((data) => {
+      console.log(data);
+    });
+    entryModal.present();
+  }
 }
