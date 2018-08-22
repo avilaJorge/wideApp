@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import { Chart } from 'chart.js';
 
 import { StepEntry } from "../../../models/step-log.model";
-import { background, lineColor } from "../home";
-import { monthDateIndex, monthNames, thirtyDayLimit } from "../../../providers/time/time.service";
+import { background, barColor, hoverColor, lineColor } from "../home";
+import { monthDateIndex, monthNames, sevenDayLimit, thirtyDayLimit } from "../../../providers/time/time.service";
 import { LogService } from "../../../providers/logs/logs.service";
 
 /**
@@ -21,9 +21,9 @@ import { LogService } from "../../../providers/logs/logs.service";
 })
 export class GraphPage {
 
-  @ViewChild('lineChart') lineChart;
+  @ViewChild('barChart') barChart;
 
-  private log: {date: string, data: StepEntry}[] = [];
+  private clickedEntry: {date: string, data: StepEntry}= null;
   private attendance: {date: string, present: boolean}[] = [];
   private lineChartEl: any = null;
   private chartLabels: any = [];
@@ -41,48 +41,60 @@ export class GraphPage {
     private logService: LogService) {
 
     const whatever = this.navParams.get('log');
-    this.log = this.logService.getThirtyDatesData();
   }
 
   ionViewDidLoad() {
     this.initChartData();
-    this.createLineChart();
+    this.createBarChart();
   }
 
   initChartData() {
-    let i = 0;
-    while(i < thirtyDayLimit) {
-      this.chartLabels.push('');
-      this.chartValues.push(this.log[i].data.steps);
-      this.chartGoals.push(this.log[i].data.goal);
+    let logData = this.logService.getThirtyDatesData();
+    let i = logData.length - sevenDayLimit;
+    while(i < logData.length) {
+      if (i == logData.length - 1) {
+        this.chartLabels.push('Today');
+      } else {
+        this.chartLabels.push(logData[i].data.date.monthNum + '/' + logData[i].data.date.day);
+      }
+      this.chartValues.push(logData[i].data.steps);
+      this.chartGoals.push(logData[i].data.goal);
       this.attendance.push({
-        date: this.log[i].date.substring(monthDateIndex + 3),
-        present: this.log[i].data.steps > 0 ? true : false
+        date: logData[i].date.substring(monthDateIndex + 3),
+        present: logData[i].data.steps > 0 ? true : false
       });
       i++;
     }
+    console.log(this.chartGoals);
     console.log(this.attendance);
     // So that the chart xaxis does not look too crowded we only want the first, last and middle dates
-    this.chartLabels[0] = this.log[0].date.substring(monthDateIndex);
-    this.chartLabels[thirtyDayLimit/2] = this.log[thirtyDayLimit/2].date.substring(monthDateIndex);
-    this.chartLabels[this.log.length-1] = this.log[this.log.length-1].date.substring(monthDateIndex);
+    // this.chartLabels[0] = this.log[0].date.substring(monthDateIndex);
+    // this.chartLabels[thirtyDayLimit/2] = this.log[thirtyDayLimit/2].date.substring(monthDateIndex);
+    // this.chartLabels[this.log.length-1] = this.log[this.log.length-1].date.substring(monthDateIndex);
   }
 
-  createLineChart() {
-    const ctx = this.lineChart.nativeElement;
+  createBarChart() {
+    const ctx = this.barChart.nativeElement;
     this.lineChartEl = new Chart(ctx,
       {
-        type: 'line',
+        type: 'bar',
         data: {
           labels: this.chartLabels,
           datasets: [{
-            label                 : 'Steps',
-            data                  : this.chartValues,
-            duration              : 2000,
-            easing                : 'easeInQuart',
-            backgroundColor       : background,
-            hoverBackgroundColor  : lineColor,
-            fill 				   : true
+              data: [this.chartGoals],
+              type: 'line',
+              borderColor: lineColor,
+              fill: false,
+              radius: 8,
+              borderWidth: 2,
+              pointStyle: 'circle'
+            },{
+              label                 : 'Steps',
+              data                  : this.chartValues,
+              duration              : 2000,
+              easing                : 'easeInQuart',
+              backgroundColor       : barColor,
+              hoverBackgroundColor  : hoverColor,
           }]
         },
         options: {
@@ -96,21 +108,50 @@ export class GraphPage {
           },
           scales: {
             yAxes: [{
+              gridLines: {
+                color: 'rgba(0,0,0,0)'
+              },
               ticks: {
                 beginAtZero: true,
                 stepSize: 1000,
                 autoSkip: true,
-                max: 6000 //TODO: Determine the max from step data
+                max: 7000 //TODO: Determine the max from step data
               }
             }],
             xAxes: [{
+              gridLines: {
+                color: 'rgba(0,0,0,0)'
+              },
               ticks: {
                 autoSkip: false
               }
             }]
-          }
+          },
+          onClick: this.handleClick
         }
       });
+  }
+
+  handleClick(event, array) {
+    // let log = this.logService.getThirtyDatesData();
+    console.log(event);
+    console.log(array);
+    // let label = array[0]._model.label;
+    // if (label) {
+    //   console.log(log);
+    //   let i = log.length - 1;
+    //   while(i >= 0) {
+    //     let str = log[i].data.date.monthNum + '/' + log[i].data.date.day;
+    //     if (str === label) {
+    //       this.clickedEntry = log[i];
+    //       console.log(this.clickedEntry);
+    //       return;
+    //     }
+    //     i--;
+    //   }
+    //   return;
+    // }
+
   }
 
   dismiss() {

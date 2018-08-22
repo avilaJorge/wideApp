@@ -1,17 +1,17 @@
 <ion-content padding>
   <ion-segment [(ngModel)]="chartType">
     <ion-segment-button value="steps">
-      1 Month Steps
+      7-day
     </ion-segment-button>
     <ion-segment-button value="attendance">
-      1 Month Attendance
+      1 Month
     </ion-segment-button>
   </ion-segment>
 
   <ion-row style="height: 15px"></ion-row>
 
   <section [hidden]="chartType != 'steps'" class="chart-wrapper">
-    <canvas #lineChart></canvas>
+    <canvas #barChart></canvas>
   </section>
   <div [hidden]="chartType == 'steps'">
     <div class="calendar-header">
