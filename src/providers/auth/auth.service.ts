@@ -5,7 +5,8 @@ import { Observable, Subject } from "rxjs";
 import * as firebase from "firebase";
 
 import { User } from "../../models/user.model";
-import { FirebaseService, Settings } from "..";
+import { Settings } from "../settings/settings";
+import { FirebaseService } from "../firebase/firebase-integration.service";
 import { AlertController } from "ionic-angular";
 import { backendURL } from "../../environment/environment";
 

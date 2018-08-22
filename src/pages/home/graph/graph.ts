@@ -2,9 +2,10 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
-import { LogService } from "../../../providers";
 import { StepEntry } from "../../../models/step-log.model";
-import { background, lineColor, monthDateIndex, monthNames, thirtyDayLimit } from "../home";
+import { background, lineColor } from "../home";
+import { monthDateIndex, monthNames, thirtyDayLimit } from "../../../providers/time/time.service";
+import { LogService } from "../../../providers/logs/logs.service";
 
 /**
  * Generated class for the GraphPage page.
@@ -31,7 +32,7 @@ export class GraphPage {
   public chartType = 'steps';
   public currentMonth: string = monthNames[(new Date()).getMonth()];
   public currentYear: number = (new Date()).getFullYear();
-  public currentDate = new Date().getDate();
+  public currentDate: string;
 
   constructor(
     public navCtrl: NavController,
@@ -85,6 +86,7 @@ export class GraphPage {
           }]
         },
         options: {
+          responsive: true,
           maintainAspectRatio: false,
           legend: {
             display: false,

@@ -6,7 +6,6 @@ import { AddPostPage } from './add-post';
 @NgModule({
   declarations: [
     AddPostPage,
-
   ],
   imports: [
     IonicPageModule.forChild(AddPostPage),

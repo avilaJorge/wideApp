@@ -104,4 +104,5 @@
     </plugin>
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
     <engine name="android" spec="7.0.0" />
+    <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
 </widget>

@@ -3,7 +3,7 @@ import {IonicPage, MenuController, Nav, ToastController} from 'ionic-angular';
 import {AngularFireAuth} from "angularfire2/auth";
 
 import { MainPage } from "../index";
-import {AuthService} from "../../providers";
+import { AuthService } from "../../providers/auth/auth.service";
 
 interface PageItem {
   title: string

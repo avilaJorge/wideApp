@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 
 import { AddLogEntryPage } from "../add-log-entry/add-log-entry";
-import { LogService } from "../../providers";
 import { StepEntry } from "../../models/step-log.model";
-import { LogEntryPage } from "../log-entry/log-entry";
+import { LogService } from "../../providers/logs/logs.service";
 
 /**
  * Generated class for the LogsPage page.
@@ -44,7 +43,7 @@ export class LogsPage {
   onEntryClick(entry: StepEntry) {
     console.log('Entry clicked!!!' + entry);
     console.log(entry);
-    let entryModal = this.modalCtrl.create(LogEntryPage, {entry: entry}, { cssClass: 'inset-modal' });
-    entryModal.present();
+    //let entryModal = this.modalCtrl.create(LogEntryPage, {entry: entry}, { cssClass: 'inset-modal' });
+    //entryModal.present();
   }
 }

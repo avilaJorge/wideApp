@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NgForm } from '@angular/forms';
+import { LogService } from "../../providers/logs/logs.service";
 
-import { LogService } from "../../providers";
 
 /**
  * Generated class for the AddLogEntryPage page.
@@ -27,9 +27,9 @@ export class AddLogEntryPage {
 
   onSubmit(form: NgForm) {
     console.log(form);
-    this.logService.addEntry(form.value.date, form.value.steps, form.value.goal, form.value.description);
+    //this.logService.addEntry(form.value.date, form.value.steps, form.value.goal, form.value.description, false);
     form.resetForm();
-    this.navCtrl.pop();
+    //this.navCtrl.pop();
   }
 
 }

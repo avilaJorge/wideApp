@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import { Subscription } from "rxjs";
 
-import { AuthService } from "../../providers";
 import { User } from "../../models/user.model";
+import { AuthService } from "../../providers/auth/auth.service";
 
 /**
  * Generated class for the AccountPage page.

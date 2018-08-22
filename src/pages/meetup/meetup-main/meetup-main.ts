@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 
-import { AuthService } from "../../../providers";
-import { firebaseConfig } from "../../../environment/environment";
 import {HttpClient} from "@angular/common/http";
+import { AuthService } from "../../../providers/auth/auth.service";
 
 @IonicPage()
 @Component({

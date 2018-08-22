@@ -12,4 +12,5 @@ export class StepEntry {
   steps: number;
   note: string;
   goal: number;
+  groupWalk: boolean;
 }

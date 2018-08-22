@@ -14,30 +14,112 @@
 
 
 <ion-content padding>
-  <section (click)="onChartClick()" class="chart-wrapper">
-    <canvas #barChart></canvas>
-  </section>
-  <div *ngIf="log.length > 0">
-    <ion-list>
-      <ion-list-header>
-        <ion-row class="header-row">
-          <ion-col width-30>Date</ion-col>
-          <ion-col width-70 text-center>Step Count</ion-col>
-        </ion-row>
-      </ion-list-header>
-      <button class="list-item" ion-item *ngFor="let entry of log">
-        <ion-row class="content-row">
-          <ion-col width-50 class="entry-date">
-            {{entry.date.month}} {{entry.date.day}}
+  <div text-center class="date-container">{{ currDate }}</div>
+  <hr>
+  <ion-grid>
+    <ion-row align-items-center class="content-row">
+      <ion-col col-1 class="col-left-arrow" (click)="onLeftClick()">
+        <ion-icon name="arrow-dropleft"></ion-icon>
+      </ion-col>
+      <ion-col col-4 class="col-graph">
+        <section (click)="onChartClick()" class="chart-wrapper">
+          <canvas #barChart></canvas>
+        </section>
+      </ion-col>
+      <ion-col col-6 class="col-data">
+        <ion-row align-items-center class="step-data">
+          <ion-col (click)="onShowData()">
+            <div class="step-num">{{ currEntry.data.steps }}</div>
+            <div class="step-text">steps</div>
           </ion-col>
-          <ion-col width-50 class="entry-steps">
-            {{entry.steps}} steps
+        </ion-row>
+        <ion-row align-items-center class="goal-data">
+          <ion-col (click)="onShowData()">
+            <div class="goal-text">Goal</div>
+            <div class="step-num">{{ currEntry.data.goal }}</div>
+            <div class="step-text">steps</div>
           </ion-col>
         </ion-row>
-      </button>
-    </ion-list>
+      </ion-col>
+      <ion-col col-1 class="col-right-arrow" >
+        <ion-icon *ngIf="!isCurrEntryToday" name="arrow-dropright" (click)="onRightClick()"></ion-icon>
+      </ion-col>
+    </ion-row>
+    <ion-row align-items-center>
+      <ion-col col-4 class="steps-logged" (click)="onShowData()">
+        <div class="achieve-text">Logged</div>
+        <div class="achieve-icon">
+          <ion-icon
+            [class.hide-check]="currEntry.data.steps <= 0"
+            [class.check-icon]="currEntry.data.steps > 0"
+            name="checkmark-circle-outline"></ion-icon>
+        </div>
+      </ion-col>
+      <ion-col col-4 class="goal-met" (click)="onShowData()">
+        <div class="achieve-text">Goal Met</div>
+        <div class="achieve-icon">
+          <ion-icon
+            [class.hide-star]="currEntry.data.steps == 0 || currEntry.data.steps < currEntry.data.goal"
+            [class.star-icon]="currEntry.data.steps >= currEntry.data.goal"
+            name="star"></ion-icon>
+        </div>
+      </ion-col>
+      <ion-col col-4 class="group-walk" (click)="onShowData()">
+        <div class="achieve-text">Group Walk</div>
+        <div class="achieve-icon">
+          <ion-icon
+            [class.hide-ribbon]="!currEntry.data.groupWalk"
+            [class.ribbon-icon]="currEntry.data.groupWalk"
+            name="ribbon"></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <div class="progress-wrapper">
+    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>
+
+    <round-progress
+      [current]="current"
+      [max]="max"
+      [stroke]="stroke"
+      [radius]="radius"
+      [semicircle]="semicircle"
+      [rounded]="rounded"
+      [responsive]="responsive"
+      [clockwise]="clockwise"
+      [color]="gradient ? 'url(#gradient)' : color"
+      [background]="background"
+      [duration]="duration"
+      [animation]="animation"
+      [animationDelay]="animationDelay"></round-progress>
   </div>
-  <div *ngIf="log.length <= 0">
+
+  <!--<button (click)="increment();">Increment</button>-->
+  <!--<button (click)="increment(-1);">Decrement</button>-->
+
+  <!--<button (click)="increment(10);">Increment 10</button>-->
+  <!--<button (click)="increment(-10);">Decrement 10</button>-->
+  <!--<div *ngIf="log.length > 0">-->
+    <!--<ion-list>-->
+      <!--<ion-list-header>-->
+        <!--<ion-row class="header-row">-->
+          <!--<ion-col width-30>Date</ion-col>-->
+          <!--<ion-col width-70 text-center>Step Count</ion-col>-->
+        <!--</ion-row>-->
+      <!--</ion-list-header>-->
+      <!--<button class="list-item" ion-item *ngFor="let entry of log">-->
+        <!--<ion-row class="content-row">-->
+          <!--<ion-col width-50 class="entry-date">-->
+            <!--{{entry.date.month}} {{entry.date.day}}-->
+          <!--</ion-col>-->
+          <!--<ion-col width-50 class="entry-steps">-->
+            <!--{{entry.steps}} steps-->
+          <!--</ion-col>-->
+        <!--</ion-row>-->
+      <!--</button>-->
+    <!--</ion-list>-->
+  <!--</div>-->
+  <div *ngIf="datesData.length <= 0">
     Enter a log entry to begin seeing your progress.
   </div>
 

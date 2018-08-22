@@ -1,7 +1,3 @@
-export { Settings } from './settings/settings';
-export { FirebaseService } from './firebase/firebase-integration.service';
-export { AuthService } from './auth/auth.service';
-export { LogService } from './logs/logs.service';
 export { Api } from './api/api';
 export { Items } from '../mocks/providers/items';
 export { User } from './user/user';

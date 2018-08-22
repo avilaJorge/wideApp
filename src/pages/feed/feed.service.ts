@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import 'rxjs/add/operator/toPromise';
 
 import { FeedPostModel } from './feed.model';
-import { FirebaseService } from "../../providers";
+import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
 import { Http } from "@angular/http";
 import { HttpClient } from "@angular/common/http";
 

@@ -1,5 +1,5 @@
 import { EntryDate } from "../../models/step-log.model";
-import { monthNames } from "../home/home";
+import { monthNames } from "../../providers/time/time.service";
 
 export class Meetup {
   groupName: string;

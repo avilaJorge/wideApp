@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
-import { Settings } from '../../providers/index';
+import { Settings } from "../../providers/settings/settings";
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider

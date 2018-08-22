@@ -4,7 +4,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 
 import { FeedModel } from './feed.model';
 import { FeedService } from './feed.service';
-import { FirebaseService } from "../../providers";
+import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
 
 @IonicPage()
 @Component({

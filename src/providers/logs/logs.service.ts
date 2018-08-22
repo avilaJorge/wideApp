@@ -1,28 +1,31 @@
 import { Injectable } from "@angular/core";
-import { Subscription } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 
 import { StepEntry, EntryDate } from "../../models/step-log.model";
-import { AuthService, Settings } from "..";
+import { Settings } from "../settings/settings";
+import { AuthService } from "../auth/auth.service";
 import { User } from "../../models/user.model";
-import { monthNames } from "../../pages/home/home";
-import { FirebaseService } from "..";
-
-const thirtyDayLimit:number = 30;
+import { FirebaseService } from "../firebase/firebase-integration.service";
+import { TimeService } from '../time/time.service';
 
 @Injectable()
 export class LogService {
 
+  private currEntryIndex: number = 0;
+  private isTodayCurrDay: boolean = false;
   private log: StepEntry[] = [];
   private logObjects: any = null;
   private currUser: User;
   private authStatusSub: Subscription;
-  private thirtyDates: string[] = [];
-  private thirtyDatesData: {date: string, data: StepEntry}[] = [];
+  private dates: string[] = [];
+  private datesData: {date: string, data: StepEntry}[] = [];
+  private initLogListener = new Subject<boolean>();
 
   constructor(
     private authService: AuthService,
     private settings: Settings,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private timeService: TimeService
   ) {
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
@@ -31,32 +34,24 @@ export class LogService {
           if (isAuth) {
             console.log(this.authService.getActiveUser());
             this.currUser = this.authService.getActiveUser();
-            if (this.currUser) {
-              this.initializeUserLog(this.currUser);
-            }
+            // if (this.currUser) {
+            //   this.initializeUserLog(this.currUser);
+            // }
           }
         },
         (error) => {console.log(error)});
-
-    const today = new Date();
-    let i = thirtyDayLimit;
-    while(i > 0) {
-      const date = new Date();
-      date.setDate(today.getDate() - i);
-      this.thirtyDates.push(date.toISOString().substring(0,10));
-      i--;
-    }
-    console.log(this.thirtyDates);
+    this.dates = this.timeService.getDates();
   }
 
-  addEntry(date: string, steps: string, goal: string, note: string) {
+  addEntry(date: string, steps: string, goal: string, note: string, group: boolean) {
     const goalNum = parseInt(goal, 10);
     const stepsNum = parseInt(steps, 10);
     const stepEntry: StepEntry = {
-      date: this.getEntryDate(date),
+      date: this.timeService.getEntryDate(date),
       steps: stepsNum,
       goal: goalNum,
-      note: note
+      note: note,
+      groupWalk: group
     };
     this.log.push(stepEntry);
     this.settings.setValue('log', JSON.stringify((this.log)));
@@ -66,70 +61,114 @@ export class LogService {
       });
   }
 
-  initializeUserLog(currUser: User) {
-    if (currUser) {
-      this.currUser = currUser;
-      this.firebaseService.getStepLog(this.currUser.googleUID)
-        .subscribe((data) => {
-          this.logObjects = [];
-          this.log = [];
-          for (let entry of data) {
-            this.log.push(entry.stepEntry);
-            this.logObjects[entry.stepEntry.date.rawDate] = entry.stepEntry;
-          }
-          console.log(this.log);
-          this.settings.setValue('log', JSON.stringify(this.log));
-          this.initThirtyDates(this.logObjects);
-        }, (error) => {
-          console.log("Error getting user log from database!");
-          console.log(error);
-        });
-    }
-
+  updateEntry(date: EntryDate, steps: string, goal: string, note: string, group: boolean) {
+    const goalNum = parseInt(goal, 10);
+    const stepsNum = parseInt(steps, 10);
+    const stepEntry: StepEntry = {
+      date: date,
+      steps: stepsNum,
+      goal: goalNum,
+      note: note,
+      groupWalk: group
+    };
+    this.datesData[this.currEntryIndex] = {date: stepEntry.date.rawDate, data: stepEntry};
+    this.settings.setValue('full_log', JSON.stringify((this.datesData)));
+    // TODO: update firebase
   }
 
-  initLogService() {
+  initializeUserLog(currUser: User): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (currUser) {
+        this.currUser = currUser;
+        this.firebaseService.getStepLog(this.currUser.googleUID)
+          .subscribe((data) => {
+            this.logObjects = [];
+            this.log = [];
+            for (let entry of data) {
+              if (!entry.stepEntry.groupWalk) {
+                entry.stepEntry.groupWalk = false;
+              }
+              this.log.push(entry.stepEntry);
+              this.logObjects[entry.stepEntry.date.rawDate] = entry.stepEntry;
+            }
+            console.log(this.log);
+            this.settings.setValue('log', JSON.stringify(this.log));
+            this.initThirtyDates(this.logObjects);
+            resolve();
+          }, (error) => {
+            console.log("Error getting user log from database!");
+            console.log(error);
+            reject(error);
+          });
+      }
+    });
+
 
   }
 
   initThirtyDates(logData: any) {
-    this.thirtyDatesData = [];
-    for(let date of this.thirtyDates) {
-      this.thirtyDatesData.push(
+    this.datesData = [];
+    for(let date of this.dates) {
+      this.datesData.push(
         {date: date, data: logData[date] ||
-            {date: this.getEntryDate(date), steps: 0, goal: 0, note: ''} });
+            {date: this.timeService.getEntryDate(date), steps: 0, goal: 0, note: '', groupWalk: false} });
     }
-    console.log(this.thirtyDatesData);
+    console.log(this.datesData);
+    this.currEntryIndex = this.datesData.length - 1;
+    this.isTodayCurrDay = true;
+    this.settings.setValue('full_log', JSON.stringify(this.datesData));
+    this.initLogListener.next(true);
   }
 
   getThirtyDatesData() {
-    return this.thirtyDatesData;
-  }
-
-  getThirtyDates() {
-    return this.thirtyDates;
-  }
-
-  getLogObjects() {
-    return this.logObjects;
+    return this.datesData;
   }
 
   getLog() {
-    console.log(this.log);
-    if (this.log.length <= 0) return [];
-    return [...this.log];
+    return this.log;
   }
 
-  getEntryDate(dateStr: string): EntryDate {
-    const monthNum = parseInt(dateStr.substring(5,7), 10);
-    let entryDate: EntryDate = {
-      rawDate: dateStr,
-      month: monthNames[monthNum - 1],
-      monthNum: monthNum,
-      day: parseInt(dateStr.substring(8, 10), 10),
-      year: parseInt(dateStr.substring(0, 4), 10)
-    };
-    return entryDate;
+  isToday() {
+    return this.isTodayCurrDay;
   }
+
+  getNextEntry(amount = 1) {
+    if (amount === 1) {
+      if (this.currEntryIndex === this.datesData.length - 1) {
+        return;
+      }
+    }
+    if (amount === -1) {
+      if (this.currEntryIndex === 0) {
+        return;
+      }
+    }
+    this.currEntryIndex += amount;
+    return this.datesData[this.currEntryIndex];
+  }
+
+  getInitLogListener() {
+    return this.initLogListener.asObservable();
+  }
+
+  setFullLog(fullLog): Promise<any> {
+    return new Promise((resolve, reject) => {
+      console.log(fullLog);
+      let newLog = Object.assign({}, fullLog);
+      this.datesData = [];
+      for (let entry in newLog) {
+        console.log(entry);
+        this.datesData.push(newLog[entry]);
+      }
+      this.currEntryIndex = this.datesData.length - 1;
+      this.isTodayCurrDay = true;
+      console.log(this.datesData);
+      console.log(this.datesData.length);
+      resolve();
+    });
+
+  }
+
+
 
 }

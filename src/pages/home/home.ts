@@ -3,17 +3,17 @@ import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angu
 import { Chart } from 'chart.js';
 
 import { StepEntry, EntryDate } from "../../models/step-log.model";
-import { Settings } from "../../providers";
+import { monthDateIndex, TimeService } from "../../providers/time/time.service";
+import { Settings } from "../../providers/settings/settings";
+import { LogService } from "../../providers/logs/logs.service";
+import { Subscription } from "rxjs";
+import { LogEntryPage } from "../log-entry/log-entry";
 
 export const hoverColor: string = 'rgb(0, 0, 255)';
-export const barColor: string = 'rgb(9, 137, 126)';
+export const barColor: string = '#00affb';
 export const background: string = 'rgb(9, 11, 105)';
 export const lineColor: string = 'rgb(0, 0, 0)';
 export const backColor: string = 'rgb(192,192,192)';
-export const sevenDayLimit: number = 7;
-export const thirtyDayLimit: number = 30;
-export const monthDateIndex: number = 5;
-export const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 @IonicPage()
 @Component({
@@ -23,7 +23,23 @@ export const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'
 export class HomePage {
   @ViewChild('barChart') barChart;
 
-  private log: StepEntry[] = [];
+  current: number = 3000;
+  max: number = 6000;
+  stroke: number = 15;
+  radius: number = 125;
+  semicircle: boolean = true;
+  rounded: boolean = false;
+  responsive: boolean = false;
+  clockwise: boolean = true;
+  color: string = barColor;
+  background: string = '#eaeaea';
+  duration: number = 800;
+  animation: string = 'easeOutCubic';
+  animationDelay: number = 0;
+  animations: string[] = [];
+  gradient: boolean = false;
+  realCurrent: number = 0;
+
   private barChartEl: any = null;
   private chartLabels: any = [];
   private chartValues: number[] = [];
@@ -31,30 +47,69 @@ export class HomePage {
   private barColors: any = [];
   private hoverColors: any = [];
 
+  private currEntry: {date: string, data: StepEntry} = null;
+  private currDate: string;
+  private isCurrEntryToday: boolean = true;
+  private todaysDate: string;
+  private log: StepEntry[] = [];
+  private fullLog: {date: string, data: StepEntry}[] = [];
+  private initLogSub: Subscription;
+
   constructor(
     private modalCtrl: ModalController,
-    private settings: Settings) {}
+    public navCtrl: NavController,
+    private settings: Settings,
+    private logService: LogService,
+    private timeService: TimeService) {
+
+    this.currEntry = this.logService.getNextEntry(0);
+  }
+
 
   ionViewDidLoad() {
-    this.settings.getValue('log').then((log) => {
-      if(log) {
-        console.log(log);
-        this.log = JSON.parse(log);
-        if (this.log.length > 0) {
-          this.initChartData();
-          this.createBarChart();
-          console.log(this.log);
-        }
-      }
-    });
+
+    // this.settings.getValue('log').then((log) => {
+    //   if(log) {
+    //     console.log(log);
+    //     this.log = JSON.parse(log);
+    //     if (this.log.length > 0) {
+    //       this.initChartData();
+    //       this.createBarChart();
+    //       console.log(this.log);
+    //     }
+    //   }
+    // });
+    // this.initFullLog();
+    this.log = this.logService.getLog();
+    this.fullLog = this.logService.getThirtyDatesData();
+    console.log(this.currEntry);
+    this.current = this.currEntry.data.steps;
+    this.max = this.currEntry.data.goal;
+    this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+    this.createBarChart();
     console.log('ionViewDidLoad HomePage');
   }
 
   ionViewWillEnter() {
-    this.settings.getValue('log').then((log) => {
-      if(log) {
-        console.log(log);
-        this.log = JSON.parse(log);
+    // this.fullLog = this.logService.getThirtyDatesData();
+    // this.settings.getValue('log').then((log) => {
+    //   if(log) {
+    //     console.log(log);
+    //     this.log = JSON.parse(log);
+    //   }
+    // });
+    // this.initFullLog();
+    this.todaysDate = this.timeService.getTodayStr();
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Todays date is: ' + this.todaysDate + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+  }
+
+  initFullLog() {
+    this.settings.getValue('full_log').then((data) => {
+      if(data) {
+        console.log("Printing the full log data" );
+        this.fullLog = JSON.parse(data);
+        // this.currentEntryIndex = this.fullLog.length-1;
+        console.log(this.fullLog);
       }
     });
   }
@@ -62,8 +117,10 @@ export class HomePage {
 
   initChartData() {
     console.log(this.log);
-    let i = this.log.length >= sevenDayLimit ? this.log.length - sevenDayLimit : 0;
-    while(i < this.log.length) {
+    //let i = this.log.length >= sevenDayLimit ? this.log.length - sevenDayLimit : 0;
+    //while(i < this.log.length) {
+    let i = 0;
+    while(i < 1) {
       this.chartLabels.push(this.log[i].date.rawDate.substring(monthDateIndex));
       this.chartValues.push(this.log[i].steps);
       this.barColors.push(barColor);
@@ -79,19 +136,22 @@ export class HomePage {
       {
         type: 'bar',
         data: {
-          labels: this.chartLabels,
+          labels: [''],
           datasets: [{
-            data: this.chartGoals,
+            data: [this.currEntry.data.goal],
             type: 'line',
             borderColor: lineColor,
-            fill: false
+            fill: false,
+            radius: 8,
+            borderWidth: 2,
+            pointStyle: 'circle',
           }, {
             label: "steps",
-            data: this.chartValues,
+            data: [this.currEntry.data.steps],
             duration: 2000,
             easing: 'eastInQuart',
             backgroundColor: barColor,
-            hoverBackgroundColor: this.hoverColors
+            hoverBackgroundColor: hoverColor
           }]
           // }, {
           //   data: this.chartGoals,
@@ -126,10 +186,12 @@ export class HomePage {
               }
             }],
             xAxes: [{
+              barThickness: 25,
               gridLines: {
                 color: 'rgba(0,0,0,0)'
               },
               ticks: {
+                display: false,
                 autoSkip: false
               }
             }]
@@ -140,7 +202,89 @@ export class HomePage {
 
   onChartClick() {
     console.log("Graph was clicked!");
-    let graphModal = this.modalCtrl.create('GraphPage', {log: this.log});
-    graphModal.present();
+    this.navCtrl.push('GraphPage');
+    // let graphModal = this.modalCtrl.create('GraphPage', {log: this.log});
+    // graphModal.present();
+  }
+
+  doSomethingWithCurrentValue($event: number) {
+    console.log($event);
+  }
+
+  increment(amount = 1) {
+    this.current += amount;
+  }
+
+  getOverlayStyle() {
+    let isSemi = this.semicircle;
+    let transform = (isSemi ? '' : 'translateY(-50%) ') + 'translateX(-50%)';
+
+    return {
+      'top': isSemi ? 'auto' : '50%',
+      'bottom': isSemi ? '5%' : 'auto',
+      'left': '50%',
+      'transform': transform,
+      '-moz-transform': transform,
+      '-webkit-transform': transform,
+      'font-size': this.radius / 3.5 + 'px'
+    };
+  }
+
+  onLeftClick() {
+    console.log('Clicked left arrow');
+    this.currEntry = this.logService.getNextEntry(-1);
+    console.log(this.currEntry);
+    this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+    console.log(this.currDate);
+    if (this.currDate === 'Today') {
+      this.isCurrEntryToday = true;
+    } else {
+      this.isCurrEntryToday = false;
+    }
+    this.max = this.currEntry.data.goal;
+    this.current = this.currEntry.data.steps;
+    this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
+    this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
+    this.barChartEl.update();
+
+    console.log('made it this far');
+  }
+
+  onRightClick() {
+    console.log('Clicked right arrow');
+    this.currEntry = this.logService.getNextEntry();
+    console.log(this.currEntry);
+    this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+    if (this.currDate === 'Today') {
+      console.log('got it in here');
+      this.isCurrEntryToday = true;
+    } else {
+      this.isCurrEntryToday = false;
+    }
+    this.max = this.currEntry.data.goal;
+    this.current = this.currEntry.data.steps;
+    this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
+    this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
+    this.barChartEl.update();
+  }
+
+  ionViewWillUnload() {
+
+  }
+
+  onShowData() {
+    console.log('onShowData click!');
+    let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.currEntry}, { cssClass: 'inset-modal' });
+    entryModal.onDidDismiss((data) => {
+      console.log(data);
+      this.currEntry = data;
+      this.max = this.currEntry.data.goal;
+      this.current = this.currEntry.data.steps;
+      this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
+      this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
+      this.barChartEl.update();
+    });
+    entryModal.present();
+
   }
 }

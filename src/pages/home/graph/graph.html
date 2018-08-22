@@ -1,25 +1,15 @@
-<ion-header>
-
-  <ion-navbar>
-    <ion-buttons start>
-    </ion-buttons>
-    <ion-title></ion-title>
-    <ion-toolbar no-border-top>
-      <ion-segment [(ngModel)]="chartType">
-        <ion-segment-button value="steps">
-          1 Month Steps
-        </ion-segment-button>
-        <ion-segment-button value="attendance">
-          1 Month Attendance
-        </ion-segment-button>
-      </ion-segment>
-    </ion-toolbar>
-  </ion-navbar>
-
-</ion-header>
-
-
 <ion-content padding>
+  <ion-segment [(ngModel)]="chartType">
+    <ion-segment-button value="steps">
+      1 Month Steps
+    </ion-segment-button>
+    <ion-segment-button value="attendance">
+      1 Month Attendance
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-row style="height: 15px"></ion-row>
+
   <section [hidden]="chartType != 'steps'" class="chart-wrapper">
     <canvas #lineChart></canvas>
   </section>
@@ -58,6 +48,5 @@
       </ion-grid>
     </div>
   </div>
-  <button ion-button color="danger" full (click)="dismiss()">Close</button>
 
 </ion-content>

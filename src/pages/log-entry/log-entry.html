@@ -7,28 +7,71 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title text-center>{{ entry.date.month }} {{ entry.date.day }}, {{ entry.date.year }}</ion-title>
+    <ion-title text-center>{{ entry.data.date.month }} {{ entry.data.date.day }}, {{ entry.data.date.year }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <form #logForm="ngForm" (ngSubmit)="onSubmit(logForm)">
+    <ion-item>
+      <ion-label fixed>Steps</ion-label>
+      <ion-input
+        [disabled]="!isEditable"
+        class="item-steps"
+        [(ngModel)]="entry.data.steps"
+        type="number"
+        name="steps"
+        required></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label fixed>Steps</ion-label>
-    <div class="item-steps" item-content>{{entry.steps}}</div>
-  </ion-item>
+    <ion-item>
+      <ion-label fixed>Goal</ion-label>
+      <ion-input
+        [disabled]="!isEditable"
+        class="item-goal"
+        [(ngModel)]="entry.data.goal"
+        type="number"
+        name="goal"
+        required></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label fixed>Goal</ion-label>
-    <div class="item-goal" item-content>{{entry.goal}}</div>
-  </ion-item>
+    <ion-item>
+      <ion-label fixed>Note</ion-label>
+      <ion-textarea
+        [disabled]="!isEditable"
+        class="item-note"
+        [placeholder]="entry.data.note"
+        [(ngModel)]="entry.data.note"
+        name="note"></ion-textarea>
+    </ion-item>
 
-  <ion-item>
-    <ion-label fixed>Note</ion-label>
-    <div class="item-note" item-content>{{entry.note}}</div>
-  </ion-item>
+    <ion-item>
+      <ion-label fixed>Group Walk?</ion-label>
+      <ion-checkbox
+        [disabled]="!isEditable"
+        class="item-group"
+        [(ngModel)]="entry.data.groupWalk"
+        name="groupWalk"></ion-checkbox>
+    </ion-item>
+
+    <hr>
+
+    <button
+      ion-button
+      block
+      type="button"
+      (click)="onClickEdit()"
+      [hidden]="isEditable">Edit</button>
+
+    <button
+      ion-button
+      block
+      type="submit"
+      [hidden]="!isEditable"
+      [disabled]="!logForm.valid">Submit</button>
+  </form>
 
 </ion-content>
 

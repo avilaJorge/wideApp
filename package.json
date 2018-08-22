@@ -25,6 +25,7 @@
     "@ionic-native/camera": "^4.3.3",
     "@ionic-native/core": "^4.9.2",
     "@ionic-native/crop": "^4.12.0",
+    "@ionic-native/date-picker": "^4.12.0",
     "@ionic-native/google-maps": "^4.8.2",
     "@ionic-native/image-picker": "^4.12.0",
     "@ionic-native/in-app-browser": "^4.11.0",
@@ -36,6 +37,7 @@
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "@types/node": "^10.3.6",
+    "angular-svg-round-progressbar": "^2.0.0",
     "angular2-text-mask": "^9.0.0",
     "angularfire2": "^5.0.0-rc.11",
     "chart.js": "^2.7.2",
@@ -46,6 +48,7 @@
     "cordova-plugin-camera": "^4.0.3",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-crop": "^0.4.0",
+    "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-googlemaps": "^2.3.6",
     "cordova-plugin-inappbrowser": "^3.0.0",
@@ -99,7 +102,8 @@
       "cordova-plugin-telerik-imagepicker": {
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": "Research project"
       },
-      "cordova-plugin-crop": {}
+      "cordova-plugin-crop": {},
+      "cordova-plugin-datepicker": {}
     },
     "platforms": [
       "android"
