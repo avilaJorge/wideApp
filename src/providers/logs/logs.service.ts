@@ -153,12 +153,17 @@ export class LogService {
 
   setFullLog(fullLog): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log(fullLog);
-      let newLog = Object.assign({}, fullLog);
+      console.log(typeof(fullLog));
+      // let newLog: {date: string, data: StepEntry}[] = Object.assign({}, fullLog);
+      // this.datesData = [];
+      // for (let entry in newLog) {
+      //   console.log(entry);
+      //   this.datesData.push(newLog[entry]);
+      // }
       this.datesData = [];
-      for (let entry in newLog) {
-        console.log(entry);
-        this.datesData.push(newLog[entry]);
+      for (let i = 0; i < fullLog.length; i++) {
+        console.log(fullLog[i]);
+        this.datesData.push(fullLog[i]);
       }
       this.currEntryIndex = this.datesData.length - 1;
       this.isTodayCurrDay = true;
