@@ -276,13 +276,15 @@ export class HomePage {
     console.log('onShowData click!');
     let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.currEntry}, { cssClass: 'inset-modal' });
     entryModal.onDidDismiss((data) => {
-      console.log(data);
-      this.currEntry = data;
-      this.max = this.currEntry.data.goal;
-      this.current = this.currEntry.data.steps;
-      this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
-      this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
-      this.barChartEl.update();
+      if(data) {
+        console.log(data);
+        this.currEntry = data;
+        this.max = this.currEntry.data.goal;
+        this.current = this.currEntry.data.steps;
+        this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
+        this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
+        this.barChartEl.update();
+      }
     });
     entryModal.present();
 

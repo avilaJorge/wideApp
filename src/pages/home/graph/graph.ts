@@ -174,6 +174,10 @@ export class GraphPage {
     console.log(index);
     let entryModal = this.modalCtrl.create('LogEntryPage', {entry: day.data}, { cssClass: 'inset-modal' });
     entryModal.onDidDismiss((data) => {
+      if (data) {
+        console.log('Do something here with the data');
+        // TODO: Need to update the current graph page.
+      }
       console.log(data);
     });
     entryModal.present();
