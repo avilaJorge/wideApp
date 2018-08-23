@@ -31,6 +31,7 @@ export class GraphPage {
   private chartValues: number[] = [];
   private chartGoals: number[] = [];
   private fullChartData: {date: string, data: StepEntry}[] = [];
+  private todayIndex: number = 0;
 
 
   constructor(
@@ -48,25 +49,29 @@ export class GraphPage {
     this.createBarChart();
   }
 
+  ionViewWillEnter() {
+    this.updateChartData();
+    console.log('ionViewWillEnter in GraphPage');
+  }
+
 
 
   initChartData() {
     let logData = this.logService.getThirtyDatesData();
     // Find today
-    let todayIndex = 0;
     let todayStr = this.timeService.getTodayStr();
     let i = logData.length - 1;
     while (i >= 0) {
       if (logData[i].date === todayStr) {
-        todayIndex = i;
+        this.todayIndex = i;
         break;
       }
       i--;
     }
 
-    i = todayIndex - sevenDayLimit + 1;
-    while(i <= todayIndex) {
-      if (i == todayIndex) {
+    i = this.todayIndex - sevenDayLimit + 1;
+    while(i <= this.todayIndex) {
+      if (i == this.todayIndex) {
         this.chartLabels.push('Today');
       } else {
         this.chartLabels.push(logData[i].data.date.monthNum + '/' + logData[i].data.date.day);
@@ -77,6 +82,23 @@ export class GraphPage {
       i++;
     }
     console.log(this.chartGoals);
+  }
+
+  updateChartData() {
+    this.chartValues = [];
+    this.chartGoals = [];
+    this.fullChartData = [];
+    let logData = this.logService.getThirtyDatesData();
+    let i = this.todayIndex - sevenDayLimit + 1;
+    while(i <= this.todayIndex) {
+      this.chartValues.push(logData[i].data.steps);
+      this.chartGoals.push(logData[i].data.goal);
+      this.fullChartData.push(logData[i]);
+      i++;
+    }
+    this.barChartEl.data.datasets[0].data = this.chartGoals;
+    this.barChartEl.data.datasets[1].data = this.chartValues;
+    this.barChartEl.update();
   }
 
   createBarChart() {

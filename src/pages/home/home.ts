@@ -64,7 +64,7 @@ export class HomePage {
 
 
     this.currEntry = this.logService.getNextEntry(0);
-
+    console.log('Homepage Constructor');
   }
 
 
@@ -78,7 +78,7 @@ export class HomePage {
     this.max = this.currEntry.data.goal;
     this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
     this.createBarChart();
-    console.log('Homepage Constructor');
+
     // this.settings.getValue('log').then((log) => {
     //   if(log) {
     //     console.log(log);
@@ -105,6 +105,7 @@ export class HomePage {
     //   }
     // });
     // this.initFullLog();
+    this.currEntry = this.logService.getNextEntry(0);
     this.todaysDate = this.timeService.getTodayStr();
     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Todays date is: ' + this.todaysDate + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   }
