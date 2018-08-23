@@ -53,6 +53,7 @@ export class LoginPage {
         if (isAuthenticated) {
           console.log("User was logged in!");
           this.loading.dismiss();
+          //TODO: Need to load the users data here or make sure it is before MainPage is set as root.
           this.navCtrl.setRoot(MainPage);
         } else {
           let toast = this.toastCtrl.create({

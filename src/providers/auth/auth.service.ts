@@ -115,6 +115,7 @@ export class AuthService {
   }
 
   autoAuthUser(localData): boolean {
+    if (!localData) return false;
     if (!localData.token || (localData.token == '' )) {
       return false;
     }

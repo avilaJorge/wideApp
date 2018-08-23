@@ -7,74 +7,74 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title text-center>{{ entry.data.date.month }} {{ entry.data.date.day }}, {{ entry.data.date.year }}</ion-title>
+    <ion-title text-center>Edit</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        icon-only
+        (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
-  <form #logForm="ngForm" (ngSubmit)="onSubmit(logForm)">
+  <form [formGroup]="logEntry" (ngSubmit)="onSubmit()">
+
+    <ion-item>
+      <ion-label fixed>Date</ion-label>
+      <ion-input
+        class="item-date"
+        formControlName="date"
+        type="date"
+        ></ion-input>
+    </ion-item>
+
     <ion-item>
       <ion-label fixed>Steps</ion-label>
       <ion-input
-        [disabled]="!isEditable"
         class="item-steps"
-        [(ngModel)]="entry.data.steps"
         type="number"
-        name="steps"
-        required></ion-input>
+        formControlName="steps"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label fixed>Goal</ion-label>
       <ion-input
-        [disabled]="!isEditable"
         class="item-goal"
-        [(ngModel)]="entry.data.goal"
         type="number"
-        name="goal"
-        required></ion-input>
+        formControlName="goal"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label fixed>Note</ion-label>
       <ion-textarea
-        [disabled]="!isEditable"
         class="item-note"
-        [placeholder]="entry.data.note"
-        [(ngModel)]="entry.data.note"
-        name="note"></ion-textarea>
+        formControlName="note"></ion-textarea>
     </ion-item>
 
     <ion-item>
       <ion-label fixed>Group Walk?</ion-label>
       <ion-checkbox
-        [disabled]="!isEditable"
         class="item-group"
-        [(ngModel)]="entry.data.groupWalk"
-        name="groupWalk"></ion-checkbox>
+        formControlName="groupWalk"></ion-checkbox>
     </ion-item>
 
     <hr>
 
-    <button
-      ion-button
-      block
-      type="button"
-      (click)="onClickEdit()"
-      [hidden]="isEditable">Edit</button>
-
-    <button
-      ion-button
-      block
-      type="submit"
-      [hidden]="!isEditable"
-      [disabled]="!logForm.valid">Submit</button>
+    <button ion-button
+            block
+            large
+            color="primary"
+            type="submit"
+            [disabled]="!logEntry.valid"
+            full>Submit</button>
   </form>
 
 </ion-content>
 
 <ion-footer>
-  <button ion-button color="primary" full (click)="dismiss()">Close</button>
+
 </ion-footer>

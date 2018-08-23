@@ -71,7 +71,14 @@ export class LogService {
       note: note,
       groupWalk: group
     };
-    this.datesData[this.currEntryIndex] = {date: stepEntry.date.rawDate, data: stepEntry};
+
+    for (let index in this.datesData) {
+      if (stepEntry.date.rawDate === this.datesData[index].date){
+        this.datesData[index] = {date: stepEntry.date.rawDate, data: stepEntry};
+      }
+    }
+    console.log(this.datesData);
+    // this.datesData[this.currEntryIndex] =
     this.settings.setValue('full_log', JSON.stringify((this.datesData)));
     // TODO: update firebase
   }
@@ -114,7 +121,7 @@ export class LogService {
             {date: this.timeService.getEntryDate(date), steps: 0, goal: 0, note: '', groupWalk: false} });
     }
     console.log(this.datesData);
-    this.currEntryIndex = this.datesData.length - 1;
+    this.currEntryIndex = this.findTodayIndex();
     this.isTodayCurrDay = true;
     this.settings.setValue('full_log', JSON.stringify(this.datesData));
     this.initLogListener.next(true);
@@ -165,13 +172,27 @@ export class LogService {
         console.log(fullLog[i]);
         this.datesData.push(fullLog[i]);
       }
-      this.currEntryIndex = this.datesData.length - 1;
+      this.currEntryIndex = this.findTodayIndex();
       this.isTodayCurrDay = true;
       console.log(this.datesData);
       console.log(this.datesData.length);
       resolve();
     });
 
+  }
+
+  findTodayIndex(): number {
+    // Find today
+    let todayIndex = 0;
+    let todayStr = this.timeService.getTodayStr();
+    let i = this.datesData.length - 1;
+    while (i >= 0) {
+      if (this.datesData[i].date === todayStr) {
+        todayIndex = i;
+        return todayIndex;
+      }
+      i--;
+    }
   }
 
 

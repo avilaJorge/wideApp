@@ -4,7 +4,13 @@ import { Chart } from 'chart.js';
 
 import { StepEntry } from "../../../models/step-log.model";
 import { background, barColor, hoverColor, lineColor } from "../home";
-import { monthDateIndex, monthNames, sevenDayLimit, thirtyDayLimit } from "../../../providers/time/time.service";
+import {
+  monthDateIndex,
+  monthNames,
+  sevenDayLimit,
+  thirtyDayLimit,
+  TimeService
+} from "../../../providers/time/time.service";
 import { LogService } from "../../../providers/logs/logs.service";
 
 /**
@@ -39,6 +45,7 @@ export class GraphPage {
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private logService: LogService,
+    private timeService: TimeService,
     private modalCtrl: ModalController) {
 
     const whatever = this.navParams.get('log');
@@ -51,9 +58,16 @@ export class GraphPage {
   }
 
   initCalendarData() {
+    this.currentDate = this.timeService.getTodayStr();
     let logData = this.logService.getThirtyDatesData();
-    let i = logData.length - thirtyDayLimit;
-    while(i < logData.length) {
+    let startIndex = this.logService.findTodayIndex();
+    let i = startIndex - thirtyDayLimit + 1;
+    // Continue decrementing i until we reach Sunday.
+    // This will make our calendar accurate.
+    while ((new Date(logData[i].date)).getDay() != 0) {
+      i--;
+    }
+    while(i <= startIndex) {
       this.attendance.push({
         date: logData[i].date.substring(monthDateIndex + 3),
         present: logData[i].data.steps > 0 ? true : false,
@@ -61,13 +75,27 @@ export class GraphPage {
       });
       i++;
     }
+    console.log(this.currentDate);
+    console.log(this.attendance);
   }
 
   initChartData() {
     let logData = this.logService.getThirtyDatesData();
-    let i = logData.length - sevenDayLimit;
-    while(i < logData.length) {
-      if (i == logData.length - 1) {
+    // Find today
+    let todayIndex = 0;
+    let todayStr = this.timeService.getTodayStr();
+    let i = logData.length - 1;
+    while (i >= 0) {
+      if (logData[i].date === todayStr) {
+        todayIndex = i;
+        break;
+      }
+      i--;
+    }
+
+    i = todayIndex - sevenDayLimit + 1;
+    while(i <= todayIndex) {
+      if (i == todayIndex) {
         this.chartLabels.push('Today');
       } else {
         this.chartLabels.push(logData[i].data.date.monthNum + '/' + logData[i].data.date.day);
@@ -92,13 +120,14 @@ export class GraphPage {
         data: {
           labels: this.chartLabels,
           datasets: [{
-              data: [this.chartGoals],
+              data: this.chartGoals,
               type: 'line',
               borderColor: lineColor,
               fill: false,
               radius: 8,
               borderWidth: 2,
-              pointStyle: 'circle'
+              pointStyle: 'circle',
+              showLine: false
             },{
               label                 : 'Steps',
               data                  : this.chartValues,
@@ -172,11 +201,15 @@ export class GraphPage {
   onDateClick(day: { date: string; present: boolean; data: { date: string; data: StepEntry } }, index: number) {
     console.log(day);
     console.log(index);
+    console.log(this.attendance);
     let entryModal = this.modalCtrl.create('LogEntryPage', {entry: day.data}, { cssClass: 'inset-modal' });
     entryModal.onDidDismiss((data) => {
       if (data) {
         console.log('Do something here with the data');
         // TODO: Need to update the current graph page.
+        this.attendance[index].data = data.data;
+        this.attendance[index].date = data.date;
+        this.attendance[index].present = true;
       }
       console.log(data);
     });

@@ -51,8 +51,7 @@ export class TimeService {
   }
 
   getToday(): Date {
-    //let tzoffset = (new Date()).getTimezoneOffset() * 60000;
-    let tzoffset = 0;
+    let tzoffset = (new Date()).getTimezoneOffset() * 60000;
     return (new Date(Date.now()-tzoffset));
   }
 
