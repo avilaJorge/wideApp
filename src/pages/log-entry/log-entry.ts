@@ -29,14 +29,16 @@ export class LogEntryPage {
     private logService: LogService) {
 
     this.entry = this.navParams.get('entry');
-
-    if (this.entry.data.goal === 0) {
+    console.log('Showing entry in LogEntry Constructor');
+    console.log(this.entry);
+    let goal = this.entry.data.goal;
+    if (goal === 0) {
 
       let logData = this.logService.getThirtyDatesData();
       let i = logData.length - 1;
       while (i >= 0) {
         if (logData[i].data.goal > 0) {
-          this.entry.data.goal = logData[i].data.goal;
+          goal = logData[i].data.goal;
           break;
         }
         i--;
@@ -52,7 +54,7 @@ export class LogEntryPage {
     });
     this.logEntry.controls['date'].setValue(this.entry.date);
     this.logEntry.controls['steps'].setValue(this.entry.data.steps);
-    this.logEntry.controls['goal'].setValue(this.entry.data.goal);
+    this.logEntry.controls['goal'].setValue(goal);
     this.logEntry.controls['note'].setValue(this.entry.data.note);
     this.logEntry.controls['groupWalk'].setValue(this.entry.data.groupWalk);
   }
@@ -74,8 +76,9 @@ export class LogEntryPage {
     const groupWalk = this.logEntry.value.groupWalk;
     this.logService.updateEntry(this.entry.data.date, steps, goal, note, groupWalk);
     this.viewCtrl.dismiss({
-      date: this.entry.data.date,
+      date: this.entry.date,
       data: {
+        date: this.entry.data.date,
         steps: steps,
         goal: goal,
         note: note,
