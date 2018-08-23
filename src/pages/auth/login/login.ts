@@ -54,7 +54,7 @@ export class LoginPage {
       .subscribe((isAuthenticated) => {
         if (isAuthenticated) {
           console.log("User was logged in!");
-          this.logService.initializeUserLog(this.authService.getActiveUser())
+          this.logService.initializeUserLog(this.authService.getActiveUser().googleUID)
             .then(() => {
               this.loading.dismiss();
               //TODO: RemoveView error is still being caused by the above dismiss.

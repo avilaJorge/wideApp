@@ -83,11 +83,10 @@ export class LogService {
     // TODO: update firebase
   }
 
-  initializeUserLog(currUser: User): Promise<any> {
+  initializeUserLog(userId: string): Promise<any> {
     return new Promise((resolve, reject) => {
-      if (currUser) {
-        this.currUser = currUser;
-        this.firebaseService.getStepLog(this.currUser.googleUID)
+      if (userId) {
+        this.firebaseService.getStepLog(userId)
           .subscribe((data) => {
             this.logObjects = [];
             this.log = [];

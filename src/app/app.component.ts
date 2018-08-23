@@ -43,7 +43,9 @@ export class MyApp {
               this.splashScreen.hide();
             });
           } else {
-            this.logService.initializeUserLog(this.authService.getActiveUser())
+            console.log('Preparing to initialize the Users log');
+            console.log(this.authService.getActiveUser());
+            this.logService.initializeUserLog(data.userId)
               .then(() => {
                 this.root = MainPage;
                 this.statusBar.styleDefault();
