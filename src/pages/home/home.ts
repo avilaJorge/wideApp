@@ -203,16 +203,10 @@ export class HomePage {
   onChartClick() {
     console.log("Graph was clicked!");
     this.navCtrl.push('GraphPage');
-    // let graphModal = this.modalCtrl.create('GraphPage', {log: this.log});
-    // graphModal.present();
   }
 
   doSomethingWithCurrentValue($event: number) {
     console.log($event);
-  }
-
-  increment(amount = 1) {
-    this.current += amount;
   }
 
   getOverlayStyle() {

@@ -2,13 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
-import { StepEntry } from "../../../models/step-log.model";
-import { background, barColor, hoverColor, lineColor } from "../home";
+import { barColor, hoverColor, lineColor } from "../home";
 import {
-  monthDateIndex,
-  monthNames,
   sevenDayLimit,
-  thirtyDayLimit,
   TimeService
 } from "../../../providers/time/time.service";
 import { LogService } from "../../../providers/logs/logs.service";
@@ -29,55 +25,27 @@ export class GraphPage {
 
   @ViewChild('barChart') barChart;
 
-  private clickedEntry: {date: string, data: StepEntry}= null;
-  private attendance: {date: string, present: boolean, data: {date: string, data: StepEntry}}[] = [];
   private lineChartEl: any = null;
   private chartLabels: any = [];
   private chartValues: number[] = [];
   private chartGoals: number[] = [];
-  public chartType = 'steps';
-  public currentMonth: string = monthNames[(new Date()).getMonth()];
-  public currentYear: number = (new Date()).getFullYear();
-  public currentDate: string;
+
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private logService: LogService,
-    private timeService: TimeService,
-    private modalCtrl: ModalController) {
+    private timeService: TimeService) {
 
-    const whatever = this.navParams.get('log');
   }
 
   ionViewDidLoad() {
     this.initChartData();
     this.createBarChart();
-    this.initCalendarData();
   }
 
-  initCalendarData() {
-    this.currentDate = this.timeService.getTodayStr();
-    let logData = this.logService.getThirtyDatesData();
-    let startIndex = this.logService.findTodayIndex();
-    let i = startIndex - thirtyDayLimit + 1;
-    // Continue decrementing i until we reach Sunday.
-    // This will make our calendar accurate.
-    while ((new Date(logData[i].date)).getDay() != 0) {
-      i--;
-    }
-    while(i <= startIndex) {
-      this.attendance.push({
-        date: logData[i].date.substring(monthDateIndex + 3),
-        present: logData[i].data.steps > 0 ? true : false,
-        data: logData[i]
-      });
-      i++;
-    }
-    console.log(this.currentDate);
-    console.log(this.attendance);
-  }
+
 
   initChartData() {
     let logData = this.logService.getThirtyDatesData();
@@ -105,11 +73,6 @@ export class GraphPage {
       i++;
     }
     console.log(this.chartGoals);
-    console.log(this.attendance);
-    // So that the chart xaxis does not look too crowded we only want the first, last and middle dates
-    // this.chartLabels[0] = this.log[0].date.substring(monthDateIndex);
-    // this.chartLabels[thirtyDayLimit/2] = this.log[thirtyDayLimit/2].date.substring(monthDateIndex);
-    // this.chartLabels[this.log.length-1] = this.log[this.log.length-1].date.substring(monthDateIndex);
   }
 
   createBarChart() {
@@ -172,10 +135,19 @@ export class GraphPage {
       });
   }
 
-  handleClick(event, array) {
+  handleClick = (event, array) => {
     // let log = this.logService.getThirtyDatesData();
     console.log(event);
     console.log(array);
+    if (!array[0]) {
+      console.log('Graph was clicked!');
+      this.navCtrl.push('CalendarPage');
+    } else {
+      console.log('Bar was clicked!');
+      console.log(array[1]._model.label);
+      // TODO: Should figure out what entry was clicked bring up edit screen.
+    }
+
     // let label = array[0]._model.label;
     // if (label) {
     //   console.log(log);
@@ -196,23 +168,5 @@ export class GraphPage {
 
   dismiss() {
     this.viewCtrl.dismiss();
-  }
-
-  onDateClick(day: { date: string; present: boolean; data: { date: string; data: StepEntry } }, index: number) {
-    console.log(day);
-    console.log(index);
-    console.log(this.attendance);
-    let entryModal = this.modalCtrl.create('LogEntryPage', {entry: day.data}, { cssClass: 'inset-modal' });
-    entryModal.onDidDismiss((data) => {
-      if (data) {
-        console.log('Do something here with the data');
-        // TODO: Need to update the current graph page.
-        this.attendance[index].data = data.data;
-        this.attendance[index].date = data.date;
-        this.attendance[index].present = true;
-      }
-      console.log(data);
-    });
-    entryModal.present();
   }
 }

@@ -1,18 +1,51 @@
-<!--
-  Generated template for the CalendarPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
-    <ion-title>Calendar</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
 <ion-content padding>
+  <div class="calendar-header">
+    <ion-row class="calendar-month">
+      <!--<ion-col col-2 ><ion-icon name="arrow-back"></ion-icon></ion-col>-->
+      <ion-col col-12>{{currentMonth}} {{currentYear}}</ion-col>
+      <!--<ion-col col-2 ><ion-icon name="arrow-forward"></ion-icon></ion-col>-->
+    </ion-row>
+  </div>
+  <div class="calendar-body">
+    <ion-grid>
+      <ion-row class="calendar-weekday">
+        <ion-col>Su</ion-col>
+        <ion-col>Mo</ion-col>
+        <ion-col>Tu</ion-col>
+        <ion-col>We</ion-col>
+        <ion-col>Th</ion-col>
+        <ion-col>Fr</ion-col>
+        <ion-col>Sa</ion-col>
+      </ion-row>
+      <ion-row class="calendar-date">
+        <!--<ion-col col-1 *ngFor="" class="last-month">{{lastDay}}</ion-col>-->
+        <ion-col col-1 class="day-cell" *ngFor="let day of attendance; let i = index" (click)="onDateClick(day, i)">
+          <ion-row>
+            <ion-col text-left>
+              <span class="currentDate" *ngIf="currentDate === day.data.date; else otherDate">{{day.date}}</span>
+              <ng-template #otherDate class="otherDate">{{day.date}}</ng-template>
+            </ion-col>
+          </ion-row>
+          <!--<ion-row><span class="otherDate">{{day.date}}</span></ion-row>-->
+          <ion-row>
+            <ion-col>
+              <ion-icon *ngIf="day.data.data.steps > 0" name="checkmark-circle"></ion-icon>
+              <ion-icon class="goal-star" *ngIf="day.data.data.steps != 0 && day.data.data.steps >= day.data.data.goal" name="star"></ion-icon>
+              <ion-icon class="group-ribbon" *ngIf="day.data.data.groupWalk" name="ribbon"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <!--<span class="currentDate" *ngIf="currentDate === day.date; else otherDate">{{day}}</span>-->
+          <!--<ng-template #otherDate class="otherDate">{{day.date}}</ng-template>-->
 
+        </ion-col>
+        <!--<ion-col col-1 *ngFor="let nextDay of daysInNextMonth" class="next-month">{{nextDay}}</ion-col>-->
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>
