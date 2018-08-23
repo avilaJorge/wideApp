@@ -30,6 +30,19 @@ export class LogEntryPage {
 
     this.entry = this.navParams.get('entry');
 
+    if (this.entry.data.goal === 0) {
+
+      let logData = this.logService.getThirtyDatesData();
+      let i = logData.length - 1;
+      while (i >= 0) {
+        if (logData[i].data.goal > 0) {
+          this.entry.data.goal = logData[i].data.goal;
+          break;
+        }
+        i--;
+      }
+    }
+
     this.logEntry = this.formBuilder.group({
       date: ['', Validators.required],
       steps: ['', Validators.required],

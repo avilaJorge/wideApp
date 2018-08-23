@@ -57,6 +57,7 @@ export class LoginPage {
           this.logService.initializeUserLog(this.authService.getActiveUser())
             .then(() => {
               this.loading.dismiss();
+              //TODO: RemoveView error is still being caused by the above dismiss.
               //TODO: Need to load the users data here or make sure it is before MainPage is set as root.
               this.navCtrl.setRoot(MainPage);
             });
