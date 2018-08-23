@@ -5,6 +5,7 @@ import {User} from "../../../models/user.model";
 import {Subscription} from "rxjs";
 import { MainPage } from "../../index";
 import { AuthService } from "../../../providers/auth/auth.service";
+import { LogService } from "../../../providers/logs/logs.service";
 
 @IonicPage()
 @Component({
@@ -43,7 +44,8 @@ export class LoginPage {
   constructor(public navCtrl: NavController,
               private toastCtrl: ToastController,
               private authService: AuthService,
-              private loadingCtrl: LoadingController) {}
+              private loadingCtrl: LoadingController,
+              private logService: LogService) {}
 
 
 
@@ -52,9 +54,12 @@ export class LoginPage {
       .subscribe((isAuthenticated) => {
         if (isAuthenticated) {
           console.log("User was logged in!");
-          this.loading.dismiss();
-          //TODO: Need to load the users data here or make sure it is before MainPage is set as root.
-          this.navCtrl.setRoot(MainPage);
+          this.logService.initializeUserLog(this.authService.getActiveUser())
+            .then(() => {
+              this.loading.dismiss();
+              //TODO: Need to load the users data here or make sure it is before MainPage is set as root.
+              this.navCtrl.setRoot(MainPage);
+            });
         } else {
           let toast = this.toastCtrl.create({
             message: 'Unable to sign you up at this time.',
@@ -70,8 +75,8 @@ export class LoginPage {
 
   // Attempt to login in through our User service
   doLogin() {
-    this.authService.signInEmail(this.account.email, this.password);
     this.loading.present();
+    this.authService.signInEmail(this.account.email, this.password);
   }
 
   onGoogleSignIn() {

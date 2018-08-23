@@ -140,6 +140,7 @@ export class LogService {
   }
 
   getNextEntry(amount = 1) {
+    console.log("The currentIndex is " + this.currEntryIndex);
     if (amount === 1) {
       if (this.currEntryIndex === this.datesData.length - 1) {
         return;
@@ -193,6 +194,13 @@ export class LogService {
       }
       i--;
     }
+    const dateData = this.timeService.getEntryDate(todayStr);
+    // If we made it this far then the date for today is not in our array and we must create it.
+    this.datesData.push({
+      date: dateData.rawDate,
+      data: {date: this.timeService.getEntryDate(todayStr), steps: 0, goal: 0, note: '', groupWalk: false}
+    });
+    return this.datesData.length - 1;
   }
 
 

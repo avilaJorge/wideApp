@@ -62,12 +62,23 @@ export class HomePage {
     private logService: LogService,
     private timeService: TimeService) {
 
+
     this.currEntry = this.logService.getNextEntry(0);
+
   }
 
 
   ionViewDidLoad() {
 
+    this.log = this.logService.getLog();
+    this.fullLog = this.logService.getThirtyDatesData();
+    console.log(this.currEntry);
+    console.log(this.logService.getThirtyDatesData());
+    this.current = this.currEntry.data.steps;
+    this.max = this.currEntry.data.goal;
+    this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+    this.createBarChart();
+    console.log('Homepage Constructor');
     // this.settings.getValue('log').then((log) => {
     //   if(log) {
     //     console.log(log);
@@ -80,13 +91,8 @@ export class HomePage {
     //   }
     // });
     // this.initFullLog();
-    this.log = this.logService.getLog();
-    this.fullLog = this.logService.getThirtyDatesData();
-    console.log(this.currEntry);
-    this.current = this.currEntry.data.steps;
-    this.max = this.currEntry.data.goal;
-    this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
-    this.createBarChart();
+
+
     console.log('ionViewDidLoad HomePage');
   }
 
