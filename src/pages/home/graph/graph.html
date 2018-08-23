@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title></ion-title>
+  <ion-navbar text-center>
+    <ion-title>Week View</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -9,5 +9,24 @@
   <section class="chart-wrapper">
     <canvas #barChart></canvas>
   </section>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-row class="header-row">
+        <ion-col width-30>Date</ion-col>
+        <ion-col width-70 text-center>Step Count</ion-col>
+      </ion-row>
+    </ion-list-header>
+    <button class="list-item" ion-item *ngFor="let entry of fullChartData; let i = index" (click)="onEntryClick(entry, i)">
+      <ion-row class="content-row">
+        <ion-col width-50 class="entry-date">
+          {{entry.data.date.month}} {{entry.data.date.day}}
+        </ion-col>
+        <ion-col width-50 class="entry-steps">
+          {{entry.data.steps}} steps
+        </ion-col>
+      </ion-row>
+    </button>
+  </ion-list>
 
 </ion-content>

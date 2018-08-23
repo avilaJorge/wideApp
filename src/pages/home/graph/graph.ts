@@ -213,4 +213,28 @@ export class GraphPage {
   dismiss() {
     this.viewCtrl.dismiss();
   }
+
+  onEntryClick(entry: StepEntry, index: number) {
+    console.log('Entry clicked!!!' + entry);
+    console.log(entry);
+    let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.fullChartData[index]}, { cssClass: 'inset-modal' });
+    entryModal.onDidDismiss((data) => {
+      if (data) {
+        console.log('Do something here with the data');
+        console.log(this.fullChartData[index]);
+        // Need to update the current graph page.
+        this.fullChartData[index].data.goal = data.data.goal;
+        this.fullChartData[index].data.groupWalk = data.data.groupWalk;
+        this.fullChartData[index].data.note = data.data.note;
+        this.fullChartData[index].data.steps = data.data.steps;
+        this.chartValues[index] = data.data.steps;
+        this.chartGoals[index] = data.data.goal;
+        this.barChartEl.update();
+      }
+      console.log(data);
+    });
+    entryModal.present();
+    //let entryModal = this.modalCtrl.create(LogEntryPage, {entry: entry}, { cssClass: 'inset-modal' });
+    //entryModal.present();
+  }
 }

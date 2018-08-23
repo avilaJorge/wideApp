@@ -184,6 +184,8 @@ export class HomePage {
                 beginAtZero: true,
                 stepSize: 500,
                 autoSkip: true,
+                fontSize: 16,
+                fontColor: 'black',
                 max: 6000, //TODO: Determine the max from step data
                 userCallback: (label, index, labels) => {
                   if (label % 2500 == 0) {
