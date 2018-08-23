@@ -8,6 +8,7 @@ import {
   TimeService
 } from "../../../providers/time/time.service";
 import { LogService } from "../../../providers/logs/logs.service";
+import { StepEntry } from "../../../models/step-log.model";
 
 /**
  * Generated class for the GraphPage page.
@@ -25,10 +26,11 @@ export class GraphPage {
 
   @ViewChild('barChart') barChart;
 
-  private lineChartEl: any = null;
+  private barChartEl: any = null;
   private chartLabels: any = [];
   private chartValues: number[] = [];
   private chartGoals: number[] = [];
+  private fullChartData: {date: string, data: StepEntry}[] = [];
 
 
   constructor(
@@ -36,7 +38,8 @@ export class GraphPage {
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private logService: LogService,
-    private timeService: TimeService) {
+    private timeService: TimeService,
+    private modalCtrl: ModalController) {
 
   }
 
@@ -70,6 +73,7 @@ export class GraphPage {
       }
       this.chartValues.push(logData[i].data.steps);
       this.chartGoals.push(logData[i].data.goal);
+      this.fullChartData.push(logData[i]);
       i++;
     }
     console.log(this.chartGoals);
@@ -77,7 +81,7 @@ export class GraphPage {
 
   createBarChart() {
     const ctx = this.barChart.nativeElement;
-    this.lineChartEl = new Chart(ctx,
+    this.barChartEl = new Chart(ctx,
       {
         type: 'bar',
         data: {
@@ -144,8 +148,26 @@ export class GraphPage {
       this.navCtrl.push('CalendarPage');
     } else {
       console.log('Bar was clicked!');
-      console.log(array[1]._model.label);
-      // TODO: Should figure out what entry was clicked bring up edit screen.
+      console.log(array[1]._index);
+      const index = array[0]._index;
+      console.log(this.fullChartData[index]);
+      let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.fullChartData[index]}, { cssClass: 'inset-modal' });
+      entryModal.onDidDismiss((data) => {
+        if (data) {
+          console.log('Do something here with the data');
+          console.log(this.fullChartData[index]);
+          // Need to update the current graph page.
+          this.fullChartData[index].data.goal = data.data.goal;
+          this.fullChartData[index].data.groupWalk = data.data.groupWalk;
+          this.fullChartData[index].data.note = data.data.note;
+          this.fullChartData[index].data.steps = data.data.steps;
+          this.chartValues[index] = data.data.steps;
+          this.chartGoals[index] = data.data.goal;
+          this.barChartEl.update();
+        }
+        console.log(data);
+      });
+      entryModal.present();
     }
 
     // let label = array[0]._model.label;

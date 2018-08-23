@@ -67,9 +67,9 @@ export class CalendarPage {
     entryModal.onDidDismiss((data) => {
       if (data) {
         console.log('Do something here with the data');
+        console.log(this.attendance[index]);
         // TODO: Need to update the current graph page.
-        this.attendance[index].data = data.data;
-        this.attendance[index].date = data.date;
+        this.attendance[index].data.data = data.data;
         this.attendance[index].present = true;
       }
       console.log(data);
