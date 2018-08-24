@@ -7,7 +7,7 @@
 <ion-content class="list-big-content">
   <div class="list-big">
     <ion-list>
-      <button class="list-item" ion-item *ngFor="let item of events">
+      <button class="list-item" ion-item *ngFor="let item of events" (click)="onClickEvent(item)">
         <ion-row no-padding class="content-row">
           <ion-col no-padding text-center col-2 class="item-date">
             <ion-row class="event-day"><ion-col no-padding>{{item.eventDate.day}}</ion-col></ion-row>
