@@ -53,5 +53,6 @@ export class EventsPage {
   onClickEvent(item: Meetup) {
     console.log("Event clicked!");
     console.log(item);
+    this.navCtrl.push('EventDetailPage', {event: item});
   }
 }

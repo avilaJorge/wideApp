@@ -9,7 +9,6 @@ import {
   ViewController
 } from 'ionic-angular';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
-import { counterRangeValidator } from '../../components/counter-input/counter-input';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Crop } from '@ionic-native/crop';
 
@@ -46,7 +45,6 @@ export class AddPostPage {
     this.post_form = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      servings: new FormControl(2, counterRangeValidator(10, 1)),
       time: new FormControl('01:30', Validators.required),
       temperature: new FormControl(180)
     });

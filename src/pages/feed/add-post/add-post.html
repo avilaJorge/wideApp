@@ -20,7 +20,7 @@
           <ion-icon name="camera"></ion-icon>
           <h3 class="button-title">Upload An Image</h3>
         </button>
-        <img *ngIf="selected_image"  [src]="selected_image" alt="this is the image" >
+        <preload-image *ngIf="selected_image" [ratio]="{w:1, h:1}" [src]="selected_image" alt="this is the image" title="IMAGE!"></preload-image>
       </section>
       <ion-item>
         <ion-textarea rows="7" placeholder="Write a description or something..." formControlName="description"></ion-textarea>

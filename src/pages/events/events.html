@@ -11,7 +11,7 @@
         <ion-row no-padding class="content-row">
           <ion-col no-padding text-center col-2 class="item-date">
             <ion-row class="event-day"><ion-col no-padding>{{item.eventDate.day}}</ion-col></ion-row>
-            <ion-row class="event-month"><ion-col no-padding>{{item.eventDate.month}}</ion-col></ion-row>
+            <ion-row class="event-month"><ion-col no-padding>{{item.eventDate.month | caps }}</ion-col></ion-row>
           </ion-col>
           <ion-col col-1 class="item-spacer"></ion-col>
           <ion-col no-padding col-9 class="item-content">

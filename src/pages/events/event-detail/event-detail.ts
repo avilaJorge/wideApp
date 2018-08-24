@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-import { AgmCore}
+import { Meetup } from "../meetup.model";
 
 /**
  * Generated class for the EventDetailPage page.
@@ -16,8 +15,11 @@ import { AgmCore}
   templateUrl: 'event-detail.html',
 })
 export class EventDetailPage {
+  public event: Meetup;
+  public title: string = 'Event location';
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+    this.event = this.navParams.get('event');
   }
 
   ionViewDidLoad() {

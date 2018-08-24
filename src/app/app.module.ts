@@ -36,13 +36,13 @@ import { FeedService } from "../pages/feed/feed.service";
 import { SocialSharing } from "@ionic-native/social-sharing";
 import { Crop } from "@ionic-native/crop";
 import { ImagePicker } from "@ionic-native/image-picker";
-import { ProcessImage } from "../components/process-image/process-image";
 import {
   ROUND_PROGRESS_DEFAULTS,
   RoundProgressEase,
   RoundProgressService
 } from "angular-svg-round-progressbar";
-import { PipesModule } from "../pipes/pipes.module";
+import { AgmCoreModule } from "@agm/core";
+import { ComponentsModule } from "../components/components.module";
 
 export function provideSettings(storage: Storage) {
   /**
@@ -64,15 +64,6 @@ export function provideSettings(storage: Storage) {
     MyApp,
     MenuPage,
     AddLogEntryPage,
-    ProcessImage,
-    //custom components
-    // BackgroundImage,
-    // ShowHideContainer,
-    // ShowHideInput,
-    // ColorRadio,
-    // CounterInput,
-    // Rating,
-    // GoogleMap
   ],
   imports: [
     BrowserModule,
@@ -84,6 +75,10 @@ export function provideSettings(storage: Storage) {
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireStorageModule,
+    ComponentsModule,
+    AgmCoreModule.forRoot({
+        apiKey: 'AIzaSyClg9p_2Ub2XIHv9cZ37MMVQcKgEX6dTHA'
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
