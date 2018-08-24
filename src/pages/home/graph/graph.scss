@@ -2,10 +2,43 @@ page-graph {
   .chart-wrapper {
     width: 95%;
     display: inline-block;
-    height: 90%;
+    height: 60%;
+    margin-bottom: 2rem;
   }
   canvas {
     height: 90%;
   }
+
+  .goal-met {
+    color: limegreen;
+  }
+
+  .header-row {
+    font-size: large;
+    border-bottom: thin solid dimgray;
+  }
+
+  .content-row {
+    align-items: center;
+
+    .entry-date {
+      font-size: large;
+      font-style: italic;
+    }
+
+    .entry-steps {
+      font-size: large;
+      font-family: "Segoe UI", "Noto Sans", sans-serif;
+    }
+
+    .steps-text {
+      font-size: large;
+      font-style: italic;
+      font-family: "Segoe UI", "Noto Sans", sans-serif;
+      color: #8f8f8f;
+    }
+
+  }
+
 
 }

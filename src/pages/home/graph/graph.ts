@@ -20,7 +20,7 @@ import { StepEntry } from "../../../models/step-log.model";
 @IonicPage()
 @Component({
   selector: 'page-graph',
-  templateUrl: 'graph.html',
+  templateUrl: 'graph.html'
 })
 export class GraphPage {
 
@@ -165,32 +165,33 @@ export class GraphPage {
     // let log = this.logService.getThirtyDatesData();
     console.log(event);
     console.log(array);
-    if (!array[0]) {
-      console.log('Graph was clicked!');
-      this.navCtrl.push('CalendarPage');
-    } else {
-      console.log('Bar was clicked!');
-      console.log(array[1]._index);
-      const index = array[0]._index;
-      console.log(this.fullChartData[index]);
-      let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.fullChartData[index]}, { cssClass: 'inset-modal' });
-      entryModal.onDidDismiss((data) => {
-        if (data) {
-          console.log('Do something here with the data');
-          console.log(this.fullChartData[index]);
-          // Need to update the current graph page.
-          this.fullChartData[index].data.goal = data.data.goal;
-          this.fullChartData[index].data.groupWalk = data.data.groupWalk;
-          this.fullChartData[index].data.note = data.data.note;
-          this.fullChartData[index].data.steps = data.data.steps;
-          this.chartValues[index] = data.data.steps;
-          this.chartGoals[index] = data.data.goal;
-          this.barChartEl.update();
-        }
-        console.log(data);
-      });
-      entryModal.present();
-    }
+    this.navCtrl.push('CalendarPage');
+    // if (!array[0]) {
+    //   console.log('Graph was clicked!');
+    //   this.navCtrl.push('CalendarPage');
+    // } else {
+    //   console.log('Bar was clicked!');
+    //   console.log(array[1]._index);
+    //   const index = array[0]._index;
+    //   console.log(this.fullChartData[index]);
+    //   let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.fullChartData[index]}, { cssClass: 'inset-modal' });
+    //   entryModal.onDidDismiss((data) => {
+    //     if (data) {
+    //       console.log('Do something here with the data');
+    //       console.log(this.fullChartData[index]);
+    //       // Need to update the current graph page.
+    //       this.fullChartData[index].data.goal = data.data.goal;
+    //       this.fullChartData[index].data.groupWalk = data.data.groupWalk;
+    //       this.fullChartData[index].data.note = data.data.note;
+    //       this.fullChartData[index].data.steps = data.data.steps;
+    //       this.chartValues[index] = data.data.steps;
+    //       this.chartGoals[index] = data.data.goal;
+    //       this.barChartEl.update();
+    //     }
+    //     console.log(data);
+    //   });
+    //   entryModal.present();
+    // }
 
     // let label = array[0]._model.label;
     // if (label) {
@@ -238,3 +239,5 @@ export class GraphPage {
     //entryModal.present();
   }
 }
+
+

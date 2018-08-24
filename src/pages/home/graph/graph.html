@@ -10,22 +10,31 @@
     <canvas #barChart></canvas>
   </section>
 
-  <ion-list>
-    <ion-list-header>
+  <div>
+    <ion-grid>
       <ion-row class="header-row">
-        <ion-col width-30>Date</ion-col>
-        <ion-col width-70 text-center>Step Count</ion-col>
+        <ion-col col-1 class="header-col"></ion-col>
+        <ion-col col-2 class="header-col">Date</ion-col>
+        <ion-col col-2 class="header-col"></ion-col>
+        <ion-col col-7 class="header-col">Step Count</ion-col>
       </ion-row>
-    </ion-list-header>
-    <button class="list-item" ion-item *ngFor="let entry of fullChartData; let i = index" (click)="onEntryClick(entry, i)">
-      <ion-row class="content-row">
-        <ion-col width-50 class="entry-date">
-          {{entry.data.date.month}} {{entry.data.date.day}}
-        </ion-col>
-        <ion-col width-50 class="entry-steps">
-          {{entry.data.steps}} steps
-        </ion-col>
-      </ion-row>
+    </ion-grid>
+  </div>
+  <ion-list>
+    <button class="list-item" ion-item *ngFor="let entry of fullChartData | reverse; let i = index" (click)="onEntryClick(entry, i)">
+      <ion-grid>
+        <ion-row class="content-row">
+          <ion-col col-3 class="entry-date">
+            {{entry.data.date.month}} {{entry.data.date.day}}
+          </ion-col>
+          <ion-col col-2 class="goal-met">
+            <ion-icon *ngIf="entry.data.steps >= entry.data.goal" name="star"></ion-icon>
+          </ion-col>
+          <ion-col col-7 class="entry-steps">
+            {{entry.data.steps}} <span class="steps-text">steps</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </button>
   </ion-list>
 

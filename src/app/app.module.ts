@@ -32,7 +32,6 @@ import {
 } from '../providers';
 
 import { AddLogEntryPage } from "../pages/add-log-entry/add-log-entry";
-import { LogEntryPage } from "../pages/log-entry/log-entry";
 import { FeedService } from "../pages/feed/feed.service";
 import { SocialSharing } from "@ionic-native/social-sharing";
 import { Crop } from "@ionic-native/crop";
@@ -43,6 +42,7 @@ import {
   RoundProgressEase,
   RoundProgressService
 } from "angular-svg-round-progressbar";
+import { PipesModule } from "../pipes/pipes.module";
 
 export function provideSettings(storage: Storage) {
   /**

@@ -19,7 +19,7 @@ import { LogService } from "../../../providers/logs/logs.service";
 })
 export class CalendarPage {
 
-  private attendance: {date: string, present: boolean, data: {date: string, data: StepEntry}}[] = [];
+  private attendance: {date: number, present: boolean, data: {date: string, data: StepEntry}}[] = [];
   public currentMonth: string = monthNames[(new Date()).getMonth()];
   public currentYear: number = (new Date()).getFullYear();
   public currentDate: string;
@@ -49,7 +49,7 @@ export class CalendarPage {
     i--;
     while(i <= startIndex) {
       this.attendance.push({
-        date: logData[i].date.substring(monthDateIndex + 3),
+        date: parseInt(logData[i].date.substring(monthDateIndex + 3), 10),
         present: logData[i].data.steps > 0 ? true : false,
         data: logData[i]
       });
