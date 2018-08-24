@@ -28,7 +28,7 @@
             {{entry.data.date.month}} {{entry.data.date.day}}
           </ion-col>
           <ion-col col-2 class="goal-met">
-            <ion-icon *ngIf="entry.data.steps >= entry.data.goal" name="star"></ion-icon>
+            <ion-icon *ngIf="entry.data.steps >= entry.data.goal && entry.data.steps > 0" name="star"></ion-icon>
           </ion-col>
           <ion-col col-7 class="entry-steps">
             {{entry.data.steps}} <span class="steps-text">steps</span>
