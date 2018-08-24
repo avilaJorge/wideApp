@@ -1,13 +1,21 @@
 page-events {
 
+  .item-date {
+    background-color: #dce4ee;
+    border-radius: 5px;
+    border: thin solid #60646B;
+  }
   .event-day {
     font-weight: bold;
+    vertical-align: text-top;
+    padding-top: 1rem;
+    color: black;
+    font-size: large;
   }
   .event-month {
-    position: relative;
-    text-align: center;
+    padding-bottom: 1rem;
   }
-  .item-title, place {
+  .item-title, .item-place {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

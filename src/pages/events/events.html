@@ -9,13 +9,14 @@
     <ion-list>
       <button class="list-item" ion-item *ngFor="let item of events">
         <ion-row no-padding class="content-row">
-          <ion-col no-padding width-2 class="item-date">
-            <ion-row class="event-month"><ion-col>{{item.eventDate.month}}</ion-col></ion-row>
-            <ion-row class="event-day"><ion-col>{{item.eventDate.day}}</ion-col></ion-row>
+          <ion-col no-padding text-center col-2 class="item-date">
+            <ion-row class="event-day"><ion-col no-padding>{{item.eventDate.day}}</ion-col></ion-row>
+            <ion-row class="event-month"><ion-col no-padding>{{item.eventDate.month}}</ion-col></ion-row>
           </ion-col>
-          <ion-col no-padding width-10 class="item-content">
+          <ion-col col-1 class="item-spacer"></ion-col>
+          <ion-col no-padding col-9 class="item-content">
             <h3  class="item-title">{{item.eventName}}</h3>
-            <p class="item-place" rows="3">{{item.place}}</p>
+            <p class="item-place" row="3">{{item.place}}</p>
             <!-- You can change the rows quantity by using rows="X", where X can be any number for example: rows="4" -->
           </ion-col>
           <!--<ion-col no-padding width-10 class="item-icon">-->
