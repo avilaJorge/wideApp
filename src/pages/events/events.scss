@@ -9,12 +9,19 @@ page-events {
     font-weight: bold;
     vertical-align: text-top;
     padding-top: 1rem;
-    color: orangered;
+    color: black;
+    //color: orangered;
     font-size: large;
   }
   .event-month {
     padding-bottom: 1rem;
+    font-size: small;
+    color: #60646B;
     font-family: "Segoe UI", "Noto Sans", sans-serif;
+  }
+  .item-title {
+    font-weight: bold;
+    font-size: medium;
   }
   .item-title, .item-place {
     overflow: hidden;

@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+
 import { EventDetailPage } from './event-detail';
 import { AgmCoreModule } from "@agm/core";
 import { PipesModule } from "../../../pipes/pipes.module";
+import { ComponentsModule } from "../../../components/components.module";
 
 @NgModule({
   declarations: [
@@ -11,7 +13,8 @@ import { PipesModule } from "../../../pipes/pipes.module";
   imports: [
     IonicPageModule.forChild(EventDetailPage),
     AgmCoreModule,
-    PipesModule
+    PipesModule,
+    ComponentsModule
   ],
 })
 export class EventDetailPageModule {}

@@ -17,6 +17,9 @@ import { Meetup } from "../meetup.model";
 export class EventDetailPage {
   public event: Meetup;
   public title: string = 'Event location';
+  public mapOptions = {
+    zoom: 12
+  };
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.event = this.navParams.get('event');
@@ -26,4 +29,15 @@ export class EventDetailPage {
     console.log('ionViewDidLoad EventDetailPage');
   }
 
+  likeEvent() {
+    console.log('clicked Like!');
+  }
+
+  unlikeEvent() {
+    console.log('clicked Unlike');
+  }
+
+  joinAndRSVP() {
+    console.log('You RSVPd')
+  }
 }

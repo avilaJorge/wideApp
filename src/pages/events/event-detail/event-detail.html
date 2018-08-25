@@ -7,18 +7,90 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>EventDetail</ion-title>
+    <ion-title>Meetup Info</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        icon-only
+        (click)="likeEvent()">
+        <ion-icon name="star-outline"></ion-icon>
+      </button>
+      <button
+        ion-button
+        icon-only
+        full
+        (click)="unlikeEvent()">
+        <ion-icon name="star"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-  <h1>{{ title }}</h1>
+<ion-content no-padding>
+
+  <div class="upper-info">
+
+    <ion-grid>
+      <ion-row>
+        <ion-col col-3 class="group-image-container">
+          <preload-image class="group-image" [ratio]="{w:4,h:3}" [src]="event.group.keyPhoto.thumb_link" title="Group Photo"></preload-image>
+        </ion-col>
+        <ion-col col-9>
+          <ion-row>
+            <ion-col class="group-name" no-padding>{{event.group.name}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="group-location" no-padding>{{event.group.location}}</ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="meetup-title">{{ event.eventName }}</div>
+
+    <hr>
+    <button
+      class="rsvp-button"
+      ion-button
+      block
+      (click)="joinAndRSVP()">JOIN AND RSVP</button>
+    <hr>
+
+    <ion-grid class="important-info">
+      <ion-row>
+        <ion-col col-1><ion-icon name="calendar"></ion-icon></ion-col>
+        <ion-col class="date-info">
+          <ion-row><ion-col>{{ event.eventDate }}</ion-col></ion-row>
+          <ion-row><ion-col></ion-col>{{ event.eventTime }}</ion-row>
+          <ion-row><ion-col></ion-col>{{ event. }}</ion-row>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-1><ion-icon name="pin"></ion-icon></ion-col>
+        <ion-col class="address-info">Address Information</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col col-1><ion-icon name="person"></ion-icon></ion-col>
+        <ion-col class="host-info">Host Info</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="going-info">28 People are going * 22 spots left</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="going-pics">Pics of ppl going go here</ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <preload-image [ratio]="{w:2, h:1}" [src]="event.featurePhoto.photo_link" title="featured_photo"></preload-image>
+
+  <div class="description-text" [innerHtml]="event.description"></div>
 
   <!-- this creates a google map on the page with the given lat/lng from -->
   <!-- the component as the initial center of the map: -->
-  <agm-map [latitude]="event.lat" [longitude]="event.lon">
-    <agm-marker [latitude]="event.lat" [longitude]="event.lon"></agm-marker>
+  <agm-map [zoom]="mapOptions.zoom" [latitude]="event.venue.lat" [longitude]="event.venue.lon">
+    <agm-marker [latitude]="event.venue.lat" [longitude]="event.venue.lon"></agm-marker>
   </agm-map>
 </ion-content>

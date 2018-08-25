@@ -48,15 +48,15 @@ export class MeetupRestApi {
         .set('photo-host', 'public')
         .set('page', '20')
         .set('sig_id', '87508102')
-        .set('sig', '5d282060610d3e49511efd2bac5ffbbdfe56da3a')};
+        .set('sig', '31a3b1aefa2a33ac2e49b0ddaab27101b1a549ba')
+        .set('fields', 'description_images, featured_photo, group_key_photo, how_to_find_us, rsvp_sample')
+    };
 
     return this.http.jsonp<{meta: any, data: Meetup[]}>
     (this.url + this.group + '/events?' + options.params.toString(), 'callback')
       .toPromise()
       .then(response => response.data as Meetup[]);
-
   }
-
 
   //getGroups() {
   //  //let resp_val = this.get(this.endpoints.find_groups, this.test_params, this.test_opts);
