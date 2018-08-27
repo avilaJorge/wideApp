@@ -62,21 +62,27 @@
       <ion-row>
         <ion-col col-1><ion-icon name="calendar"></ion-icon></ion-col>
         <ion-col class="date-info">
-          <ion-row><ion-col>{{ event.eventDate }}</ion-col></ion-row>
-          <ion-row><ion-col></ion-col>{{ event.eventTime }}</ion-row>
-          <ion-row><ion-col></ion-col>{{ event. }}</ion-row>
+          <ion-row><ion-col>{{ event.timeInfo.day }}, {{ event.timeInfo.month }} {{ event.timeInfo.date }}</ion-col></ion-row>
+          <ion-row><ion-col>{{ event.timeInfo.startTime }} - {{ event.timeInfo.endTime }}</ion-col></ion-row>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col col-1><ion-icon name="pin"></ion-icon></ion-col>
-        <ion-col class="address-info">Address Information</ion-col>
+        <ion-col class="address-info">
+          <ion-row>
+            <ion-col>{{ event.venue.name }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>{{ event.venue.location.address_1 }}, {{ event.venue.city }} {{ event.venue.zip }}</ion-col>
+          </ion-row>
+        </ion-col>
       </ion-row>
       <ion-row>
         <ion-col col-1><ion-icon name="person"></ion-icon></ion-col>
-        <ion-col class="host-info">Host Info</ion-col>
+        <ion-col class="host-info">{{ event.host }}</ion-col>
       </ion-row>
       <ion-row>
-        <ion-col class="going-info">28 People are going * 22 spots left</ion-col>
+        <ion-col class="going-info">{{ event.yesRSVPCount }} people are going</ion-col>
       </ion-row>
       <ion-row>
         <ion-col class="going-pics">Pics of ppl going go here</ion-col>
@@ -86,8 +92,13 @@
 
   <preload-image [ratio]="{w:2, h:1}" [src]="event.featurePhoto.photo_link" title="featured_photo"></preload-image>
 
-  <div class="description-text" [innerHtml]="event.description"></div>
-
+  <div class="description-text">
+    <div [innerHtml]="event.description"></div>
+    <div *ngIf="event.howToFindUs">
+      <h6>How to find us.</h6>
+      <p>{{ event.howToFindUs }}</p>
+    </div>
+  </div>
   <!-- this creates a google map on the page with the given lat/lng from -->
   <!-- the component as the initial center of the map: -->
   <agm-map [zoom]="mapOptions.zoom" [latitude]="event.venue.lat" [longitude]="event.venue.lon">

@@ -1,9 +1,8 @@
 import { EntryDate } from "../../models/step-log.model";
-import { monthNames } from "../../providers/time/time.service";
+import { fullDayName, fullMonthNames, monthNames } from "../../providers/time/time.service";
 
 export class Meetup {
   eventDate: EntryDate;
-  eventTime: string;
   link: string;
   eventName: string;
   description: string;
@@ -13,14 +12,14 @@ export class Meetup {
   howToFindUs: string;
   descriptionImages: string[];
   featurePhoto: string;
+  host: string;
+  timeInfo: MeetupTime;
   group: MeetupGroup;
   venue: MeetupVenue;
   rsvpSample: MeetupMember[] = [];
 
-
   constructor(fields: any) {
     this.eventDate = this.getEntryDate(fields.local_date);
-    this.eventTime = fields.local_time;
     this.link = fields.link;
     this.eventName = fields.name;
     this.description = fields.description;
@@ -32,9 +31,21 @@ export class Meetup {
     this.yesRSVPCount = fields.yes_rsvp_count;
     this.group = new MeetupGroup(fields.group);
     this.venue = new MeetupVenue(fields.venue);
+    this.timeInfo = new MeetupTime(fields);
+    this.host = "Hosted by ";
+    let comma: boolean = false;
 
     for (let sample of fields.rsvp_sample) {
       this.rsvpSample.push(new MeetupMember(sample.member));
+      let mem = this.rsvpSample[this.rsvpSample.length - 1];
+      if (mem.host) {
+        if (comma) {
+          this.host += (", " + mem.name);
+        } else {
+          this.host += mem.name;
+          comma = true;
+        }
+      }
     }
   }
 
@@ -80,6 +91,37 @@ export class MeetupGroup {
     this.urlName = fields.urlname;
     this.keyPhoto = fields.key_photo || '';
     this.location = fields.localized_location;
+  }
+}
+
+export class MeetupTime {
+  duration: number;
+  created: number;
+  time: number;
+  updated: number;
+  utfOffset: number;
+  startTime: string;
+  endTime: string;
+  month: string;
+  day: string;
+  date: number;
+
+  constructor(fields: any) {
+    this.created = fields.created;
+    this.duration = fields.duration;
+    this.time = fields.time;
+    this.updated = fields.updated;
+    this.utfOffset = fields.utc_offset;
+    let date = new Date(this.time);
+    let str = date.toLocaleTimeString();
+    let index = str.indexOf(':', str.indexOf(':') + 1);
+    this.startTime = str.substring(0, index) + str.substring(index + 3);
+    str = (new Date(this.time + this.duration)).toLocaleTimeString();
+    index = str.indexOf(':', str.indexOf(':') + 1);
+    this.endTime = str.substring(0, index) + str.substring(index + 3);
+    this.month = fullMonthNames[date.getMonth() + 1];
+    this.day = fullDayName[date.getDay()];
+    this.date = date.getDate();
   }
 }
 

@@ -8,6 +8,7 @@ export const thirtyDayLimit: number = 30;
 export const monthDateIndex: number = 5;
 export const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 export const fullMonthNames = ["January","February","March","April","May","June","July", "August","September","October","November","December"];
+export const fullDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 /*
   Generated class for the TimeProvider provider.
