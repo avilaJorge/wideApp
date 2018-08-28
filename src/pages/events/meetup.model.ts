@@ -2,6 +2,7 @@ import { EntryDate } from "../../models/step-log.model";
 import { fullDayName, fullMonthNames, monthNames } from "../../providers/time/time.service";
 
 export class Meetup {
+  id: string;
   eventDate: EntryDate;
   link: string;
   eventName: string;
@@ -19,6 +20,7 @@ export class Meetup {
   rsvpSample: MeetupMember[] = [];
 
   constructor(fields: any) {
+    this.id = fields.id;
     this.eventDate = this.getEntryDate(fields.local_date);
     this.link = fields.link;
     this.eventName = fields.name;
@@ -30,7 +32,7 @@ export class Meetup {
     this.howToFindUs = fields.how_to_find_us;
     this.yesRSVPCount = fields.yes_rsvp_count;
     this.group = new MeetupGroup(fields.group);
-    this.venue = new MeetupVenue(fields.venue);
+    this.venue = fields.venue ? new MeetupVenue(fields.venue) : null;
     this.timeInfo = new MeetupTime(fields);
     this.host = "Hosted by ";
     let comma: boolean = false;

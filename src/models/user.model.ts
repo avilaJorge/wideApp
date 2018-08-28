@@ -7,7 +7,11 @@ export class User {
   authExpires: string;
   groupName: string;
   isMeetupAuthenticated: boolean = false;
-  meetupAuthToken: string = '';
+  meetupAccessToken: string = '';
+  meetupRefreshToken: string = '';
+  meetupTokenType: string = '';
+  meetupTokenExpiresIn: number = 0;
+  meetupTokenExpirationDate: number = 0;
   isUAAuthenticated: boolean = false;
   underArmourAuthToken: string = '';
 

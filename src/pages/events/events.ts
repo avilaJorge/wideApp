@@ -3,6 +3,7 @@ import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-an
 import { MeetupRestApi } from "../../providers";
 import { map } from "rxjs/operators";
 import { Meetup } from "./meetup.model";
+import { EventService } from "./events.service";
 
 /**
  * Generated class for the EventsPage page.
@@ -24,7 +25,8 @@ export class EventsPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public meetupApi: MeetupRestApi,
-    public loadingCtrl: LoadingController) {
+    public loadingCtrl: LoadingController,
+    private eventService: EventService) {
   }
 
   ionViewDidLoad() {
@@ -43,7 +45,7 @@ export class EventsPage {
           this.events.push(new Meetup(entry));
         }
         console.log(this.events);
-      })
+      });
 
 
     console.log('ionViewDidLoad EventsPage');

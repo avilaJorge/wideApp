@@ -201,9 +201,10 @@ export class AuthService {
     });
   }
 
-  private saveAuthData(token: any, user: User) {
+  saveAuthData(token: any, user: User) {
     this.settings.setValue('token', token);
     this.settings.setValue('user', JSON.stringify(user));
+    this.currentlyLoggedInUser = user;
   }
 
   private getAuthData(): {token: string, user: User} {

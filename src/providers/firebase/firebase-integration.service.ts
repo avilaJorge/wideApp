@@ -7,6 +7,7 @@ import 'firebase/storage';
 import { StepEntry } from "../../models/step-log.model";
 import { User } from "../../models/user.model";
 import { take } from "rxjs/operators";
+import { Observable } from "rxjs";
 
 @Injectable()
 export class FirebaseService {
@@ -152,6 +153,8 @@ export class FirebaseService {
     return this.afs.collection('/users').doc(userId).valueChanges().pipe(take(1));
   }
 
-
+  getMeetupIntegrationResult(userId: string): Observable<any> {
+    return this.afs.collection('/users').doc(userId).snapshotChanges();
+  }
 
 }

@@ -16,8 +16,8 @@
           <ion-col col-1 class="item-spacer"></ion-col>
           <ion-col no-padding col-9 class="item-content">
             <h3  class="item-title">{{item.eventName}}</h3>
-            <p class="item-place" row="3">{{item.venue.name}}</p>
-            <p class="item-city">{{item.venue.city}}</p>
+            <p *ngIf="item.venue" class="item-place" row="3">{{item.venue.name}}</p>
+            <p *ngIf="item.venue" class="item-city">{{item.venue.city}}</p>
             <!-- You can change the rows quantity by using rows="X", where X can be any number for example: rows="4" -->
           </ion-col>
           <!--<ion-col no-padding width-10 class="item-icon">-->

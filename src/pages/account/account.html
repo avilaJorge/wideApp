@@ -58,5 +58,10 @@
   <div *ngIf="isAuthenticated">
     <h4 text-center>Hello {{ user.userName }}!</h4>
   </div>
-
+  <button
+    ion-button
+    class="meetup-integrate"
+    block
+    color="primary"
+    (click)="onMeetupIntegrate()">Integrate Meetup</button>
 </ion-content>

@@ -1,9 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Api } from '../../api/api';
 import { meetupConfig } from "../../../environment/environment";
 import { map } from "rxjs/operators";
 import { Meetup } from "../../../pages/events/meetup.model";
+import { AuthService } from "../../auth/auth.service";
 
 /*
   Generated class for the MeetupRestApi provider.
@@ -14,7 +15,12 @@ import { Meetup } from "../../../pages/events/meetup.model";
 @Injectable()
 export class MeetupRestApi {
   url: string = 'https://api.meetup.com/';
-  group: string = 'San-Diegos-plan2BFIT-Walking-Group'
+  // group: string = 'San-Diegos-plan2BFIT-Walking-Group';
+  group: string = 'Meetup-API-Testing';
+  sig_id: string = '87508102';
+  sig: string = '84ea88d6b8b31e9d8c8a1bdd2a456c4b99eb9f26';
+  // private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/auth/meetup';
+  private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/';
 
   //endpoints = {
   //  find_groups: 'find/groups',
@@ -34,7 +40,9 @@ export class MeetupRestApi {
   //  'key': MeetupRestApi.apiKey
   //}
 
-  constructor(public http: HttpClient) {
+  constructor(
+    public http: HttpClient,
+    private authService: AuthService) {
     console.log('Hello MeetupDataProvider Provider');
   }
 
@@ -47,17 +55,36 @@ export class MeetupRestApi {
     const options = { params: new HttpParams()
         .set('photo-host', 'public')
         .set('page', '20')
-        .set('sig_id', '87508102')
-        .set('sig', '31a3b1aefa2a33ac2e49b0ddaab27101b1a549ba')
+        .set('sig_id', this.sig_id)
+        .set('sig', this.sig)
         .set('fields', 'description_images, featured_photo, group_key_photo, how_to_find_us, rsvp_sample')
     };
 
+    console.log(this.url + this.group + '/events?' + options.params.toString());
     return this.http.jsonp<{meta: any, data: Meetup[]}>
     (this.url + this.group + '/events?' + options.params.toString(), 'callback')
       .toPromise()
       .then(response => response.data as Meetup[]);
   }
 
+  eventRSVP(eventId: string) {
+    const httpOptions = {
+      headers: this.getHeader(),
+      params: new HttpParams()
+        .set('eventId', eventId)
+        .set('group', this.group)
+        .set('response', 'yes')
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+    }
+    return this.http.get(this.redirectURI + 'meetup/rsvp', httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  getHeader() {
+    return new HttpHeaders()
+      .set('Authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken);
+  }
   //getGroups() {
   //  //let resp_val = this.get(this.endpoints.find_groups, this.test_params, this.test_opts);
   //  let resp_val = this.get(this.endpoints.find_groups, this.group_params);

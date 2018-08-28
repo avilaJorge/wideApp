@@ -5,7 +5,7 @@ import { Camera } from '@ionic-native/camera';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule, Storage } from '@ionic/storage';
-import {IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Toast } from '@ionic-native/toast';
 
 import { Items } from '../mocks/providers/items';
@@ -43,6 +43,10 @@ import {
 } from "angular-svg-round-progressbar";
 import { AgmCoreModule } from "@agm/core";
 import { ComponentsModule } from "../components/components.module";
+import { LaunchNavigator } from "@ionic-native/launch-navigator";
+import { Calendar } from "@ionic-native/calendar";
+import { InAppBrowser } from "@ionic-native/in-app-browser";
+import { EventService } from "../pages/events/events.service";
 
 export function provideSettings(storage: Storage) {
   /**
@@ -95,11 +99,15 @@ export function provideSettings(storage: Storage) {
     AuthService,
     TimeService,
     LogService,
+    Calendar,
+    LaunchNavigator,
+    InAppBrowser,
     Camera,
     Crop,
     ImagePicker,
     Toast,
     FeedService,
+    EventService,
     SocialSharing,
     Api,
     MeetupRestApi,

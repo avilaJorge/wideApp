@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { Subscription } from "rxjs";
 
 import { User } from "../../models/user.model";
 import { AuthService } from "../../providers/auth/auth.service";
 import { Settings } from "../../providers/settings/settings";
 import { FormBuilder, FormGroup } from "@angular/forms";
+import { InAppBrowser } from "@ionic-native/in-app-browser";
+import { meetupConfig } from "../../environment/environment";
+import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
 
 /**
  * Generated class for the AccountPage page.
@@ -24,6 +27,14 @@ export class AccountPage {
   private isAuthenticated: boolean = false;
   private authStatusSub: Subscription;
   private user: User;
+  private state: string = '';
+  private scope = '&scope=ageless+event_management+group_join+rsvp';
+  // private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/auth/meetup';
+  private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/auth/meetup';
+  private meetupAuthBaseURL: string = 'https://secure.meetup.com/oauth2/authorize';
+  private meetupAuthURL: string = this.meetupAuthBaseURL + '?client_id=' +
+    meetupConfig.client_id + '&response_type=code&redirect_uri=' + this.redirectURI + this.scope;
+    // '&set_mobile=on';
 
   // Our local settings object
   options: any;
@@ -47,7 +58,10 @@ export class AccountPage {
               public navParams: NavParams,
               public settings: Settings,
               public formBuilder: FormBuilder,
-              private authService: AuthService) {}
+              private authService: AuthService,
+              private firebaseService: FirebaseService,
+              private iab: InAppBrowser,
+              private loadingCtrl: LoadingController) {}
 
   _buildForm() {
     let group: any = {
@@ -76,6 +90,8 @@ export class AccountPage {
   ionViewDidLoad() {
     this.isAuthenticated = this.authService.isAuth;
     this.user = this.authService.getActiveUser();
+    this.state = this.user.googleUID;
+    this.meetupAuthURL += '&state=' + this.state;
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
         console.log('AuthStatusSub called in AccountPage');
@@ -115,5 +131,30 @@ export class AccountPage {
 
   ionViewWillLeave() {
     this.authStatusSub.unsubscribe();
+  }
+
+
+  onMeetupIntegrate() {
+    console.log(this.meetupAuthURL);
+    const browser = this.iab.create(this.meetupAuthURL, '_system');
+    const load = this.loadingCtrl.create({
+      content: 'Integrating with Meetup ...'
+    });
+    load.present();
+    const fbSub = this.firebaseService.getMeetupIntegrationResult(this.user.googleUID)
+      .subscribe((data) => {
+        console.log(data);
+        console.log(data.payload.data());
+        const userData = data.payload.data();
+        if (userData.isMeetupAuthenticated) {
+          load.dismiss();
+          this.user = userData;
+          this.authService.saveAuthData(this.authService.getToken(), userData);
+          fbSub.unsubscribe();
+        }
+      }, (error) => {
+        console.log(error);
+      });
+
   }
 }
