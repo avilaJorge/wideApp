@@ -3,6 +3,7 @@ import { fullDayName, fullMonthNames, monthNames } from "../../providers/time/ti
 
 export class Meetup {
   id: string;
+  going: string;
   eventDate: EntryDate;
   link: string;
   eventName: string;
@@ -20,6 +21,7 @@ export class Meetup {
   rsvpSample: MeetupMember[] = [];
 
   constructor(fields: any) {
+    this.going = "no";
     this.id = fields.id;
     this.eventDate = this.getEntryDate(fields.local_date);
     this.link = fields.link;

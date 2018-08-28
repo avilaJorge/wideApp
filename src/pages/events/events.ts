@@ -19,7 +19,6 @@ import { EventService } from "./events.service";
 })
 export class EventsPage {
 
-  eventData: any;
   events: Meetup[] = [];
   constructor(
     public navCtrl: NavController,
@@ -34,27 +33,19 @@ export class EventsPage {
       content: 'Loading Meetups ...'
     });
     load.present();
-    this.meetupApi.getEvents()
+    this.eventService.getEvents()
       .then((res) => {
-        load.dismiss();
         console.log(res);
-        console.log(typeof(res));
-        this.eventData = res;
-        for (let entry of this.eventData) {
-          console.log(entry);
-          this.events.push(new Meetup(entry));
-        }
-        console.log(this.events);
+        load.dismiss();
+        this.events = res;
       });
-
-
     console.log('ionViewDidLoad EventsPage');
   }
 
 
-  onClickEvent(item: Meetup) {
+  onClickEvent(item: Meetup, index: number) {
     console.log("Event clicked!");
     console.log(item);
-    this.navCtrl.push('EventDetailPage', {event: item});
+    this.navCtrl.push('EventDetailPage', {event: item, index: index});
   }
 }

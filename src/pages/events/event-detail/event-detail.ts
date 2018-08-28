@@ -22,6 +22,7 @@ import { MeetupRestApi } from "../../../providers";
 })
 export class EventDetailPage {
   public event: Meetup;
+  private index: number = null;
   public user: User = null;
   public title: string = 'Event location';
   public mapOptions = {
@@ -49,6 +50,7 @@ export class EventDetailPage {
   ) {
 
     this.event = this.navParams.get('event');
+    this.index = this.navParams.get('index');
     if (this.event.venue) {
       this.launchNavOpts = {
         destinationName: this.event.venue.name,
