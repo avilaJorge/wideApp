@@ -51,7 +51,7 @@ export class MeetupRestApi {
   //   return super.get(endpoint, params, reqOpts);
   // }
 
-  getEvents() {
+  getEvents(): Promise<any> {
     const options = { params: new HttpParams()
         .set('photo-host', 'public')
         .set('page', '20')
@@ -67,16 +67,88 @@ export class MeetupRestApi {
       .then(response => response.data as Meetup[]);
   }
 
-  eventRSVP(eventId: string) {
+  getEventComments(eventId: string): Promise<any> {
+    const options = {
+      params: new HttpParams()
+        .set('group', this.group)
+        .set('eventId', eventId)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+    }
+    return this.http.get(this.redirectURI + 'meetup/event/comments', options)
+      .toPromise()
+      .then(response => response);
+  }
+
+  eventRSVP(eventId: string, responded: string): Promise<any> {
     const httpOptions = {
       headers: this.getHeader(),
       params: new HttpParams()
         .set('eventId', eventId)
         .set('group', this.group)
-        .set('response', 'yes')
+        .set('response', responded)
         .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
-    }
+    };
     return this.http.get(this.redirectURI + 'meetup/rsvp', httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  getAuthEvents(): Promise<any> {
+    const httpOptions = {
+      headers: this.getHeader(),
+      params: new HttpParams()
+        .set('group', this.group)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+    };
+    return this.http.get(this.redirectURI + 'meetup/events', httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  getSelfProfile(): Promise<any> {
+    const httpOptions = {
+      headers: this.getHeader(),
+      params: new HttpParams().set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+    };
+    return this.http.get(this.redirectURI + 'meetup/profile/self', httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  postComment(comment: string, replyToId: number, eventId: number): Promise<any> {
+    const httpOptions = {
+      headers: this.getHeader(),
+      params: new HttpParams().set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+    };
+    let body: any;
+    if (replyToId > 0) {
+      body = {
+        comment: comment,
+        group: this.group,
+        eventId: eventId,
+        in_reply_to: replyToId
+      };
+    } else {
+      body = {
+        comment: comment,
+        group: this.group,
+        eventId: eventId,
+      };
+    }
+    return this.http.post(this.redirectURI + 'meetup/event/comment', body, httpOptions)
+      .toPromise()
+      .then(response => response);
+  }
+
+  getEventRSVPList(eventId: string): Promise<any> {
+    const httpOptions = {
+      headers: this.getHeader(),
+      params: new HttpParams()
+        .set('eventId', eventId)
+        .set('group', this.group)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+    };
+    return this.http.get(this.redirectURI + 'meetup/rsvp/list', httpOptions)
       .toPromise()
       .then(response => response);
   }

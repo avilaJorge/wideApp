@@ -8,21 +8,21 @@
 
   <ion-navbar>
     <ion-title>Meetup Info</ion-title>
-    <ion-buttons end>
-      <button
-        ion-button
-        icon-only
-        (click)="likeEvent()">
-        <ion-icon name="star-outline"></ion-icon>
-      </button>
-      <button
-        ion-button
-        icon-only
-        full
-        (click)="unlikeEvent()">
-        <ion-icon name="star"></ion-icon>
-      </button>
-    </ion-buttons>
+    <!--<ion-buttons end>-->
+      <!--<button-->
+        <!--ion-button-->
+        <!--icon-only-->
+        <!--(click)="likeEvent()">-->
+        <!--<ion-icon name="star-outline"></ion-icon>-->
+      <!--</button>-->
+      <!--<button-->
+        <!--ion-button-->
+        <!--icon-only-->
+        <!--full-->
+        <!--(click)="unlikeEvent()">-->
+        <!--<ion-icon name="star"></ion-icon>-->
+      <!--</button>-->
+    <!--</ion-buttons>-->
   </ion-navbar>
 
 </ion-header>
@@ -52,10 +52,17 @@
 
     <hr>
     <button
+      *ngIf="hasRSVP == 'no'"
       class="rsvp-button"
       ion-button
       block
-      (click)="joinAndRSVP()">JOIN AND RSVP</button>
+      (click)="joinAndRSVP('yes')">RSVP</button>
+    <button
+      *ngIf="hasRSVP == 'yes'"
+      class="rsvp-button"
+      ion-button
+      block
+      (click)="joinAndRSVP('no')">Not Going</button>
     <hr>
 
     <ion-grid class="important-info">
@@ -81,10 +88,10 @@
         <ion-col col-1><ion-icon name="person"></ion-icon></ion-col>
         <ion-col class="host-info">{{ event.host }}</ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row (click)="onGoingClick()">
         <ion-col class="going-info">{{ event.yesRSVPCount }} people are going</ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row (click)="onGoingClick()">
         <ion-col col-1 class="going-pics" *ngFor="let memURL of rsvpSampleURLs">
           <div class="profile-thumb" [style.background-image]="memURL"></div>
         </ion-col>
@@ -110,4 +117,88 @@
     class="map-image-container"
     [style.background-image]="safeMapSrcStyle"
     (click)="onAddrClick()"></div>
+
+  <h6 class="comments-title">Comments</h6>
+  <div>
+    <ion-grid class="comment-button-container">
+      <ion-row clas="comment-button-row">
+        <ion-col col-1>
+          <div class="self-thumb" [style.background-image]="selfProfile.photo.thumb_link"></div>
+        </ion-col>
+        <ion-col col-1></ion-col>
+        <ion-col col-8>
+          <button ion-button block small class="comment-button" (click)="addComment(0)">Add a comment</button>
+        </ion-col>
+        <ion-col col-2></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div class="comments-container">
+    <ion-list>
+      <ion-item no-padding *ngFor="let comment of comments">
+        <ion-grid>
+          <ion-row>
+            <ion-col col-1>
+              <div class="comment-thumb" [style.background-image]="comment.member.photo.thumb_link"></div>
+            </ion-col>
+            <ion-col col-11>
+              <ion-row class="comment-header">
+                <ion-col>
+                  <div class="header-flex-container">
+                    <div class="comment-poster">{{ comment.member.name }}</div>
+                    <div class="comment-bull">&bull;</div>
+                    <div class="comment-date">{{ comment.postDate }}</div>
+                  </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <p>{{comment.comment}}</p>
+                </ion-col>
+              </ion-row>
+              <ion-row no-padding>
+                <ion-col>
+                  <button
+                    ion-button
+                    class="reply-button"
+                    clear
+                    small
+                    (click)="addComment(comment.id)"
+                    icon-start>Reply</button>
+                </ion-col>
+              </ion-row>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-list class="reply-container" *ngIf="comment.replies.length > 0">
+          <ion-item no-padding *ngFor="let reply of comment.replies">
+            <ion-grid>
+              <ion-row>
+                <ion-col col-1>
+                  <div class="comment-thumb" [style.background-image]="reply.member.photo.thumb_link"></div>
+                </ion-col>
+                <ion-col col-11>
+                  <ion-row class="comment-header">
+                    <ion-col>
+                      <div class="header-flex-container">
+                        <div class="comment-poster">{{ reply.member.name }}</div>
+                        <div class="comment-bull">&bull;</div>
+                        <div class="comment-date">{{ reply.postDate }}</div>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col>
+                      <p>{{reply.comment}}</p>
+                    </ion-col>
+                  </ion-row>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+      </ion-item>
+    </ion-list>
+  </div>
+
 </ion-content>

@@ -1,0 +1,22 @@
+<!--<ion-header>-->
+
+  <!--<ion-navbar>-->
+    <!--<ion-title>comments</ion-title>-->
+  <!--</ion-navbar>-->
+
+<!--</ion-header>-->
+
+
+<!--<ion-content padding>-->
+
+<!--</ion-content>-->
+<ion-footer no-padding>
+  <div class="input-container">
+    <form [formGroup]="commentForm" (ngSubmit)="send()">
+      <ion-item class="input-box">
+        <ion-textarea #input type="text" autocomplete="on" autocorrect="on" formControlName="comment"></ion-textarea>
+        <button ion-button clear type="submit" [disabled]="!commentForm.valid" item-end><ion-icon class="footer-btn" name="send"></ion-icon></button>
+      </ion-item>
+    </form>
+  </div>
+</ion-footer>

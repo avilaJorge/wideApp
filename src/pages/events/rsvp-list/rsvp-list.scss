@@ -1,0 +1,19 @@
+page-rsvp-list {
+  .thumb-pic {
+    height: 50px;
+    width: 50px;
+    background-size: cover;
+    border-radius: 50%;
+    background-position: center;
+  }
+
+  .item-name {
+    font-size: medium;
+    font-weight: bold;
+  }
+
+  .item-date {
+    font-size: small;
+    color: #60646B;
+  }
+}

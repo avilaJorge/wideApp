@@ -1,0 +1,56 @@
+<!--
+  Generated template for the RsvpListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Attendees</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-segment [(ngModel)]="goingTab">
+    <ion-segment-button value="true" (click)="onSegmentClick(true)">
+      Going ({{going.length}})
+    </ion-segment-button>
+    <ion-segment-button value="false" (click)="onSegmentClick(false)">
+      Not Going ({{not_going.length}})
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-list *ngIf="goingTab">
+    <ion-item *ngFor="let entry of going">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-2>
+            <div class="thumb-pic" [style.background-image]="entry.member.photo.thumb_link"></div>
+          </ion-col>
+          <ion-col col-10>
+            <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>
+            <ion-row><ion-col class="item-date">{{entry.dateStr}}</ion-col></ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="!goingTab">
+    <ion-item *ngFor="let entry of not_going">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-2>
+            <div class="thumb-pic" [style.background-image]="entry.member.photo.thumb_link"></div>
+          </ion-col>
+          <ion-col col-10>
+            <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>
+            <ion-row><ion-col class="item-date">{{entry.dateStr}}</ion-col></ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -156,5 +156,4 @@ export class FirebaseService {
   getMeetupIntegrationResult(userId: string): Observable<any> {
     return this.afs.collection('/users').doc(userId).snapshotChanges();
   }
-
 }

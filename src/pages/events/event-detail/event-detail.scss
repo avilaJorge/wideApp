@@ -22,6 +22,7 @@ page-event-detail {
     margin-bottom: 2rem;
     background-color: black;
     color: white;
+    font-size: medium;
   }
 
   .group-name {
@@ -74,6 +75,55 @@ page-event-detail {
     width: 25px;
     background-size: cover;
     border-radius: 50%;
+    background-position: center;
   }
 
+  .comments-title {
+    padding-left: 2rem;
+  }
+
+  .comment-button-container {
+    padding-left: 2rem;
+  }
+  .comment-button {
+    background-color: gray;
+  }
+
+  .comments-container {
+    padding: 1rem;
+  }
+
+  .header-flex-container {
+    display: flex;
+  }
+  .comment-poster, .comment-date, .comment-bull {
+    vertical-align: middle;
+  }
+  .comment-poster {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: medium;
+  }
+  .comment-bull {
+    color: #60646B;
+    font-size: small;
+  }
+  .comment-date {
+    font-size: small;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    color: #60646B;
+  }
+
+  .comment-thumb, .self-thumb {
+    height: 30px;
+    width: 30px;
+    background-size: cover;
+    border-radius: 50%;
+    background-position: center;
+  }
+
+  .reply-container {
+    padding-left: 2rem;
+  }
 }

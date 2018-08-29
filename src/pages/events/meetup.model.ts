@@ -18,6 +18,7 @@ export class Meetup {
   timeInfo: MeetupTime;
   group: MeetupGroup;
   venue: MeetupVenue;
+  meetupSelf: MeetupSelf = null;
   rsvpSample: MeetupMember[] = [];
 
   constructor(fields: any) {
@@ -50,6 +51,9 @@ export class Meetup {
           comma = true;
         }
       }
+    }
+    if (fields.self) {
+      this.meetupSelf = new MeetupSelf(fields.self);
     }
   }
 
@@ -146,5 +150,95 @@ export class MeetupVenue {
     };
     this.city = fields.city;
     this.zip = fields.zip;
+  }
+}
+
+export class MeetupSelf {
+  actions: string[];
+  role: string;
+  rsvp: {answers: string, guests: number, response: string};
+  constructor(fields: any) {
+    this.actions = fields.actions ? fields.actions : [];
+    this.role = fields.role;
+    this.rsvp = fields.rsvp ? fields.rsvp : {
+      answers: null,
+      guests: 0,
+      response: 'no'
+    };
+  }
+}
+
+export class MeetupComment {
+  comment: string;
+  created: number;
+  postDate: string;
+  id: number;
+  likeCount: number;
+  inReplyTo: number;
+  replies: MeetupComment[] = [];
+  member: MeetupMember;
+
+  constructor(fields: any) {
+    this.comment = fields.comment;
+    this.created = fields.created;
+    this.postDate = MeetupComment.parseDateString(this.created);
+    this.id = fields.id;
+    this.likeCount = fields.like_count;
+    this.inReplyTo = fields.in_reply_to ? fields.in_reply_to : null;
+    this.member = new MeetupMember(fields.member);
+    if (fields.replies) {
+      for (let reply of fields.replies) {
+        this.replies.push(new MeetupComment(reply));
+      }
+    }
+  }
+
+  public static parseDateString(dateNum: number): string {
+    const dateObj: Date = new Date(dateNum);
+    let timeStr = dateObj.toLocaleTimeString();
+    let index = timeStr.indexOf(':', timeStr.indexOf(':', 0));
+    timeStr = timeStr.substring(0, index) + timeStr.substring(index + 3);
+    let dateStr = dateObj.toLocaleDateString();
+    let dateIndex = dateStr.indexOf('/', dateStr.indexOf('/', 0) + 1);
+    dateStr = dateStr.substring(0, dateIndex + 1) + dateStr.substring(dateIndex + 3);
+    return dateStr + ' ' + timeStr;
+  }
+}
+
+export class MeetupProfile {
+  id: number;
+  name: string;
+  email: string;
+  status: string;
+  joined: number;
+  city: string;
+  photo: { thumb_link: string };
+
+  constructor(fields: any) {
+    this.id = fields.id;
+    this.name = fields.name;
+    this.email = fields.email;
+    this.status = fields.status;
+    this.joined = fields.joined;
+    this.city = fields.city;
+    this.photo = { thumb_link: fields.photo.thumb_link };
+  }
+}
+
+export class MeetupRSVP {
+  created: number;
+  updated: number;
+  response: string;
+  guests: number;
+  dateStr: string;
+  member: MeetupMember;
+
+  constructor(fields: any) {
+    this.created = fields.created;
+    this.updated = fields.updated;
+    this.response = fields.response;
+    this.guests = fields.guests;
+    this.member = new MeetupMember(fields.member);
+    this.dateStr = MeetupComment.parseDateString(this.updated);
   }
 }
