@@ -1,7 +1,9 @@
 page-rsvp-list {
   .thumb-pic {
-    height: 50px;
-    width: 50px;
+    //height: 50px;
+    //width: 50px;
+    width: 100%;
+    padding-top: 100%;
     background-size: cover;
     border-radius: 50%;
     background-position: center;
@@ -10,10 +12,41 @@ page-rsvp-list {
   .item-name {
     font-size: medium;
     font-weight: bold;
+    text-align: center;
+    white-space: pre-line;
+    overflow: auto;
+    word-wrap: normal;
+    text-overflow: ellipsis;
+  }
+
+  .item-role {
+    font-size: medium;
+    text-align: center;
+    white-space: pre-line;
+    overflow: auto;
+    word-wrap: normal;
+    text-overflow: ellipsis;
+    color: #60646B;
   }
 
   .item-date {
     font-size: small;
+    color: #60646B;
+  }
+
+  .going-col, .not-going-col,
+  .going-col-text, .not-going-col-text {
+    max-width: 50% !important;
+  }
+
+  .thumb-pic-col {
+    padding-left: 25%;
+    padding-right: 25%;
+  }
+
+  .going-col-text, .not-going-col-text {
+    font-size: large;
+    font-weight: bold;
     color: #60646B;
   }
 }

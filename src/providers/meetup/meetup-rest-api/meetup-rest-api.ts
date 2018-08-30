@@ -105,10 +105,12 @@ export class MeetupRestApi {
       .then(response => response);
   }
 
-  getSelfProfile(): Promise<any> {
+  getProfile(memberId: any): Promise<any> {
     const httpOptions = {
       headers: this.getHeader(),
-      params: new HttpParams().set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+      params: new HttpParams()
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('memberId', memberId)
     };
     return this.http.get(this.redirectURI + 'meetup/profile/self', httpOptions)
       .toPromise()

@@ -85,6 +85,7 @@ export class MeetupMember {
   name: string;
   photo: string;
   role: string;
+  roleStr: string;
   host: boolean;
 
   constructor(fields: any) {
@@ -92,7 +93,28 @@ export class MeetupMember {
     this.name = fields.name;
     this.photo = fields.photo || '';
     this.role = fields.role || 'member';
+    this.roleStr = this.getRoleStr(this.role);
     this.host = fields.event_context.host || false;
+  }
+
+  getRoleStr(role: string) {
+    switch (role) {
+      case 'assistant_organizer': {
+        return "Assistant Organizer";
+      }
+      case 'coorganizer': {
+        return "Coorganizer";
+      }
+      case 'event_organizer': {
+        return "Event Organizer";
+      }
+      case 'organizer': {
+        return "Organizer";
+      }
+      default: {
+        return "Member";
+      }
+    }
   }
 }
 

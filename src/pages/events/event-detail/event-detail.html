@@ -95,15 +95,21 @@
           </ion-row>
         </ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row *ngIf="hosts.length > 0">
         <ion-col col-1><ion-icon name="person"></ion-icon></ion-col>
-        <ion-col class="host-info">{{ event.host }}</ion-col>
+        <ion-col class="host-info" *ngIf="hosts.length == 1">Hosted by {{hosts[0].name}}</ion-col>
+        <ion-col class="host-info" *ngIf="hosts.length > 1">Hosted by
+          <span *ngFor="let host of hosts; let i = index">
+            <span *ngIf="i != (hosts.length-1)">{{host.name}}, </span>
+            <span *ngIf="i == (hosts.length-1)">{{host.name}}</span>
+          </span>
+        </ion-col>
       </ion-row>
       <ion-row (click)="onMembersGoingClick()">
         <ion-col class="going-info">
           <span *ngIf="event.yesRSVPCount > 1">{{ event.yesRSVPCount }} people are going</span>
           <span *ngIf="event.yesRSVPCount == 1">One person is going</span>
-          <span *ngIf="event.yesRSVPCount <= 0">No one is going</span>
+          <span *ngIf="event.yesRSVPCount <= 0">No one is going yet</span>
           <span *ngIf="event.yesRSVPCount > 0 && guestCount > 0">, {{ guestCount }} are guests</span>
         </ion-col>
       </ion-row>
@@ -115,7 +121,7 @@
       </ion-row>
       <ion-row *ngIf="rsvpNotGoingURLs.length > 0"><ion-col text-right><div class="going-pics-text">Not Going</div></ion-col></ion-row>
       <ion-row *ngIf="rsvpNotGoingURLs.length > 0" justify-content-end (click)="onMembersGoingClick()">
-        <ion-col col-1 class="going-pics" *ngFor="let memURL of rsvpNotGoingURLs; let i = index">
+        <ion-col col-1 class="going-pics" *ngFor="let memURL of rsvpNotGoingURLs">
           <div class="profile-thumb" [style.background-image]="memURL"></div>
         </ion-col>
       </ion-row>

@@ -7,7 +7,7 @@ import {
   NavParams,
   ToastController
 } from 'ionic-angular';
-import { Meetup, MeetupComment, MeetupProfile, MeetupRSVP, Response, rsvp_status } from "../meetup.model";
+import { Meetup, MeetupComment, MeetupMember, MeetupProfile, MeetupRSVP, Response, rsvp_status } from "../meetup.model";
 import { Calendar } from "@ionic-native/calendar";
 import { LaunchNavigator, LaunchNavigatorOptions } from "@ionic-native/launch-navigator";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -54,6 +54,7 @@ export class EventDetailPage {
   public notGoingOutline = true;
   public rsvpString: string;
   public guestCount: number = 0;
+  public hosts: MeetupMember[] = [];
 
   constructor(
     public navCtrl: NavController,
@@ -69,10 +70,12 @@ export class EventDetailPage {
     private loadingCtrl: LoadingController,
   ) {
 
+    let load = this.loadingCtrl.create();
+    load.present();
     this.event = this.navParams.get('event');
     this.index = this.navParams.get('index');
     this.selfProfile = this.eventService.getSelfProfile();
-    console.log('SelfProfile: ' + this.selfProfile);
+    console.log(this.event);
     this.hasRSVP = this.event.meetupSelf.rsvp ?
       (this.event.meetupSelf.rsvp.response ?
         this.event.meetupSelf.rsvp.response : Response.No) : Response.No;
@@ -91,9 +94,6 @@ export class EventDetailPage {
       this.mapSrc = this.mapBaseURL + centerStr + zoomStr + sizeStr + mapType + markerStr + keyStr;
       this.safeMapSrcStyle = this.sanitizer.bypassSecurityTrustStyle(`url(${this.mapSrc})`);
     }
-
-    let load = this.loadingCtrl.create({spinner: 'dots'});
-    load.present();
     this.eventService.getRSVPList(this.event.id)
       .then((data) => {
         for (let entry of data) {
@@ -106,10 +106,14 @@ export class EventDetailPage {
           }
           if (entry.guests) this.guestCount += entry.guests;
           this.rsvpList.push(entry);
+          if (this.rsvpList[this.rsvpList.length-1].member.host) {
+            this.hosts.push(this.rsvpList[this.rsvpList.length-1].member);
+          }
         }
         load.dismiss();
-        console.log('The guest count is ' + this.guestCount);
+        console.log(this.rsvpList);
       });
+
   }
 
   onGoingClick() {
@@ -137,8 +141,6 @@ export class EventDetailPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EventDetailPage');
-    console.log(this.mapSrc);
   }
 
   ionViewWillEnter() {

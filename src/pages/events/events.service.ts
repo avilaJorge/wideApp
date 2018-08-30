@@ -19,7 +19,7 @@ export class EventService {
     private authService: AuthService,
     private sanitizer: DomSanitizer
   ) {
-    this.retrieveSelfProfile()
+    this.retrieveProfile('self')
       .then((profile) => {
         this.selfProfile = profile;
       }).catch((err) => {
@@ -27,9 +27,9 @@ export class EventService {
     });
   }
 
-  retrieveSelfProfile(): Promise<any> {
+  retrieveProfile(memberId: any): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.meetupApi.getSelfProfile()
+      this.meetupApi.getProfile(memberId)
         .then((profile) => {
           if (profile.photo) {
             profile.photo.thumb_link =
