@@ -1,9 +1,17 @@
 import { EntryDate } from "../../models/step-log.model";
 import { fullDayName, fullMonthNames, monthNames } from "../../providers/time/time.service";
 
+export enum Response {
+  Yes = 1,
+  No = 2,
+  None = 3
+}
+
+export const rsvp_status = ['', 'You\'re going', 'You\'re not going', 'Are you going?'];
+
 export class Meetup {
   id: string;
-  going: string;
+  going: Response;
   eventDate: EntryDate;
   link: string;
   eventName: string;
@@ -22,7 +30,7 @@ export class Meetup {
   rsvpSample: MeetupMember[] = [];
 
   constructor(fields: any) {
-    this.going = "no";
+    this.going = Response.No;
     this.id = fields.id;
     this.eventDate = this.getEntryDate(fields.local_date);
     this.link = fields.link;
@@ -40,15 +48,17 @@ export class Meetup {
     this.host = "Hosted by ";
     let comma: boolean = false;
 
-    for (let sample of fields.rsvp_sample) {
-      this.rsvpSample.push(new MeetupMember(sample.member));
-      let mem = this.rsvpSample[this.rsvpSample.length - 1];
-      if (mem.host) {
-        if (comma) {
-          this.host += (", " + mem.name);
-        } else {
-          this.host += mem.name;
-          comma = true;
+    if (fields.rsvp_sample) {
+      for (let sample of fields.rsvp_sample) {
+        this.rsvpSample.push(new MeetupMember(sample.member));
+        let mem = this.rsvpSample[this.rsvpSample.length - 1];
+        if (mem.host) {
+          if (comma) {
+            this.host += (", " + mem.name);
+          } else {
+            this.host += mem.name;
+            comma = true;
+          }
         }
       }
     }
@@ -156,15 +166,21 @@ export class MeetupVenue {
 export class MeetupSelf {
   actions: string[];
   role: string;
-  rsvp: {answers: string, guests: number, response: string};
+  rsvp: {answers: string, guests: number, response: Response};
   constructor(fields: any) {
     this.actions = fields.actions ? fields.actions : [];
     this.role = fields.role;
-    this.rsvp = fields.rsvp ? fields.rsvp : {
+    let temp = {
       answers: null,
       guests: 0,
-      response: 'no'
+      response: Response.None
     };
+    if (fields.rsvp) {
+      temp.answers = fields.rsvp.answers || null;
+      temp.guests = fields.rsvp.guests || 0;
+      temp.response = MeetupRSVP.getResponse(fields.rsvp.response);
+    }
+    this.rsvp = temp;
   }
 }
 
@@ -228,7 +244,7 @@ export class MeetupProfile {
 export class MeetupRSVP {
   created: number;
   updated: number;
-  response: string;
+  response: Response;
   guests: number;
   dateStr: string;
   member: MeetupMember;
@@ -236,9 +252,39 @@ export class MeetupRSVP {
   constructor(fields: any) {
     this.created = fields.created;
     this.updated = fields.updated;
-    this.response = fields.response;
+    this.response = MeetupRSVP.getResponse(fields.response);
     this.guests = fields.guests;
     this.member = new MeetupMember(fields.member);
     this.dateStr = MeetupComment.parseDateString(this.updated);
   }
+
+  public static getResponse(response: any): Response {
+    if(response) {
+      if (response === "yes") {
+        return Response.Yes;
+      } else {
+        return Response.No;
+      }
+    } else {
+      return Response.None;
+    }
+  }
+
+  public static getStrResponse(response: Response): string {
+    switch (response) {
+      case Response.No: {
+        return "no";
+      }
+      case Response.Yes: {
+        return "yes";
+      }
+      case Response.None: {
+        return "";
+      }
+      default: {
+        return "";
+      }
+    }
+  }
+
 }

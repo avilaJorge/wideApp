@@ -51,18 +51,29 @@
     <div class="meetup-title">{{ event.eventName }}</div>
 
     <hr>
-    <button
-      *ngIf="hasRSVP == 'no'"
-      class="rsvp-button"
-      ion-button
-      block
-      (click)="joinAndRSVP('yes')">RSVP</button>
-    <button
-      *ngIf="hasRSVP == 'yes'"
-      class="rsvp-button"
-      ion-button
-      block
-      (click)="joinAndRSVP('no')">Not Going</button>
+    <ion-grid>
+      <ion-row align-items-center text-center>
+        <ion-col class="going-text" no-padding col-6>{{ rsvpString }}</ion-col>
+        <ion-col no-padding class="going-button-col" col-2>
+          <button
+            ion-button
+            [outline]="goingOutline"
+            round
+            class="rsvp-button"
+            (click)="onGoingClick()">&#x2714;</button>
+        </ion-col>
+        <ion-col col-1 class="button-spacer"></ion-col>
+        <ion-col no-padding class="not-going-button-col" col-2>
+          <button
+            ion-button
+            class="rsvp-button"
+            round
+            [outline]="notGoingOutline"
+            (click)="onNotGoingClick()">&#x2716;</button>
+        </ion-col>
+        <ion-col col-1 class="button-spacer"></ion-col>
+      </ion-row>
+    </ion-grid>
     <hr>
 
     <ion-grid class="important-info">
@@ -88,11 +99,23 @@
         <ion-col col-1><ion-icon name="person"></ion-icon></ion-col>
         <ion-col class="host-info">{{ event.host }}</ion-col>
       </ion-row>
-      <ion-row (click)="onGoingClick()">
-        <ion-col class="going-info">{{ event.yesRSVPCount }} people are going</ion-col>
+      <ion-row (click)="onMembersGoingClick()">
+        <ion-col class="going-info">
+          <span *ngIf="event.yesRSVPCount > 1">{{ event.yesRSVPCount }} people are going</span>
+          <span *ngIf="event.yesRSVPCount == 1">One person is going</span>
+          <span *ngIf="event.yesRSVPCount <= 0">No one is going</span>
+          <span *ngIf="event.yesRSVPCount > 0 && guestCount > 0">, {{ guestCount }} are guests</span>
+        </ion-col>
       </ion-row>
-      <ion-row (click)="onGoingClick()">
-        <ion-col col-1 class="going-pics" *ngFor="let memURL of rsvpSampleURLs">
+      <ion-row *ngIf="rsvpGoingURLs.length > 0"><ion-col><div class="going-pics-text">Going</div></ion-col></ion-row>
+      <ion-row *ngIf="rsvpGoingURLs.length > 0" text-left (click)="onMembersGoingClick()">
+        <ion-col col-1 *ngFor="let memURL of rsvpGoingURLs">
+          <div class="profile-thumb" [style.background-image]="memURL"></div>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="rsvpNotGoingURLs.length > 0"><ion-col text-right><div class="going-pics-text">Not Going</div></ion-col></ion-row>
+      <ion-row *ngIf="rsvpNotGoingURLs.length > 0" justify-content-end (click)="onMembersGoingClick()">
+        <ion-col col-1 class="going-pics" *ngFor="let memURL of rsvpNotGoingURLs; let i = index">
           <div class="profile-thumb" [style.background-image]="memURL"></div>
         </ion-col>
       </ion-row>

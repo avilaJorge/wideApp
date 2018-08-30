@@ -14,7 +14,7 @@
   <ion-grid>
     <ion-row align-items-center class="content-row">
       <ion-col col-1 class="col-left-arrow" (click)="onLeftClick()">
-        <ion-icon name="arrow-dropleft"></ion-icon>
+        &#x276E;
       </ion-col>
       <ion-col col-4 class="col-graph">
         <section (click)="onChartClick()" class="chart-wrapper">
@@ -36,8 +36,8 @@
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col col-1 class="col-right-arrow" >
-        <ion-icon *ngIf="!isCurrEntryToday" name="arrow-dropright" (click)="onRightClick()"></ion-icon>
+      <ion-col col-1 class="col-right-arrow" (click)="onRightClick()">
+        <div *ngIf="!isCurrEntryToday">&#x276F;</div>
       </ion-col>
     </ion-row>
     <ion-row align-items-center>

@@ -1,3 +1,5 @@
+$rsvp-button-radius: 50px;
+
 page-event-detail {
   //agm-map {
   //  height: 200px;
@@ -17,14 +19,24 @@ page-event-detail {
     background-size: cover;
   }
 
-  .rsvp-button {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    background-color: black;
-    color: white;
-    font-size: medium;
+  //.rsvp-button {
+  //  margin-top: 2rem;
+  //  margin-bottom: 2rem;
+  //
+  //}
+  .button-spacer {
+    max-width: 2px;
   }
-
+  //.going-button-col {
+  //  text-align: left;
+  //}
+  //.not-going-button-col {
+  //  text-align: center;
+  //}
+  .going-text {
+    font-size: large;
+    font-weight: bold;
+  }
   .group-name {
     margin-left: 1rem;
     margin-bottom: 4px;
@@ -54,6 +66,10 @@ page-event-detail {
   .date-info, .address-info, .host-info,
   .going-info, .going-pics {
     width: 100%;
+    font-size: medium;
+  }
+
+  .going-pics-text {
     font-size: medium;
   }
 
@@ -125,5 +141,27 @@ page-event-detail {
 
   .reply-container {
     padding-left: 2rem;
+  }
+}
+
+.ios{
+  page-event-detail {
+    .rsvp-button {
+      font-size: large;
+      height: $rsvp-button-radius;
+      width: $rsvp-button-radius;
+      border-radius: 50%;
+    }
+  }
+}
+
+.md {
+  page-event-detail {
+    .rsvp-button {
+      font-size: x-large;
+      height: $rsvp-button-radius;
+      width: $rsvp-button-radius;
+      border-radius: 50%;
+    }
   }
 }

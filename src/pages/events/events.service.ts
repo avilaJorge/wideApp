@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 
 import { MeetupRestApi } from "../../providers";
-import { Meetup, MeetupComment, MeetupMember, MeetupProfile, MeetupRSVP } from "./meetup.model";
+import { Meetup, MeetupComment, MeetupMember, MeetupProfile, MeetupRSVP, Response } from "./meetup.model";
 import { AuthService } from "../../providers/auth/auth.service";
 import { User } from "../../models/user.model";
 
@@ -63,6 +63,7 @@ export class EventService {
               console.log(entry);
               this.events.push(new Meetup(entry));
             }
+            console.log(this.events);
             resolve(this.events);
           }, (err) => reject(err));
       })
@@ -83,7 +84,7 @@ export class EventService {
     }
   }
 
-  updateRSVPInfo(response: string, yesRSVPCount: number, index: number, id: string) {
+  updateRSVPInfo(response: Response, yesRSVPCount: number, index: number, id: string) {
     if (this.events[index].id !== id) {
       console.log('The EventService events array not longer matches others');
       return;
@@ -137,7 +138,7 @@ export class EventService {
     });
   }
 
-  getRSVPList(eventId: string): Promise<any>{
+  getRSVPList(eventId: string): Promise<MeetupRSVP[]>{
     return new Promise<any>((resolve, reject) => {
       this.meetupApi.getEventRSVPList(eventId)
         .then((res) => {

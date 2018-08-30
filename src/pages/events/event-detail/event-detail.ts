@@ -1,6 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams, ToastController } from 'ionic-angular';
-import { Meetup, MeetupComment, MeetupProfile } from "../meetup.model";
+import {
+  IonicPage,
+  LoadingController,
+  ModalController,
+  NavController,
+  NavParams,
+  ToastController
+} from 'ionic-angular';
+import { Meetup, MeetupComment, MeetupProfile, MeetupRSVP, Response, rsvp_status } from "../meetup.model";
 import { Calendar } from "@ionic-native/calendar";
 import { LaunchNavigator, LaunchNavigatorOptions } from "@ionic-native/launch-navigator";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -23,8 +30,9 @@ import { EventService } from "../events.service";
 })
 export class EventDetailPage {
   public event: Meetup;
+  public rsvpList: MeetupRSVP[] = [];
   public comments: MeetupComment[] = [];
-  private hasRSVP: string;
+  private hasRSVP: Response;
   private index: number = null;
   public user: User = null;
   public title: string = 'Event location';
@@ -38,10 +46,14 @@ export class EventDetailPage {
   public mapSrc: string = '';
   public safeMapSrcStyle: any;
   private launchNavOpts: LaunchNavigatorOptions;
-  public rsvpSampleURLs: any[] = [];
-  private avatarImageUrl: 'assets/imgs/no-person.png';
+  public rsvpGoingURLs: any[] = [];
+  public rsvpNotGoingURLs: any[] = [];
+  private avatarImageUrl: string = 'assets/imgs/no-person.png';
   public selfProfile: MeetupProfile;
-
+  public goingOutline = true;
+  public notGoingOutline = true;
+  public rsvpString: string;
+  public guestCount: number = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -54,6 +66,7 @@ export class EventDetailPage {
     private meetupAPI: MeetupRestApi,
     private eventService: EventService,
     private modalCtrl: ModalController,
+    private loadingCtrl: LoadingController,
   ) {
 
     this.event = this.navParams.get('event');
@@ -62,7 +75,9 @@ export class EventDetailPage {
     console.log('SelfProfile: ' + this.selfProfile);
     this.hasRSVP = this.event.meetupSelf.rsvp ?
       (this.event.meetupSelf.rsvp.response ?
-        this.event.meetupSelf.rsvp.response : 'no') : 'no';
+        this.event.meetupSelf.rsvp.response : Response.No) : Response.No;
+    this.setButtonOutlines(this.hasRSVP);
+    this.rsvpString = rsvp_status[this.hasRSVP];
     if (this.event.venue) {
       this.launchNavOpts = {
         destinationName: this.event.venue.name,
@@ -76,13 +91,48 @@ export class EventDetailPage {
       this.mapSrc = this.mapBaseURL + centerStr + zoomStr + sizeStr + mapType + markerStr + keyStr;
       this.safeMapSrcStyle = this.sanitizer.bypassSecurityTrustStyle(`url(${this.mapSrc})`);
     }
-    for (let mem of this.event.rsvpSample) {
-      if (mem.photo != '') {
-        // @ts-ignore
-        this.rsvpSampleURLs.push(this.sanitizer.bypassSecurityTrustStyle(`url(${mem.photo.thumb_link})`));
-      } else {
-        this.rsvpSampleURLs.push(this.sanitizer.bypassSecurityTrustStyle(`url(${this.avatarImageUrl})`));
+
+    let load = this.loadingCtrl.create({spinner: 'dots'});
+    load.present();
+    this.eventService.getRSVPList(this.event.id)
+      .then((data) => {
+        for (let entry of data) {
+          if (entry.response === Response.Yes) {
+            // @ts-ignore
+            this.rsvpGoingURLs.push(entry.member.photo.thumb_link);
+          } else {
+            // @ts-ignore
+            this.rsvpNotGoingURLs.push(entry.member.photo.thumb_link);
+          }
+          if (entry.guests) this.guestCount += entry.guests;
+          this.rsvpList.push(entry);
+        }
+        load.dismiss();
+        console.log('The guest count is ' + this.guestCount);
+      });
+  }
+
+  onGoingClick() {
+    if (this.goingOutline) {
+      this.hasRSVP = Response.Yes;
+      this.rsvpString = rsvp_status[this.hasRSVP];
+      this.goingOutline = !this.goingOutline;
+      if (!this.notGoingOutline) {
+        this.notGoingOutline = !this.notGoingOutline;
       }
+      this.joinAndRSVP(Response.Yes);
+    }
+  }
+
+  onNotGoingClick() {
+    if (this.notGoingOutline) {
+      this.hasRSVP = Response.No;
+      this.rsvpString = rsvp_status[this.hasRSVP];
+      this.notGoingOutline = !this.notGoingOutline;
+      if (!this.goingOutline) {
+        this.goingOutline = !this.goingOutline;
+      }
+      this.joinAndRSVP(Response.No);
     }
   }
 
@@ -109,18 +159,20 @@ export class EventDetailPage {
     console.log('clicked Unlike');
   }
 
-  joinAndRSVP(responded: string) {
+  joinAndRSVP(responded: Response) {
     if (this.user.isMeetupAuthenticated) {
-      console.log('You RSVPd');
-      this.meetupAPI.eventRSVP(this.event.id, responded).then((resp) => {
+      let load = this.loadingCtrl.create({spinner: 'dots', content: 'Sending RSVP Response'});
+      load.present();
+      this.meetupAPI.eventRSVP(this.event.id, MeetupRSVP.getStrResponse(responded)).then((resp) => {
         console.log(resp);
-        // @ts-ignore
         let data = JSON.parse(resp.body);
-        this.event.meetupSelf.rsvp.response = data.response;
+        this.event.meetupSelf.rsvp.response = MeetupRSVP.getResponse(data.response);
         this.event.yesRSVPCount = data.event.yes_rsvp_count;
-        this.hasRSVP = data.response;
+        this.hasRSVP = MeetupRSVP.getResponse(data.response);
+        this.rsvpString = rsvp_status[this.hasRSVP];
         this.eventService.updateRSVPInfo(this.event.meetupSelf.rsvp.response,
           this.event.yesRSVPCount, this.index, this.event.id);
+        load.dismiss();
       });
     } else {
       const toast = this.toastCtrl.create({
@@ -189,7 +241,31 @@ export class EventDetailPage {
     commentModal.present();
   }
 
-  onGoingClick() {
-    this.navCtrl.push('RsvpListPage', {eventId: this.event.id});
+  onMembersGoingClick() {
+    this.navCtrl.push('RsvpListPage', {eventId: this.event.id, rsvpList: this.rsvpList});
+  }
+
+  private setButtonOutlines(response: Response) {
+    switch (response) {
+      case Response.No: {
+        this.notGoingOutline = false;
+        this.goingOutline = true;
+        break;
+      }
+      case Response.Yes: {
+        this.goingOutline = false;
+        this.notGoingOutline = true;
+        break;
+      }
+      case Response.None: {
+        this.goingOutline = true;
+        this.notGoingOutline = true;
+        break;
+      }
+      default: {
+        this.goingOutline = false;
+        this.notGoingOutline = false;
+      }
+    }
   }
 }

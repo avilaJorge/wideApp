@@ -108,6 +108,8 @@ export class HomePage {
     this.currEntry = this.logService.getNextEntry(0);
     this.todaysDate = this.timeService.getTodayStr();
     console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Todays date is: ' + this.todaysDate + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Todays date is: ' + this.timeService.getTodayUTC().toISOString() + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Yesterdays date is: ' +  (new Date(this.timeService.getTodayUTC().getTime() - (24 * 60 * 60000))).toISOString()  + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   }
 
   initFullLog() {

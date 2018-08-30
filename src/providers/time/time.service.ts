@@ -23,7 +23,7 @@ export class TimeService {
   private thirtyDates
   constructor() {
 
-    const today = this.getToday();
+    const today = new Date(Date.now());
     let i = totalDaysInLog - 1;
     let j = thirtyDayLimit;
     while(i >= 0) {
@@ -51,20 +51,19 @@ export class TimeService {
     return entryDate;
   }
 
-  getToday(): Date {
+  // The return must be converted to ISO string for correct time.
+  getTodayUTC(): Date {
     let tzoffset = (new Date()).getTimezoneOffset() * 60000;
     return (new Date(Date.now()-tzoffset));
   }
 
   getYesterdayStr(): string {
-    const today = this.getToday();
-    let yesterday = new Date();
-    yesterday.setDate(today.getDate()-1);
+    let yesterday = new Date(this.getTodayUTC().getTime() - (24 * 60 * 60000));
     return yesterday.toISOString().substring(0,10);
   }
 
   getTodayStr(): string {
-    let dateStr = this.getToday().toISOString();
+    let dateStr = this.getTodayUTC().toISOString();
     return dateStr.substring(0,10);
   }
 

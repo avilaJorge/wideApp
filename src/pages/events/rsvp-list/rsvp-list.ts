@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { EventService } from "../events.service";
-import { MeetupRSVP } from "../meetup.model";
+import { MeetupRSVP, Response } from "../meetup.model";
 
 /**
  * Generated class for the RsvpListPage page.
@@ -17,6 +17,7 @@ import { MeetupRSVP } from "../meetup.model";
 })
 export class RsvpListPage {
   public eventId: string;
+  public rsvpList: MeetupRSVP[] = [];
   public going: MeetupRSVP[] = [];
   public not_going: MeetupRSVP[] = [];
   public goingTab: boolean = true;
@@ -28,28 +29,36 @@ export class RsvpListPage {
     private loadingCtr: LoadingController) {
 
     this.eventId = this.navParams.get('eventId');
+    this.rsvpList = this.navParams.get('rsvpList');
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RsvpListPage');
-    const load = this.loadingCtr.create({
-      spinner: 'dots'
-    });
-    load.present();
-    this.eventService.getRSVPList(this.eventId)
-      .then((data) => {
-        console.log(data);
-        for (let entry of data) {
-          if (entry.response === "yes") {
-            this.going.push(entry);
-          } else {
-            this.not_going.push(entry);
-          }
-        }
-        console.log(this.going);
-        console.log(this.not_going);
-        load.dismiss();
-      });
+    for (let entry of this.rsvpList) {
+      if (entry.response === Response.Yes) {
+        this.going.push(entry);
+      } else {
+        this.not_going.push(entry);
+      }
+    }
+    // const load = this.loadingCtr.create({
+    //   spinner: 'dots'
+    // });
+    // load.present();
+    // this.eventService.getRSVPList(this.eventId)
+    //   .then((data) => {
+    //     console.log(data);
+    //     for (let entry of data) {
+    //       if (entry.response === Response.Yes) {
+    //         this.going.push(entry);
+    //       } else {
+    //         this.not_going.push(entry);
+    //       }
+    //     }
+    //     console.log(this.going);
+    //     console.log(this.not_going);
+    //     load.dismiss();
+    //   });
   }
 
 
