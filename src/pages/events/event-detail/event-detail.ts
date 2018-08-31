@@ -244,7 +244,7 @@ export class EventDetailPage {
   }
 
   onMembersGoingClick() {
-    this.navCtrl.push('RsvpListPage', {eventId: this.event.id, rsvpList: this.rsvpList});
+    this.navCtrl.push('RsvpListPage', {eventId: this.event.id, rsvpList: this.rsvpList, group: this.event.group});
   }
 
   private setButtonOutlines(response: Response) {

@@ -32,12 +32,12 @@
     <ion-row>
       <ion-col class="going-col">
         <ion-list>
-          <ion-item *ngFor="let entry of going">
+          <ion-item *ngFor="let entry of going" (click)="onProfile(entry)">
             <ion-grid>
               <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>
               <ion-row>
                 <ion-col class="thumb-pic-col">
-                  <div class="thumb-pic" [style.background-image]="entry.member.photo.thumb_link"></div>
+                  <div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>
                 </ion-col>
               </ion-row>
               <ion-row><ion-col *ngIf="entry.member.host" class="item-role">Event Host</ion-col></ion-row>
@@ -50,11 +50,11 @@
       </ion-col>
       <ion-col class="not-going-col">
         <ion-list>
-          <ion-item *ngFor="let entry of not_going">
+          <ion-item *ngFor="let entry of not_going" (click)="onProfile(entry)">
             <ion-grid>
               <ion-row>
                 <ion-col col-5>
-                  <div class="thumb-pic" [style.background-image]="entry.member.photo.thumb_link"></div>
+                  <div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>
                 </ion-col>
                 <ion-col col-7>
                   <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>

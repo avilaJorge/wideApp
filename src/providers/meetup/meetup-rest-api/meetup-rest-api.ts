@@ -112,9 +112,9 @@ export class MeetupRestApi {
         .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
         .set('memberId', memberId)
     };
-    return this.http.get(this.redirectURI + 'meetup/profile/self', httpOptions)
+    return this.http.get<any>(this.redirectURI + 'meetup/profile', httpOptions)
       .toPromise()
-      .then(response => response);
+      .then(response => JSON.parse(response.body));
   }
 
   postComment(comment: string, replyToId: number, eventId: number): Promise<any> {

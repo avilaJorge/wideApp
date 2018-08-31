@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { EventService } from "../events.service";
-import { MeetupRSVP, Response } from "../meetup.model";
+import { Meetup, MeetupRSVP, Response } from "../meetup.model";
 
 /**
  * Generated class for the RsvpListPage page.
@@ -21,6 +21,7 @@ export class RsvpListPage {
   public going: MeetupRSVP[] = [];
   public not_going: MeetupRSVP[] = [];
   public goingTab: boolean = true;
+  public group: Meetup;
 
   constructor(
     public navCtrl: NavController,
@@ -30,6 +31,7 @@ export class RsvpListPage {
 
     this.eventId = this.navParams.get('eventId');
     this.rsvpList = this.navParams.get('rsvpList');
+    this.group = this.navParams.get('group');
   }
 
   ionViewDidLoad() {
@@ -65,5 +67,9 @@ export class RsvpListPage {
   onSegmentClick(value: any) {
     console.log(value);
     this.goingTab = value;
+  }
+
+  onProfile(entry: MeetupRSVP) {
+    this.navCtrl.push('ProfilePage', {rsvp: entry, group: this.group});
   }
 }

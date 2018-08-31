@@ -32,14 +32,20 @@ export class EventService {
       this.meetupApi.getProfile(memberId)
         .then((profile) => {
           if (profile.photo) {
+            profile.photo.photo_link =
+              this.sanitizer.bypassSecurityTrustStyle(`url(${profile.photo.photo_link})`);
             profile.photo.thumb_link =
               this.sanitizer.bypassSecurityTrustStyle(`url(${profile.photo.thumb_link})`);
           } else {
+            let photo = this.sanitizer.bypassSecurityTrustStyle(`url(assets/imgs/no-person.png)`);
             profile.photo = {
-              thumb_link: this.sanitizer.bypassSecurityTrustStyle(`url(assets/imgs/no-person.png)`)
+              thumb_link: photo,
+              photo_link: photo
             };
           }
+          console.log(profile);
           let profModel = new MeetupProfile(profile);
+          console.log(profModel);
           resolve(profModel);
         }, (err) => reject(err));
     });
@@ -147,24 +153,15 @@ export class EventService {
           let rsvps: MeetupRSVP[] = [];
           for (let com of data) {
             if (com.member.photo) {
+              com.member.photo.photo_link =
+                this.sanitizer.bypassSecurityTrustStyle(`url(${com.member.photo.photo_link})`);
               com.member.photo.thumb_link =
                 this.sanitizer.bypassSecurityTrustStyle(`url(${com.member.photo.thumb_link})`);
             } else {
+              let photo = this.sanitizer.bypassSecurityTrustStyle(`url(assets/imgs/no-person.png)`);
               com.member.photo = {
-                thumb_link: this.sanitizer.bypassSecurityTrustStyle(`url(assets/imgs/no-person.png)`)
+                thumb_link: photo, photo_link: photo
               };
-            }
-            if (com.replies) {
-              for (let reply of com.replies) {
-                if (reply.member.photo) {
-                  reply.member.photo.thumb_link =
-                    this.sanitizer.bypassSecurityTrustStyle(`url(${reply.member.photo.thumb_link})`);
-                } else {
-                  reply.member.photo = {
-                    thumb_link: this.sanitizer.bypassSecurityTrustStyle(`url(assets/imgs/no-person.png)`)
-                  };
-                }
-              }
             }
             rsvps.push(new MeetupRSVP(com));
           }

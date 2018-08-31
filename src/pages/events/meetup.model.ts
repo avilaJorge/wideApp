@@ -250,16 +250,23 @@ export class MeetupProfile {
   status: string;
   joined: number;
   city: string;
-  photo: { thumb_link: string };
+  bio: string;
+  photo: { thumb_link: string, photo_link: string };
 
   constructor(fields: any) {
-    this.id = fields.id;
-    this.name = fields.name;
-    this.email = fields.email;
-    this.status = fields.status;
-    this.joined = fields.joined;
-    this.city = fields.city;
-    this.photo = { thumb_link: fields.photo.thumb_link };
+    this.id = fields.id || 0;
+    this.name = fields.name || '';
+    this.email = fields.email || '';
+    this.status = fields.status || '';
+    this.joined = fields.joined || 0;
+    this.city = fields.city || '';
+    this.bio = fields.bio || '';
+    if (fields.photo) {
+      this.photo = { thumb_link: fields.photo.thumb_link || '', photo_link: fields.photo.photo_link || '' };
+    } else {
+      this.photo = { thumb_link: '', photo_link: '' };
+    }
+
   }
 }
 
