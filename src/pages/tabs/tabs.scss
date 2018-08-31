@@ -2,7 +2,11 @@ page-tabs {
   .tabbar a[aria-selected=true] {
     border: 1px;
     border-style: solid;
+  }
 
+  ion-tab {
+    word-wrap: normal;
+    white-space: normal;
   }
   /*.ion-ios-customicon,
   .ion-md-customicon {

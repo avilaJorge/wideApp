@@ -54,7 +54,7 @@ export class EventDetailPage {
   public notGoingOutline = true;
   public rsvpString: string;
   public guestCount: number = 0;
-  public hosts: MeetupMember[] = [];
+  public hosts: MeetupRSVP[] = [];
 
   constructor(
     public navCtrl: NavController,
@@ -107,7 +107,7 @@ export class EventDetailPage {
           if (entry.guests) this.guestCount += entry.guests;
           this.rsvpList.push(entry);
           if (this.rsvpList[this.rsvpList.length-1].member.host) {
-            this.hosts.push(this.rsvpList[this.rsvpList.length-1].member);
+            this.hosts.push(this.rsvpList[this.rsvpList.length-1]);
           }
         }
         load.dismiss();
@@ -244,7 +244,17 @@ export class EventDetailPage {
   }
 
   onMembersGoingClick() {
-    this.navCtrl.push('RsvpListPage', {eventId: this.event.id, rsvpList: this.rsvpList, group: this.event.group});
+    this.navCtrl.push('RsvpListPage',
+      {
+        eventId: this.event.id,
+        rsvpList: this.rsvpList,
+        group: this.event.group,
+        eventName: this.event.eventName
+      });
+  }
+
+  onProfile(entry: MeetupRSVP) {
+    this.navCtrl.push('ProfilePage', {rsvp: entry, group: this.event.group});
   }
 
   private setButtonOutlines(response: Response) {

@@ -111,7 +111,10 @@
       },
       "cordova-plugin-crop": {},
       "cordova-plugin-datepicker": {},
-      "uk.co.workingedge.phonegap.plugin.launchnavigator": {},
+      "uk.co.workingedge.phonegap.plugin.launchnavigator": {
+        "OKHTTP_VERSION": "3.+",
+        "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes"
+      },
       "cordova-plugin-calendar": {}
     },
     "platforms": [

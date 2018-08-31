@@ -9,34 +9,34 @@
 
 
 <ion-content padding>
-  <div text-center class="date-container">{{ currDate }}</div>
-  <hr>
   <ion-grid>
     <ion-row align-items-center class="content-row">
       <ion-col col-1 class="col-left-arrow" (click)="onLeftClick()">
         &#x276E;
       </ion-col>
-      <ion-col col-4 class="col-graph">
+      <ion-col col-5 class="col-graph">
         <section (click)="onChartClick()" class="chart-wrapper">
           <canvas #barChart></canvas>
         </section>
       </ion-col>
-      <ion-col col-6 class="col-data">
+      <ion-col col-5 class="col-data">
         <ion-row align-items-center class="step-data">
           <ion-col (click)="onShowData()">
+            <div class="date-container">{{ currDate }}</div>
+            <div class="filler-text">you walked</div>
             <div class="step-num">{{ currEntry.data.steps }}</div>
             <div class="step-text">steps</div>
           </ion-col>
         </ion-row>
         <ion-row align-items-center class="goal-data">
           <ion-col (click)="onShowData()">
-            <div class="goal-text">Goal</div>
+            <div class="goal-text">Your Goal was</div>
             <div class="step-num">{{ currEntry.data.goal }}</div>
             <div class="step-text">steps</div>
           </ion-col>
         </ion-row>
       </ion-col>
-      <ion-col col-1 class="col-right-arrow" (click)="onRightClick()">
+      <ion-col col-1 *ngIf="!isCurrEntryToday" class="col-right-arrow" (click)="onRightClick()">
         <div *ngIf="!isCurrEntryToday">&#x276F;</div>
       </ion-col>
     </ion-row>
@@ -70,24 +70,24 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <!--<div class="progress-wrapper">-->
-    <!--<div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>-->
+  <div class="progress-wrapper">
+    <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>
 
-    <!--<round-progress-->
-      <!--[current]="current"-->
-      <!--[max]="max"-->
-      <!--[stroke]="stroke"-->
-      <!--[radius]="radius"-->
-      <!--[semicircle]="semicircle"-->
-      <!--[rounded]="rounded"-->
-      <!--[responsive]="responsive"-->
-      <!--[clockwise]="clockwise"-->
-      <!--[color]="gradient ? 'url(#gradient)' : color"-->
-      <!--[background]="background"-->
-      <!--[duration]="duration"-->
-      <!--[animation]="animation"-->
-      <!--[animationDelay]="animationDelay"></round-progress>-->
-  <!--</div>-->
+    <round-progress
+      [current]="current"
+      [max]="max"
+      [stroke]="stroke"
+      [radius]="radius"
+      [semicircle]="semicircle"
+      [rounded]="rounded"
+      [responsive]="responsive"
+      [clockwise]="clockwise"
+      [color]="gradient ? 'url(#gradient)' : color"
+      [background]="background"
+      [duration]="duration"
+      [animation]="animation"
+      [animationDelay]="animationDelay"></round-progress>
+  </div>
 
   <!--<button (click)="increment();">Increment</button>-->
   <!--<button (click)="increment(-1);">Decrement</button>-->

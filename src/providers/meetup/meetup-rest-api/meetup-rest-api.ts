@@ -19,8 +19,8 @@ export class MeetupRestApi {
   group: string = 'Meetup-API-Testing';
   sig_id: string = '87508102';
   sig: string = '84ea88d6b8b31e9d8c8a1bdd2a456c4b99eb9f26';
-  // private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/auth/meetup';
-  private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/';
+  private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/';
+  // private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/';
 
   //endpoints = {
   //  find_groups: 'find/groups',
@@ -111,6 +111,7 @@ export class MeetupRestApi {
       params: new HttpParams()
         .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
         .set('memberId', memberId)
+        .set('group', this.group)
     };
     return this.http.get<any>(this.redirectURI + 'meetup/profile', httpOptions)
       .toPromise()

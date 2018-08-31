@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <div class="calendar-header">
+  <div class="calendar-header" (click)="onFullDataView()">
     <ion-row class="calendar-month">
       <!--<ion-col col-2 ><ion-icon name="arrow-back"></ion-icon></ion-col>-->
       <ion-col col-12>{{currentMonth}} {{currentYear}}</ion-col>
@@ -35,7 +35,7 @@
           <!--<ion-row><span class="otherDate">{{day.date}}</span></ion-row>-->
           <ion-row>
             <ion-col>
-              <ion-icon *ngIf="day.data.data.steps > 0" name="checkmark-circle"></ion-icon>
+              <ion-icon *ngIf="day.data.data.steps > 0" name="checkmark-circle-outline"></ion-icon>
               <ion-icon class="goal-star" *ngIf="day.data.data.steps != 0 && day.data.data.steps >= day.data.data.goal" name="star"></ion-icon>
               <ion-icon class="group-ribbon" *ngIf="day.data.data.groupWalk" name="ribbon"></ion-icon>
             </ion-col>
@@ -48,4 +48,26 @@
       </ion-row>
     </ion-grid>
   </div>
+  <ion-grid>
+    <ion-row align-items-center>
+      <ion-col col-4 class="steps-logged">
+        <div class="achieve-text">Logged</div>
+        <div class="achieve-icon">
+          <ion-icon name="checkmark-circle-outline"></ion-icon>
+        </div>
+      </ion-col>
+      <ion-col col-4 class="goal-met">
+        <div class="achieve-text">Goal Met</div>
+        <div class="achieve-icon">
+          <ion-icon name="star"></ion-icon>
+        </div>
+      </ion-col>
+      <ion-col col-4 class="group-walk">
+        <div class="achieve-text">Group Walk</div>
+        <div class="achieve-icon">
+          <ion-icon name="ribbon"></ion-icon>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

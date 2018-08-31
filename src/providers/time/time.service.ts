@@ -25,13 +25,13 @@ export class TimeService {
 
     const today = new Date(Date.now());
     let i = totalDaysInLog - 1;
-    let j = thirtyDayLimit;
     while(i >= 0) {
       const date = new Date();
       date.setDate(today.getDate() - i);
       this.dates.push(date.toISOString().substring(0,10));
       i--;
     }
+    console.log(this.dates);
   }
 
   getDates(): string[] {

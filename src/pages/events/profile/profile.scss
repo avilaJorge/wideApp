@@ -35,8 +35,35 @@ page-profile {
     margin-right: auto;
     // margin-bottom: 50px;
   }
+
+  .name-container {
+    font-size: x-large;
+    font-family: 'AvenirNextLTPro-Regular', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  }
+
+  .city-container {
+    font-size: large;
+    color: #404040;
+  }
+
   .profile-description {
     font-size: 15px;
     color: #888;
   }
+
+  .group-container {
+    font-size: large;
+  }
+
+  .role-container {
+    font-size: medium;
+    color: #404040;
+  }
+
+  .stats-number {
+    font-size: medium;
+    font-weight: bold;
+  }
+
+
 }

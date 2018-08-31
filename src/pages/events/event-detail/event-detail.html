@@ -97,11 +97,11 @@
       </ion-row>
       <ion-row *ngIf="hosts.length > 0">
         <ion-col col-1><ion-icon name="person"></ion-icon></ion-col>
-        <ion-col class="host-info" *ngIf="hosts.length == 1">Hosted by {{hosts[0].name}}</ion-col>
+        <ion-col class="host-info" *ngIf="hosts.length == 1" (click)="onProfile(hosts[0])">Hosted by {{hosts[0].member.name}}</ion-col>
         <ion-col class="host-info" *ngIf="hosts.length > 1">Hosted by
           <span *ngFor="let host of hosts; let i = index">
-            <span *ngIf="i != (hosts.length-1)">{{host.name}}, </span>
-            <span *ngIf="i == (hosts.length-1)">{{host.name}}</span>
+            <span *ngIf="i != (hosts.length-1)" (click)="onProfile(host)">{{host.member.name}}, </span>
+            <span *ngIf="i == (hosts.length-1)" (click)="onProfile(host)">{{host.member.name}}</span>
           </span>
         </ion-col>
       </ion-row>

@@ -252,6 +252,10 @@ export class MeetupProfile {
   city: string;
   bio: string;
   photo: { thumb_link: string, photo_link: string };
+  groupProfile: MeetupGroupProfile;
+  privacy: {bio: string, groups: string, topics: string};
+  topics: MeetupTopics[] = [];
+  stats: {groups: number, topics: number, rsvps: number};
 
   constructor(fields: any) {
     this.id = fields.id || 0;
@@ -261,12 +265,48 @@ export class MeetupProfile {
     this.joined = fields.joined || 0;
     this.city = fields.city || '';
     this.bio = fields.bio || '';
+    this.stats = fields.stats || {groups: 0, topics: 0, rsvps: 0};
     if (fields.photo) {
       this.photo = { thumb_link: fields.photo.thumb_link || '', photo_link: fields.photo.photo_link || '' };
     } else {
       this.photo = { thumb_link: '', photo_link: '' };
     }
+    if (fields.group_profile) {
+      this.groupProfile = new MeetupGroupProfile(fields.group_profile);
+    } else {
+      this.groupProfile = new MeetupGroupProfile('');
+    }
+    this.privacy = fields.privacy || {bio: '', groups: '', topics: ''};
+    if (fields.topics) {
+      this.topics = fields.topics;
+    }
+  }
+}
 
+export class MeetupGroupProfile {
+  created: number;
+  intro: string;
+  link: string;
+  createdYear: number;
+  constructor(fields: any) {
+    this.created = fields.created || 0;
+    this.createdYear = (new Date(this.created)).getFullYear();
+    this.intro = fields.intro || '';
+    this.link = fields.link || '';
+  }
+}
+
+export class MeetupTopics {
+  id: number;
+  name: string;
+  urlkey: string;
+  lang: string;
+
+  constructor(fields: any) {
+    this.id = fields.id || 0;
+    this.name = fields.name || '';
+    this.urlkey = fields.urlkey || '';
+    this.lang = fields.lang || '';
   }
 }
 

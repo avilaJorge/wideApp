@@ -29,8 +29,8 @@ export class AccountPage {
   private user: User;
   private state: string = '';
   private scope = '&scope=ageless+event_management+group_join+rsvp+group_content_edit';
-  // private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/auth/meetup';
-  private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/auth/meetup';
+  private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/auth/meetup';
+  // private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/auth/meetup';
   private meetupAuthBaseURL: string = 'https://secure.meetup.com/oauth2/authorize';
   private meetupAuthURL: string = this.meetupAuthBaseURL + '?client_id=' +
     meetupConfig.client_id + '&response_type=code&redirect_uri=' + this.redirectURI + this.scope;

@@ -72,8 +72,6 @@ export class HomePage {
 
     this.log = this.logService.getLog();
     this.fullLog = this.logService.getThirtyDatesData();
-    console.log(this.currEntry);
-    console.log(this.logService.getThirtyDatesData());
     this.current = this.currEntry.data.steps;
     this.max = this.currEntry.data.goal;
     this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
@@ -256,21 +254,21 @@ export class HomePage {
   }
 
   onRightClick() {
-    console.log('Clicked right arrow');
     this.currEntry = this.logService.getNextEntry();
     console.log(this.currEntry);
-    this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
-    if (this.currDate === 'Today') {
-      console.log('got it in here');
-      this.isCurrEntryToday = true;
-    } else {
-      this.isCurrEntryToday = false;
+    if (this.currEntry) {
+      this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+      if (this.currDate === 'Today') {
+        this.isCurrEntryToday = true;
+      } else {
+        this.isCurrEntryToday = false;
+      }
+      this.max = this.currEntry.data.goal;
+      this.current = this.currEntry.data.steps;
+      this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
+      this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
+      this.barChartEl.update();
     }
-    this.max = this.currEntry.data.goal;
-    this.current = this.currEntry.data.steps;
-    this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
-    this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
-    this.barChartEl.update();
   }
 
   ionViewWillUnload() {

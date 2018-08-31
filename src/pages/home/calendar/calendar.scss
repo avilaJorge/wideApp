@@ -79,4 +79,33 @@ page-calendar {
       border-bottom: solid 1px color($colors, primary);
     }
   }
+
+  .steps-logged, .goal-met, .group-walk {
+    border-bottom: thin solid #dce4ee;
+    text-align: center;
+  }
+  .goal-met {
+    border-right: thin solid #dce4ee;
+    border-left: thin solid #dce4ee;
+  }
+
+  .achieve-text {
+    font-weight: bold;
+    font-style: italic;
+    font-size: medium;
+    color: #8f8f8f;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .achieve-icon {
+    font-size: xx-large;
+    margin-bottom: 1rem;
+  }
+  .goal-met {
+    color: limegreen;
+  }
+  .group-walk {
+    color: forestgreen;
+  }
 }

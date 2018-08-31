@@ -142,12 +142,12 @@ export class LogService {
     console.log("The currentIndex is " + this.currEntryIndex);
     if (amount === 1) {
       if (this.currEntryIndex === this.datesData.length - 1) {
-        return;
+        return null;
       }
     }
     if (amount === -1) {
       if (this.currEntryIndex === 0) {
-        return;
+        return null;
       }
     }
     this.currEntryIndex += amount;
@@ -186,11 +186,13 @@ export class LogService {
     let todayIndex = 0;
     let todayStr = this.timeService.getTodayStr();
     let i = this.datesData.length - 1;
+    let lastDate = '';
     while (i >= 0) {
       if (this.datesData[i].date === todayStr) {
         todayIndex = i;
         return todayIndex;
       }
+      lastDate = this.datesData[i].date;
       i--;
     }
     const dateData = this.timeService.getEntryDate(todayStr);

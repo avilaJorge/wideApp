@@ -22,6 +22,7 @@ export class RsvpListPage {
   public not_going: MeetupRSVP[] = [];
   public goingTab: boolean = true;
   public group: Meetup;
+  public eventName: string;
 
   constructor(
     public navCtrl: NavController,
@@ -32,6 +33,7 @@ export class RsvpListPage {
     this.eventId = this.navParams.get('eventId');
     this.rsvpList = this.navParams.get('rsvpList');
     this.group = this.navParams.get('group');
+    this.eventName = this.navParams.get('eventName')
   }
 
   ionViewDidLoad() {

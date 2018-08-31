@@ -16,7 +16,9 @@ page-home {
     font-weight: bold;
     color: #60646B;
     margin-top: 25px;
-    margin-bottom: 25px;
+  }
+  .filler-text, .goal-text {
+    font-size: medium;
   }
 
   .content-row {
@@ -27,9 +29,9 @@ page-home {
     font-size: xx-large;
   }
 
-  .step-data {
-    border-bottom: thin solid #dce4ee;
-  }
+  //.step-data {
+  //  border-bottom: thin solid #dce4ee;
+  //}
 
   .col-graph {
     border-right: thin solid #dce4ee;
@@ -74,12 +76,12 @@ page-home {
     color: #8f8f8f;
   }
 
-  .goal-text {
-    font-weight: lighter;
-    font-size: x-large;
-    font-style: oblique;
-    text-decoration: underline;
-  }
+  //.goal-text {
+  //  font-weight: lighter;
+  //  font-size: x-large;
+  //  font-style: oblique;
+  //  text-decoration: underline;
+  //}
 
   .chart-wrapper {
     height: 315px;

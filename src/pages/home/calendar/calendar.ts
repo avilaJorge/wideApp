@@ -77,4 +77,7 @@ export class CalendarPage {
     entryModal.present();
   }
 
+  onFullDataView() {
+    this.navCtrl.push('FullDataPage');
+  }
 }

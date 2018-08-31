@@ -1,6 +1,6 @@
 <ion-header>
-  <ion-navbar color="primary">
-    <ion-title>Parallax Header</ion-title>
+  <ion-navbar>
+    <ion-title></ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -8,36 +8,33 @@
   <div class="header-image"></div>
   <div class="main-content" text-wrap text-center>
     <div class="circular" [style.background-image]="rsvp.member.photo.photo_link"></div>
-    <h2>{{rsvp.member.name}}</h2>
+    <div class="name-container">{{rsvp.member.name}}</div>
     <div class="city-container">{{profile.city}}</div>
+    <!--<ion-grid>-->
+      <!--<ion-row>-->
+        <!--<ion-col>-->
+          <!--<h4>Groups</h4>-->
+          <!--<div class="stats-number">{{profile.stats.groups}}</div>-->
+        <!--</ion-col>-->
+        <!--<ion-col>-->
+          <!--<h4>Topics</h4>-->
+          <!--<div class="stats-number">{{profile.stats.topics}}</div>-->
+        <!--</ion-col>-->
+        <!--<ion-col>-->
+          <!--<h4>RSVPs</h4>-->
+          <!--<div class="stats-number">{{profile.stats.rsvps}}</div>-->
+        <!--</ion-col>-->
+      <!--</ion-row>-->
+    <!--</ion-grid>-->
+    <p class="profile-description">{{profile.bio}}</p>
     <div class="group-container">{{group.name}}</div>
     <div class="role-container" *ngIf="rsvp.member.role != 'member'">{{rsvp.member.roleStr}}</div>
-    <div class="since-container">Member since 2014</div>
-    <p class="profile-description">{{profile.bio}}</p>
-    <hr>
-    <ion-list no-lines>
-      <ion-item>
-        <ion-icon name="mail" color="primary" item-start></ion-icon>
-        <p>Email</p>
-        {{rsvp.member.id}}
-        <a button ion-button href="mailto:{{rsvp}}" color="primary" item-end medium>Open App</a>
-      </ion-item>
-      <ion-item>
-        <ion-icon item-start name="call" color="danger"></ion-icon>
-        <p>Mobile</p>
-        {{rsvp.member.id}}
-        <a button ion-button href="tel:{{rsvp.dateStr}}" color="danger" item-end medium>Poke me</a>
-      </ion-item>
-      <ion-item>
-        <ion-icon item-start name="logo-whatsapp" color="secondary"></ion-icon>
-        <p>Whatsapp</p>
-        {{rsvp.response}}
-      </ion-item>
-      <ion-item>
-        <ion-icon item-start name="pin" color="twitter"></ion-icon>
-        <p>{{rsvp.updated}}</p>
-      </ion-item>
-    </ion-list>
+    <div class="since-container">Member since {{profile.groupProfile.createdYear}}</div>
+    <p class="profile-description">{{profile.groupProfile.intro}}</p>
+    <!--<hr>-->
+    <!--<div *ngIf="profile.privacy.topics == 'visible'" class="topics-container">-->
+      <!--<span *ngFor="let topic of profile.topics"> {{topic.name}} &#x25E6;</span>-->
+    <!--</div>-->
   </div>
 
 </ion-content>
