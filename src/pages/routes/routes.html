@@ -1,0 +1,34 @@
+<!--
+  Generated template for the RoutesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Routes</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <button class="list-route" ion-item *ngFor="let route of routes; let i = index" (click)="onRouteClick(route, i)">
+      <ion-row no-padding class="content-row">
+        <ion-col col-3 class="route-thumb">
+          <preload-image [ratio]="{w:1, h:1}" [src]="route.links.thumbnail[0].href" title="route-thumb"></preload-image>
+        </ion-col>
+        <ion-col col-9 class="info-col-container">
+          <ion-row><ion-col class="route-name">{{ route.name }}</ion-col></ion-row>
+          <ion-row><ion-col class="route-dist">{{ route.distanceInMiles | number: '1.2-2'}} mi</ion-col></ion-row>
+          <ion-row>
+            <ion-col class="route-city">{{ route.city }}</ion-col>
+            <ion-col class="route-dist-away">{{ route.distanceFromStart | number: '1.2-2' }} mi away</ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </button>
+  </ion-list>
+</ion-content>

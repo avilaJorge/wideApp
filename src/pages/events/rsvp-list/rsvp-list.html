@@ -14,62 +14,98 @@
 
 
 <ion-content padding>
-  <!--<ion-segment [(ngModel)]="goingTab">-->
-    <!--<ion-segment-button value="true" (click)="onSegmentClick(true)">-->
-      <!--Going ({{going.length}})-->
-    <!--</ion-segment-button>-->
-    <!--<ion-segment-button value="false" (click)="onSegmentClick(false)">-->
-      <!--Not Going ({{not_going.length}})-->
-    <!--</ion-segment-button>-->
-  <!--</ion-segment>-->
+  <ion-segment [(ngModel)]="goingTab">
+    <ion-segment-button value="true" (click)="onSegmentClick(true)">
+      Going ({{going.length}})
+    </ion-segment-button>
+    <ion-segment-button value="false" (click)="onSegmentClick(false)">
+      Not Going ({{not_going.length}})
+    </ion-segment-button>
+  </ion-segment>
 
-  <ion-grid no-padding>
-    <ion-row>
-      <ion-col class="going-col-text" text-center>Going</ion-col>
-      <ion-col class="not-going-col-text" text-center>Not Going</ion-col>
-    </ion-row>
-    <ion-row><ion-col><hr></ion-col></ion-row>
-    <ion-row>
-      <ion-col class="going-col">
-        <ion-list>
-          <ion-item *ngFor="let entry of going" (click)="onProfile(entry)">
-            <ion-grid>
-              <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>
-              <ion-row>
-                <ion-col class="thumb-pic-col">
-                  <div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>
-                </ion-col>
-              </ion-row>
-              <ion-row><ion-col *ngIf="entry.member.host" class="item-role">Event Host</ion-col></ion-row>
-              <ion-row><ion-col *ngIf="(entry.member.role != 'member') && !entry.member.host" class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>
-              <ion-row><ion-col *ngIf="entry.guests == 1" class="item-role">Bringing {{entry.guests}} guest</ion-col></ion-row>
-              <ion-row><ion-col *ngIf="entry.guests > 1" class="item-role">Bringing {{entry.guests}} guests</ion-col></ion-row>
-            </ion-grid>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-      <ion-col class="not-going-col">
-        <ion-list>
-          <ion-item *ngFor="let entry of not_going" (click)="onProfile(entry)">
-            <ion-grid>
-              <ion-row>
-                <ion-col col-5>
-                  <div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>
-                </ion-col>
-                <ion-col col-7>
-                  <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>
-                  <!--<ion-row><ion-col class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>-->
-                </ion-col>
-              </ion-row>
-              <ion-row><ion-col *ngIf="entry.member.host" class="item-role">Event Host</ion-col></ion-row>
-              <ion-row><ion-col *ngIf="(entry.member.role != 'member') && !entry.member.host" class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>
-              <ion-row><ion-col *ngIf="entry.guests == 1" class="item-role">Bringing {{entry.guests}} guest</ion-col></ion-row>
-              <ion-row><ion-col *ngIf="entry.guests > 1" class="item-role">Bringing {{entry.guests}} guests</ion-col></ion-row>
-            </ion-grid>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-list class="going-list" *ngIf="goingTab">
+    <ion-item class="going-item" *ngFor="let entry of going" (click)="onProfile(entry)">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-3>
+            <div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>
+          </ion-col>
+          <ion-col col-9>
+            <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="entry.member.host" class="item-role">Event Host</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="(entry.member.role != 'member') && !entry.member.host" class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="entry.guests == 1" class="item-role">Bringing {{entry.guests}} guest</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="entry.guests > 1" class="item-role">Bringing {{entry.guests}} guests</ion-col></ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+  <ion-list class="going-list" *ngIf="!goingTab">
+    <ion-item class="going-item" *ngFor="let entry of not_going" (click)="onProfile(entry)">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-3>
+            <div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>
+          </ion-col>
+          <ion-col col-9>
+            <ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="entry.member.host" class="item-role">Event Host</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="(entry.member.role != 'member') && !entry.member.host" class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="entry.guests == 1" class="item-role">Bringing {{entry.guests}} guest</ion-col></ion-row>
+            <ion-row><ion-col *ngIf="entry.guests > 1" class="item-role">Bringing {{entry.guests}} guests</ion-col></ion-row>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+  <!--<ion-grid no-padding>-->
+    <!--<ion-row>-->
+      <!--<ion-col class="going-col-text" text-center>Going</ion-col>-->
+      <!--<ion-col class="not-going-col-text" text-center>Not Going</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row><ion-col><hr></ion-col></ion-row>-->
+    <!--<ion-row>-->
+      <!--<ion-col class="going-col">-->
+        <!--<ion-list>-->
+          <!--<ion-item *ngFor="let entry of going" (click)="onProfile(entry)">-->
+            <!--<ion-grid>-->
+              <!--<ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>-->
+              <!--<ion-row>-->
+                <!--<ion-col class="thumb-pic-col">-->
+                  <!--<div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>-->
+                <!--</ion-col>-->
+              <!--</ion-row>-->
+              <!--<ion-row><ion-col *ngIf="entry.member.host" class="item-role">Event Host</ion-col></ion-row>-->
+              <!--<ion-row><ion-col *ngIf="(entry.member.role != 'member') && !entry.member.host" class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>-->
+              <!--<ion-row><ion-col *ngIf="entry.guests == 1" class="item-role">Bringing {{entry.guests}} guest</ion-col></ion-row>-->
+              <!--<ion-row><ion-col *ngIf="entry.guests > 1" class="item-role">Bringing {{entry.guests}} guests</ion-col></ion-row>-->
+            <!--</ion-grid>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+      <!--<ion-col class="not-going-col">-->
+        <!--<ion-list>-->
+          <!--<ion-item *ngFor="let entry of not_going" (click)="onProfile(entry)">-->
+            <!--<ion-grid>-->
+              <!--<ion-row>-->
+                <!--<ion-col col-5>-->
+                  <!--<div class="thumb-pic" [style.background-image]="entry.member.photo.photo_link"></div>-->
+                <!--</ion-col>-->
+                <!--<ion-col col-7>-->
+                  <!--<ion-row><ion-col class="item-name">{{entry.member.name}}</ion-col></ion-row>-->
+                  <!--&lt;!&ndash;<ion-row><ion-col class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>&ndash;&gt;-->
+                <!--</ion-col>-->
+              <!--</ion-row>-->
+              <!--<ion-row><ion-col *ngIf="entry.member.host" class="item-role">Event Host</ion-col></ion-row>-->
+              <!--<ion-row><ion-col *ngIf="(entry.member.role != 'member') && !entry.member.host" class="item-role">{{entry.member.roleStr}}</ion-col></ion-row>-->
+              <!--<ion-row><ion-col *ngIf="entry.guests == 1" class="item-role">Bringing {{entry.guests}} guest</ion-col></ion-row>-->
+              <!--<ion-row><ion-col *ngIf="entry.guests > 1" class="item-role">Bringing {{entry.guests}} guests</ion-col></ion-row>-->
+            <!--</ion-grid>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+  <!--</ion-grid>-->
 
 </ion-content>

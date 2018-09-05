@@ -47,6 +47,9 @@ import { LaunchNavigator } from "@ionic-native/launch-navigator";
 import { Calendar } from "@ionic-native/calendar";
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 import { EventService } from "../pages/events/events.service";
+import { UARestApi } from '../providers/ua-rest-api/ua-rest-api';
+import { RouteService } from "../pages/routes/routes.service";
+import { GoogleMaps } from "@ionic-native/google-maps";
 
 export function provideSettings(storage: Storage) {
   /**
@@ -101,16 +104,19 @@ export function provideSettings(storage: Storage) {
     LogService,
     Calendar,
     LaunchNavigator,
+    GoogleMaps,
     InAppBrowser,
     Camera,
     Crop,
     ImagePicker,
     Toast,
     FeedService,
-    EventService,
     SocialSharing,
     Api,
     MeetupRestApi,
+    UARestApi,
+    EventService,
+    RouteService,
     { provide: ROUND_PROGRESS_DEFAULTS, useValue: {color: '#f00', background: '#0f0'} },
     RoundProgressService,
     RoundProgressEase,
