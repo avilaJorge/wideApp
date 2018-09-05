@@ -27,7 +27,7 @@ export class TabsPage {
     this.tab1Title = 'Home';
     this.tab2Title = 'Discussion';
     this.tab3Title = 'Log';
-    this.tab4Title = 'Upcoming Walks';
+    this.tab4Title = 'Upcoming';
     this.tab5Title = 'Account';
   }
 }
