@@ -32,7 +32,7 @@ export class RouteService {
     return new Promise<any>((resolve, reject) => {
       this.api.getKMLFile(id).then((res) => {
         console.log(res);
-        resolve(res.body);
+        resolve(res);
       }, (err) => reject(err));
     });
   }
