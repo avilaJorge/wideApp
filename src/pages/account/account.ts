@@ -42,7 +42,6 @@ export class AccountPage {
   settingsReady = false;
 
   form: FormGroup;
-  p;
 
   profileSettings = {
     page: 'profile',
@@ -67,7 +66,8 @@ export class AccountPage {
     let group: any = {
       option1: [this.options.option1],
       option2: [this.options.option2],
-      option3: [this.options.option3]
+      option3: [this.options.option3],
+      stride: [this.options.stride]
     };
 
     switch (this.page) {
@@ -121,6 +121,7 @@ export class AccountPage {
       this.settingsReady = true;
       this.options = this.settings.allSettings;
 
+      console.log(this.options);
       this._buildForm();
     });
   }

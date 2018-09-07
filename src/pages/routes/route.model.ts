@@ -1,5 +1,7 @@
 export const m_to_miles = 0.000621371;
+export const m_to_ft = 3.280839895;
 export const ua_end = 'https://api.ua.com';
+export const inches_in_mile = 63360;
 
 export class Route {
   total_descent: number;
@@ -12,6 +14,7 @@ export class Route {
   max_elevation: number;
   min_elevation: number;
   total_ascent: number;
+  gainInFt: number;
   links: {
     alternate: {href: string, id: string, name: string}[],
     user: {href: string, id: string}[];
@@ -29,6 +32,7 @@ export class Route {
     this.max_elevation = fields.max_elevation;
     this.min_elevation = fields.min_elevation;
     this.total_ascent = fields.total_ascent;
+    this.gainInFt = this.total_ascent * m_to_ft;
     this.links = fields._links;
   }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Route } from "./route.model";
 import { UARestApi } from "../../providers/ua-rest-api/ua-rest-api";
+import { Settings } from "../../providers/settings/settings";
 
 @Injectable()
 export class RouteService {
@@ -10,21 +11,32 @@ export class RouteService {
   long: number = -117.22725327337258;
   constructor(
     private api: UARestApi,
+    private settings: Settings,
   ) {}
 
   getRoutes(): Promise<Route[]> {
     return new Promise<any>((resolve, reject) => {
-      this.api.getRoutes().then((res) => {
-        console.log(res);
-        this.routes = [];
-        let data = JSON.parse(res.body);
-        console.log(data);
-        for (let route of data._embedded.routes) {
-          console.log(route);
-          this.routes.push(new Route(route, this.lat, this.long));
+      this.settings.getValue('routes').then((routes) => {
+        if(routes) {
+          console.log('Routes exist in local storage');
+          this.routes = routes;
+          resolve(routes);
+        } else {
+          console.log('Routes do not exist in local storage, will fetch from UA');
+          this.api.getRoutes().then((res) => {
+            console.log(res);
+            this.routes = [];
+            let data = JSON.parse(res.body);
+            console.log(data);
+            for (let route of data._embedded.routes) {
+              console.log(route);
+              this.routes.push(new Route(route, this.lat, this.long));
+            }
+            this.settings.setValue('routes', this.routes);
+            resolve([...this.routes]);
+          }, (err) => reject(err) );
         }
-        resolve([...this.routes]);
-      }, (err) => reject(err) );
+      }).catch((err) => reject(err));
     });
   }
 
@@ -34,6 +46,12 @@ export class RouteService {
         console.log(res);
         resolve(res);
       }, (err) => reject(err));
+    });
+  }
+
+  clearLocalStorage() {
+    this.settings.setValue('routes', null).then((data) => {
+      console.log("routes data in local storage is now ", data);
     });
   }
 }

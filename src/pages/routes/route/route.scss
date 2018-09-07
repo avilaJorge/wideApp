@@ -2,5 +2,55 @@ page-route {
   agm-map {
     height: 300px;
     width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
   }
+
+  .route-name {
+    font-size: x-large;
+    text-align: center;
+    margin-top: 4rem;
+  }
+
+  .gain-text, .max-text,
+  .min-text, .distance-text,
+  .step-text {
+    font-size: large;
+    color: #60646B;
+    text-align: center;
+  }
+
+  .gain-data, .distance-data,
+  .max-data, .min-data,
+  .step-data {
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .distance-data, .max-data {
+    border-bottom: thin solid #bbbbbb;
+  }
+
+  //.max-data, .min-data {
+  //  font-size: x-large;
+  //  text-align: center;
+  //  font-weight: bold;
+  //}
+
+  .left-col {
+    border-right: thin solid #bbbbbb;
+  }
+
+  .steps-col {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-top: thin solid #bbbbbb;
+    border-bottom: thin solid #bbbbbb;
+  }
+
+
+
+
+
 }

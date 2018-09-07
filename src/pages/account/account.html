@@ -43,6 +43,11 @@
         </ion-select>
       </ion-item>
 
+      <ion-item>
+        <ion-label>Stride Length (inches)</ion-label>
+        <ion-input type="number" formControlName="stride"></ion-input>
+      </ion-item>
+
       <button ion-item [navPush]="subSettings" [navParams]="profileSettings">
         Edit Profile
       </button>

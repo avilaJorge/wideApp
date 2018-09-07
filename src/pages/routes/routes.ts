@@ -34,7 +34,7 @@ export class RoutesPage {
       this.routes = routes;
       console.log(this.routes);
       load.dismiss();
-    })
+    });
   }
 
   onRouteClick(route: Route, i) {
@@ -42,5 +42,17 @@ export class RoutesPage {
     console.log('index is ' + i);
     console.log(route);
     this.navCtrl.push('RoutePage', {route: route, index: i});
+  }
+
+  clearLocalData() {
+    this.routes = [];
+    this.routeService.clearLocalStorage();
+    let load = this.loadingCtrl.create({content: 'Loading Routes ...'});
+    load.present();
+    this.routeService.getRoutes().then((routes) => {
+      this.routes = routes;
+      console.log(this.routes);
+      load.dismiss();
+    });
   }
 }

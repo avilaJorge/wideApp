@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Route, ua_end } from "../route.model";
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { inches_in_mile, Route } from "../route.model";
 import { RouteService } from "../routes.service";
+import { Settings } from "../../../providers/settings/settings";
 
 /**
  * Generated class for the RoutePage page.
@@ -21,11 +22,15 @@ export class RoutePage {
   kml_url: string = '';
   kml_file_data:string = '';
   route: Route;
+  stride: number = 0.0;
+  steps: number = 0;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    private routeService: RouteService) {
+    private routeService: RouteService,
+    private settings: Settings,
+    private toastCtrl: ToastController) {
 
     this.route = this.navParams.get('route');
     // this.kml_url = 'https://developers.google.com/maps/documentation/javascript/examples/kml/westcampus.kml';
@@ -34,6 +39,19 @@ export class RoutePage {
     this.route_lat = this.route.starting_location.coordinates[1];
     this.route_lng = this.route.starting_location.coordinates[0];
     console.log(this.route);
+    this.settings.getValue('stride').then((stride) => {
+      if (stride > 0) {
+        this.stride = stride;
+        this.steps = (this.route.distanceInMiles * inches_in_mile) / this.stride;
+      } else {
+        let toast = this.toastCtrl.create({
+          message: "Update your stride length in the Account tab to get approximate steps for this route.",
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
+      }
+    });
   }
 
   ionViewDidLoad() {
@@ -44,6 +62,9 @@ export class RoutePage {
         this.kml_file_data = data;
         this.kml_url = data[1].mediaLink;
       });
+  }
+
+  ionViewWillEnter() {
   }
 
 }
