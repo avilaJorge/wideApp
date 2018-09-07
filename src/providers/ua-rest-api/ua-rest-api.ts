@@ -11,8 +11,8 @@ export class UARestApi {
     console.log('Hello UaRestApiProvider Provider');
   }
 
-  getRoutes(): Promise<any> {
-    return this.http.get(this.redirectURI + 'ua/routes')
+  getRoutes(lat: number, long: number): Promise<any> {
+    return this.http.get(this.redirectURI + 'ua/routes?location=' + lat + ',' + long)
       .toPromise()
       .then(response => response);
   }

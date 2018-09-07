@@ -7,14 +7,12 @@ import { Settings } from "../../providers/settings/settings";
 export class RouteService {
 
   routes: Route[];
-  lat: number = 32.87395225;
-  long: number = -117.22725327337258;
   constructor(
     private api: UARestApi,
     private settings: Settings,
   ) {}
 
-  getRoutes(): Promise<Route[]> {
+  getRoutes(lat: number, long: number): Promise<Route[]> {
     return new Promise<any>((resolve, reject) => {
       this.settings.getValue('routes').then((routes) => {
         if(routes) {
@@ -23,14 +21,14 @@ export class RouteService {
           resolve(routes);
         } else {
           console.log('Routes do not exist in local storage, will fetch from UA');
-          this.api.getRoutes().then((res) => {
+          this.api.getRoutes(lat, long).then((res) => {
             console.log(res);
             this.routes = [];
             let data = JSON.parse(res.body);
             console.log(data);
             for (let route of data._embedded.routes) {
               console.log(route);
-              this.routes.push(new Route(route, this.lat, this.long));
+              this.routes.push(new Route(route, lat, long));
             }
             this.settings.setValue('routes', this.routes);
             resolve([...this.routes]);
