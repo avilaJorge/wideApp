@@ -18,6 +18,8 @@ import { Route } from "./route.model";
 export class RoutesPage {
 
   routes: Route[] = [];
+  lat: number = 32.87395225;
+  long: number = -117.22725327337258;
 
   constructor(
     public navCtrl: NavController,
@@ -30,7 +32,7 @@ export class RoutesPage {
     console.log('ionViewDidLoad RoutesPage');
     let load = this.loadingCtrl.create({content: 'Loading Routes ...'});
     load.present();
-    this.routeService.getRoutes().then((routes) => {
+    this.routeService.getRoutes(this.lat, this.long).then((routes) => {
       this.routes = routes;
       console.log(this.routes);
       load.dismiss();
@@ -49,7 +51,7 @@ export class RoutesPage {
     this.routeService.clearLocalStorage();
     let load = this.loadingCtrl.create({content: 'Loading Routes ...'});
     load.present();
-    this.routeService.getRoutes().then((routes) => {
+    this.routeService.getRoutes(this.lat, this.long).then((routes) => {
       this.routes = routes;
       console.log(this.routes);
       load.dismiss();
