@@ -2,6 +2,21 @@ export const m_to_miles = 0.000621371;
 export const m_to_ft = 3.280839895;
 export const ua_end = 'https://api.ua.com';
 export const inches_in_mile = 63360;
+export const routes_limit = 20;
+
+export class RouteMetaData {
+  self_link: string;
+  next_link: string;
+  total_count: number;
+  remaining: number;
+  constructor (fields: any, current_remaining: number) {
+    this.total_count = fields.total_count;
+    this.remaining = current_remaining - routes_limit;
+    this.self_link = fields._links.self[0].href;
+    this.next_link = fields._links.next[0].href;
+  }
+}
+
 
 export class Route {
   total_descent: number;

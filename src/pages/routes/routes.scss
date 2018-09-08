@@ -1,6 +1,10 @@
 page-routes {
   .route-name {
     font-size: medium;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
 
   }
 

@@ -85,7 +85,8 @@ export function provideSettings(storage: Storage) {
     AngularFireStorageModule,
     ComponentsModule,
     AgmCoreModule.forRoot({
-        apiKey: 'AIzaSyClg9p_2Ub2XIHv9cZ37MMVQcKgEX6dTHA'
+      apiKey: 'AIzaSyClg9p_2Ub2XIHv9cZ37MMVQcKgEX6dTHA',
+      libraries: ["places"]
     }),
   ],
   bootstrap: [IonicApp],

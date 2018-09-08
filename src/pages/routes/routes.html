@@ -15,6 +15,16 @@
 
 
 <ion-content padding>
+
+  <ion-searchbar
+    [formControl]="searchControl"
+    placeholder="search for routes near ... "
+    autocorrect="off"
+    type="text"
+    class="search-bar"
+    showCancelButton
+    (ionInput)="getNewRoutes($event)"></ion-searchbar>
+
   <ion-list>
     <button class="list-route" ion-item *ngFor="let route of routes; let i = index" (click)="onRouteClick(route, i)">
       <ion-row no-padding class="content-row">
@@ -32,4 +42,11 @@
       </ion-row>
     </button>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="getMoreRoutes($event)" threshold="100px">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Getting more routes...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
