@@ -22,7 +22,9 @@ export class MyApp {
               private splashScreen: SplashScreen,
               private authService: AuthService,
               private logService: LogService,
-              private fireAuth: AngularFireAuth) {
+              private fireAuth: AngularFireAuth,
+              )
+  {
 
     platform.ready().then(() => {
       settings.load().then((data) => {
