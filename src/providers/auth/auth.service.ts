@@ -2,18 +2,20 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFireAuth } from "angularfire2/auth";
 import { Observable, Subject } from "rxjs";
+import { AlertController, ToastController } from "ionic-angular";
 import * as firebase from "firebase";
+import { tap } from "rxjs/operators";
 
 import { User } from "../../models/user.model";
 import { Settings } from "../settings/settings";
 import { FirebaseService } from "../firebase/firebase-integration.service";
-import { AlertController } from "ionic-angular";
 import { backendURL } from "../../environment/environment";
+import { FCM } from "../fcm/fcm";
 
 @Injectable()
 export class AuthService {
 
-  url: string = backendURL;
+  url: string = backendURL + 'app/';
   private token: string;
   private isAuthenticated = false;
   private currentlyLoggedInUser: User = null;
@@ -23,7 +25,9 @@ export class AuthService {
               private http: HttpClient,
               private alertCtrl: AlertController,
               private settings: Settings,
-              private firebaseService: FirebaseService) {
+              private firebaseService: FirebaseService,
+              private fcm: FCM,
+              private toastCtrl: ToastController) {
 
     fireAuth.auth.onAuthStateChanged((user) => {
      if (user) {
@@ -44,6 +48,26 @@ export class AuthService {
             console.log(error);
             this.authStatusListener.next(false);
           });
+
+        // Get a FCM token
+       this.fcm.getToken(user.uid).then((available) => {
+         console.log("Was cordova available?  ", available);
+
+         if (!available) {
+           console.log('FCM has been activated!');
+           this.fcm.listenToNotifications().pipe(
+             tap(msg => {
+               console.log(msg);
+               const toast = this.toastCtrl.create({
+                 message: msg.body,
+                 duration: 3000
+               });
+               toast.present();
+             })
+           ).subscribe();
+         }
+       });
+
       }
     });
   }

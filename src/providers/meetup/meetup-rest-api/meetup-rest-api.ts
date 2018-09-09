@@ -1,8 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Api } from t '../../api/api';
-import { meetupConfig } from "../../../environment/environment";
-import { map } from "rxjs/operators";
+import { backendURL } from "../../../environment/environment";
 import { Meetup } from "../../../pages/events/meetup.model";
 import { AuthService } from "../../auth/auth.service";
 
@@ -19,8 +17,7 @@ export class MeetupRestApi {
   group: string = 'Meetup-API-Testing';
   sig_id: string = '87508102';
   sig: string = '84ea88d6b8b31e9d8c8a1bdd2a456c4b99eb9f26';
-  // private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/';
-  private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/';
+  private redirectURI = backendURL + 'app/';
 
   //endpoints = {
   //  find_groups: 'find/groups',

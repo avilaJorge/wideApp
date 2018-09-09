@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpParams } from "../../../node_modules/@angular/common/http";
+import { backendURL } from "../../environment/environment";
 
 @Injectable()
 export class UARestApi {
 
-  // private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/';
-  private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/';
+  private redirectURI = backendURL + 'app/';
 
   constructor(public http: HttpClient) {
     console.log('Hello UaRestApiProvider Provider');

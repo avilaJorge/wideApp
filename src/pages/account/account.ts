@@ -7,7 +7,7 @@ import { AuthService } from "../../providers/auth/auth.service";
 import { Settings } from "../../providers/settings/settings";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { InAppBrowser } from "@ionic-native/in-app-browser";
-import { meetupConfig } from "../../environment/environment";
+import { backendURL, meetupConfig } from "../../environment/environment";
 import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
 
 /**
@@ -29,8 +29,7 @@ export class AccountPage {
   private user: User;
   private state: string = '';
   private scope = '&scope=ageless+event_management+group_join+rsvp+group_content_edit';
-  // private redirectURI = 'https://us-central1-wide-app.cloudfunctions.net/app/auth/meetup';
-  private redirectURI = 'http://localhost:5000/wide-app/us-central1/app/auth/meetup';
+  private redirectURI = backendURL + 'app/auth/meetup';
   private meetupAuthBaseURL: string = 'https://secure.meetup.com/oauth2/authorize';
   private meetupAuthURL: string = this.meetupAuthBaseURL + '?client_id=' +
     meetupConfig.client_id + '&response_type=code&redirect_uri=' + this.redirectURI + this.scope;
@@ -135,6 +134,7 @@ export class AccountPage {
   }
 
 
+  // TODO: This should be done in the meetup-rest-api service.
   onMeetupIntegrate() {
     console.log(this.meetupAuthURL);
     const browser = this.iab.create(this.meetupAuthURL, '_system');
