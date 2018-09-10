@@ -98,7 +98,7 @@ export class RouteService {
   }
 
   linkRouteWithMeetup(meetup_data: DBMeetup, route_data: MeetupRouteDB): Promise<any> {
-    return this.firebaseService.storeRouteInDB(meetup_data, route_data)
+    return this.firebaseService.storeRouteInMeetupDB(meetup_data, route_data)
       .then((response) => {
         console.log(response);
         console.log('This route was successfully added to Meetup ', meetup_data.id, ' ', meetup_data.name);

@@ -1,5 +1,6 @@
 import { EntryDate } from "../../models/step-log.model";
 import { fullDayName, fullMonthNames, monthNames } from "../../providers/time/time.service";
+import { MeetupRouteDB } from "../routes/route.model";
 
 export enum Response {
   Yes = 1,
@@ -366,5 +367,5 @@ export interface DBMeetup {
   duration: number;
   date_str: string;
   time_str: string;
-  route: {}
+  route: MeetupRouteDB;
 }

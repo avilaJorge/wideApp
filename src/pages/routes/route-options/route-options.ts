@@ -29,6 +29,7 @@ export class RouteOptionsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RouteOptionsPage');
     this.meetupList = this.eventService.getEventDBList();
+    console.log(this.route);
   }
 
   onItemClick(item: DBMeetup) {
@@ -38,7 +39,9 @@ export class RouteOptionsPage {
       gain: this.route.gainInFt,
       max_elevation: this.route.max_elevation,
       min_elevation: this.route.min_elevation,
-      kml_url: this.kml_url
+      kml_url: this.kml_url,
+      start_lat: this.route.starting_location.coordinates[1],
+      start_lng: this.route.starting_location.coordinates[0]
     };
     this.viewCtrl.dismiss({route_data: data, meetup_data: item});
   }

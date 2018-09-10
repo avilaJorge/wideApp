@@ -21,6 +21,8 @@ export interface MeetupRouteDB {
   id: string;
   dist: number;
   gain: number;
+  start_lat: number;
+  start_lng: number;
   max_elevation: number;
   min_elevation: number;
   kml_url: string;

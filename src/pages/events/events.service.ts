@@ -185,4 +185,8 @@ export class EventService {
   getEventDBList(): DBMeetup[] {
     return this.eventDBList;
   }
+
+  getRouteLinkedWithEvent(meetup_id: string): Promise<DBMeetup> {
+    return this.firebaseService.getRouteInMeetupDB(meetup_id);
+  }
 }

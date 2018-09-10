@@ -165,8 +165,14 @@ export class FirebaseService {
       .then(data => data);
   }
 
-  storeRouteInDB(meetup_data: DBMeetup, route_data: MeetupRouteDB): Promise<any> {
+  storeRouteInMeetupDB(meetup_data: DBMeetup, route_data: MeetupRouteDB): Promise<any> {
     return this.afs.collection('/meetups').doc(meetup_data.id).set({route: route_data}, {merge: true});
+  }
+
+  getRouteInMeetupDB(meetup_id): Promise<DBMeetup> {
+    return this.afs.collection('/meetups').doc(meetup_id).valueChanges().pipe(take(1))
+      .toPromise()
+      .then(data => data as DBMeetup);
   }
 
 }
