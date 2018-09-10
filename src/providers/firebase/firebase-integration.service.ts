@@ -8,6 +8,8 @@ import { StepEntry } from "../../models/step-log.model";
 import { User } from "../../models/user.model";
 import { take } from "rxjs/operators";
 import { Observable } from "rxjs";
+import { MeetupRouteDB } from "../../pages/routes/route.model";
+import { DBMeetup } from "../../pages/events/meetup.model";
 
 @Injectable()
 export class FirebaseService {
@@ -156,4 +158,15 @@ export class FirebaseService {
   getMeetupIntegrationResult(userId: string): Observable<any> {
     return this.afs.collection('/users').doc(userId).snapshotChanges();
   }
+
+  getMeetupList(): Promise<any> {
+    return this.afs.collection('/meetups').valueChanges().pipe(take(1))
+      .toPromise()
+      .then(data => data);
+  }
+
+  storeRouteInDB(meetup_data: DBMeetup, route_data: MeetupRouteDB): Promise<any> {
+    return this.afs.collection('/meetups').doc(meetup_data.id).set({route: route_data}, {merge: true});
+  }
+
 }

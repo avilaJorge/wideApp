@@ -17,6 +17,15 @@ export class RouteMetaData {
   }
 }
 
+export interface MeetupRouteDB {
+  id: string;
+  dist: number;
+  gain: number;
+  max_elevation: number;
+  min_elevation: number;
+  kml_url: string;
+}
+
 
 export class Route {
   total_descent: number;
@@ -33,6 +42,7 @@ export class Route {
   links: {
     alternate: {href: string, id: string, name: string}[],
     user: {href: string, id: string}[];
+    self: {href: string, id: string}[];
     thumbnail: {href:string}[];
   }
 

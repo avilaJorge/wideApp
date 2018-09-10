@@ -1,0 +1,13 @@
+<div class="options-title">Add to Upcoming Walk</div>
+<ion-list>
+  <button ion-item *ngFor="let item of meetupList" (click)="onItemClick(item)">
+    <ion-grid>
+      <ion-row>
+        <ion-col class="time-row">{{item.date_str}}  {{item.time_str}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col class="name-row">{{item.name}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </button>
+</ion-list>

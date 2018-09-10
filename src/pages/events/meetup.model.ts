@@ -357,3 +357,14 @@ export class MeetupRSVP {
   }
 
 }
+
+export interface DBMeetup {
+  id: string;
+  name: string;
+  status: string;
+  time: number;
+  duration: number;
+  date_str: string;
+  time_str: string;
+  route: {}
+}

@@ -2,22 +2,25 @@ import { Injectable } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 
 import { MeetupRestApi } from "../../providers";
-import { Meetup, MeetupComment, MeetupMember, MeetupProfile, MeetupRSVP, Response } from "./meetup.model";
+import { DBMeetup, Meetup, MeetupComment, MeetupMember, MeetupProfile, MeetupRSVP, Response } from "./meetup.model";
 import { AuthService } from "../../providers/auth/auth.service";
 import { User } from "../../models/user.model";
+import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
 
 
 @Injectable()
 export class EventService {
-  events: Meetup[] = [];
+  private events: Meetup[] = [];
   private eventData;
+  private eventDBList: DBMeetup[];
   private user: User;
   private selfProfile: MeetupProfile;
 
   constructor(
     private meetupApi: MeetupRestApi,
     private authService: AuthService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private firebaseService: FirebaseService,
   ) {
     this.retrieveProfile('self')
       .then((profile) => {
@@ -168,5 +171,18 @@ export class EventService {
           resolve([...rsvps]);
         }, (err) => reject(err));
     });
+  }
+
+  retrieveEventDBList(): Promise<any> {
+    return this.firebaseService.getMeetupList().then((data) => {
+      let list = data as DBMeetup[];
+      console.log(list);
+      this.eventDBList = list;
+      return list;
+    });
+  }
+
+  getEventDBList(): DBMeetup[] {
+    return this.eventDBList;
   }
 }

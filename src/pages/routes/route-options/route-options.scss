@@ -1,0 +1,23 @@
+page-route-options {
+
+  .name-row {
+    font-size: medium;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .time-row {
+    font-size: small;
+    font-weight: bold;
+    color: #60646B;
+  }
+
+  .options-title {
+    text-align: center;
+    font-size: large;
+    color: blue;
+    padding-top: 2rem;
+  }
+}
