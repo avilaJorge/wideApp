@@ -7,7 +7,16 @@ import {
   NavParams,
   ToastController
 } from 'ionic-angular';
-import { Meetup, MeetupComment, MeetupMember, MeetupProfile, MeetupRSVP, Response, rsvp_status } from "../meetup.model";
+import {
+  DBMeetup,
+  Meetup,
+  MeetupComment,
+  MeetupMember,
+  MeetupProfile,
+  MeetupRSVP,
+  Response,
+  rsvp_status
+} from "../meetup.model";
 import { Calendar } from "@ionic-native/calendar";
 import { LaunchNavigator, LaunchNavigatorOptions } from "@ionic-native/launch-navigator";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -15,6 +24,17 @@ import { AuthService } from "../../../providers/auth/auth.service";
 import { User } from "../../../models/user.model";
 import { MeetupRestApi } from "../../../providers";
 import { EventService } from "../events.service";
+
+const initial_meetup_db_data: DBMeetup = {
+  id: '',
+  name: '',
+  status: '',
+  time: 0,
+  duration: 0,
+  date_str: '',
+  time_str: '',
+  route: null
+};
 
 /**
  * Generated class for the EventDetailPage page.
@@ -55,6 +75,7 @@ export class EventDetailPage {
   public rsvpString: string;
   public guestCount: number = 0;
   public hosts: MeetupRSVP[] = [];
+  public db_meetup_data: DBMeetup = initial_meetup_db_data;
 
   constructor(
     public navCtrl: NavController,
@@ -110,9 +131,13 @@ export class EventDetailPage {
             this.hosts.push(this.rsvpList[this.rsvpList.length-1]);
           }
         }
-        load.dismiss();
         console.log(this.rsvpList);
-      });
+        return this.eventService.getRouteLinkedWithEvent(this.event.id);
+      }).then((data: DBMeetup) => {
+        console.log(data);
+        this.db_meetup_data = data;
+        load.dismiss();
+    });
 
   }
 

@@ -1,10 +1,12 @@
 $rsvp-button-radius: 50px;
 
 page-event-detail {
-  //agm-map {
-  //  height: 200px;
-  //  width: 100%;
-  //}
+
+  agm-map {
+    height: 200px;
+    width: 100%;
+  }
+
   .map-image-container {
     height: 200px;
     width: 100%;
@@ -96,7 +98,7 @@ page-event-detail {
 
   }
 
-  .comments-title {
+  .comments-title, .where-text, .route-text {
     padding-left: 2rem;
   }
 

@@ -6,6 +6,7 @@ import { } from 'googlemaps';
 
 import { RouteService } from "./routes.service";
 import { Route } from "./route.model";
+import { EventService } from "../events/events.service";
 
 /**
  * Generated class for the RoutesPage page.
@@ -32,7 +33,8 @@ export class RoutesPage {
     private routeService: RouteService,
     private loadingCtrl: LoadingController,
     private mapsAPILoader: MapsAPILoader,
-    private ngZone: NgZone)
+    private ngZone: NgZone,
+    private eventService: EventService)
   {
 
     // create search FormControl
@@ -67,6 +69,12 @@ export class RoutesPage {
 
     this.setCurrentPosition();
     this.updateRoutes();
+  }
+
+  ionViewWillEnter() {
+    this.eventService.retrieveEventDBList().then((data) => {
+      console.log('The evenDBList contains ', data);
+    });
   }
 
   private updateRoutes() {

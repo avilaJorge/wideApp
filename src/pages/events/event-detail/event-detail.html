@@ -142,10 +142,20 @@
   <!--<agm-map [zoom]="mapOptions.zoom" [latitude]="event.venue.lat" [longitude]="event.venue.lon">-->
     <!--<agm-marker [latitude]="event.venue.lat" [longitude]="event.venue.lon"></agm-marker>-->
   <!--</agm-map>-->
+  <h6 *ngIf="event.venue" class="where-text">Where to meet</h6>
   <div *ngIf="event.venue"
     class="map-image-container"
     [style.background-image]="safeMapSrcStyle"
     (click)="onAddrClick()"></div>
+
+  <h6 *ngIf="db_meetup_data.route" class="route-text">Route Information</h6>
+  <agm-map
+    *ngIf="db_meetup_data.route"
+    [latitude]="db_meetup_data.route.start_lat"
+    [longitude]="db_meetup_data.route.start_lng"
+    [zoom]="13">
+    <agm-kml-layer [url]="db_meetup_data.route.kml_url"></agm-kml-layer>
+  </agm-map>
 
   <h6 class="comments-title">Comments</h6>
   <div>

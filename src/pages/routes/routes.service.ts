@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Route, RouteMetaData } from "./route.model";
+import { MeetupRouteDB, Route, RouteMetaData } from "./route.model";
 import { UARestApi } from "../../providers/ua-rest-api/ua-rest-api";
 import { Settings } from "../../providers/settings/settings";
+import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
+import { DBMeetup } from "../events/meetup.model";
 
 @Injectable()
 export class RouteService {
@@ -12,6 +14,7 @@ export class RouteService {
   constructor(
     private api: UARestApi,
     private settings: Settings,
+    private firebaseService: FirebaseService
   ) {
     this.settings.getValue('lastCoords').then((value) => {
       if (value) {
@@ -92,5 +95,13 @@ export class RouteService {
     this.settings.setValue('routes', null).then((data) => {
       console.log("routes data in local storage is now ", data);
     });
+  }
+
+  linkRouteWithMeetup(meetup_data: DBMeetup, route_data: MeetupRouteDB): Promise<any> {
+    return this.firebaseService.storeRouteInMeetupDB(meetup_data, route_data)
+      .then((response) => {
+        console.log(response);
+        console.log('This route was successfully added to Meetup ', meetup_data.id, ' ', meetup_data.name);
+      });
   }
 }
