@@ -24,6 +24,8 @@ import { AuthService } from "../../../providers/auth/auth.service";
 import { User } from "../../../models/user.model";
 import { MeetupRestApi } from "../../../providers";
 import { EventService } from "../events.service";
+import { inches_in_mile } from "../../routes/route.model";
+import { Settings } from "../../../providers/settings/settings";
 
 const initial_meetup_db_data: DBMeetup = {
   id: '',
@@ -76,6 +78,8 @@ export class EventDetailPage {
   public guestCount: number = 0;
   public hosts: MeetupRSVP[] = [];
   public db_meetup_data: DBMeetup = initial_meetup_db_data;
+  public stride: number = 0.0;
+  public steps: number = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -89,6 +93,7 @@ export class EventDetailPage {
     private eventService: EventService,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
+    private settings: Settings,
   ) {
 
     let load = this.loadingCtrl.create();
@@ -136,8 +141,17 @@ export class EventDetailPage {
       }).then((data: DBMeetup) => {
         console.log(data);
         this.db_meetup_data = data;
+        if (this.db_meetup_data.route) {
+          this.settings.getValue('stride').then((stride) => {
+            if (stride > 0) {
+              this.stride = stride;
+              this.steps = (this.db_meetup_data.route.dist * inches_in_mile) / this.stride;
+            }
+          });
+        }
         load.dismiss();
     });
+
 
   }
 
@@ -171,7 +185,7 @@ export class EventDetailPage {
   ionViewWillEnter() {
     console.log('ionViewWillEnter EventDetailPage');
     this.user = this.authService.getActiveUser();
-    this.eventService.getEventComments(this.event.id)
+    this.eventService.getEventComments(this.event.id, this.event.eventName)
       .then((comments) => {
         this.comments = comments;
         console.log(comments);

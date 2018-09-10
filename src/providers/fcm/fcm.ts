@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Firebase } from '@ionic-native/firebase';
 import { Platform } from 'ionic-angular';
 import { AngularFirestore } from "angularfire2/firestore";
+import { MeetupRestApi } from "..";
 
 /*
   Generated class for the FcmProvider provider.
@@ -12,6 +13,8 @@ import { AngularFirestore } from "angularfire2/firestore";
 */
 @Injectable()
 export class FCM {
+
+  private token: string = null;
 
   constructor(
     public http: HttpClient,
@@ -45,6 +48,7 @@ export class FCM {
       const perm = await this.firebaseNative.grantPermission();
     }
 
+    this.token = token;
 
     return this.saveTokenToFirestore(token, userId);
   }
@@ -55,15 +59,37 @@ export class FCM {
 
     const devicesRef = this.afs.collection('devices');
 
+
+
     const docData = {
       token,
       userId: userId
     };
 
-    return devicesRef.doc(token).set(docData);
+    return devicesRef.doc(token).set(docData, {merge: true});
   }
 
   listenToNotifications() {
     return this.firebaseNative.onNotificationOpen();
+  }
+
+  storeMeetupId(meetup_id: string, meetup_name: string): Promise<boolean> {
+    return new Promise<any>((resolve, reject) => {
+      console.log(this.token);
+      if (!this.token) {
+        resolve(false);
+      }
+      const data = {
+        meetup_id: meetup_id,
+        meetup_name: meetup_name
+      };
+      this.afs.collection('devices').doc(this.token).set(data, {merge: true})
+        .then(() => {
+          resolve(true);
+        }).catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
   }
 }
