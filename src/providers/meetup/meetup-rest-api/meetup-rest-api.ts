@@ -76,10 +76,11 @@ export class MeetupRestApi {
       .then(response => response.data as Meetup[]);
   }
 
-  getEventComments(eventId: string): Promise<any> {
+  getEventComments(eventId: string, eventName: string): Promise<any> {
     const options = {
       params: new HttpParams()
         .set('group', this.group)
+        .set('event_name', eventName)
         .set('eventId', eventId)
         .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
     }

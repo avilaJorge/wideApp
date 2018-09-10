@@ -185,7 +185,7 @@ export class EventDetailPage {
   ionViewWillEnter() {
     console.log('ionViewWillEnter EventDetailPage');
     this.user = this.authService.getActiveUser();
-    this.eventService.getEventComments(this.event.id)
+    this.eventService.getEventComments(this.event.id, this.event.eventName)
       .then((comments) => {
         this.comments = comments;
         console.log(comments);

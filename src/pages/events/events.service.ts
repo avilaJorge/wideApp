@@ -102,9 +102,9 @@ export class EventService {
     this.events[index].yesRSVPCount = yesRSVPCount;
   }
 
-  getEventComments(eventId: string): Promise<any> {
+  getEventComments(eventId: string, eventName: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
-      this.meetupApi.getEventComments(eventId)
+      this.meetupApi.getEventComments(eventId, eventName)
         .then((res) => {
           console.log(res);
           let data = JSON.parse(res.body);
