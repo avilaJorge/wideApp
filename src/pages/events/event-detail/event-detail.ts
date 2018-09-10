@@ -141,19 +141,14 @@ export class EventDetailPage {
       }).then((data: DBMeetup) => {
         console.log(data);
         this.db_meetup_data = data;
-        this.settings.getValue('stride').then((stride) => {
-          if (stride > 0) {
-            this.stride = stride;
-            this.steps = (this.db_meetup_data.route.dist * inches_in_mile) / this.stride;
-          } else {
-            let toast = this.toastCtrl.create({
-              message: "Update your stride length in the Account tab to get approximate steps for this route.",
-              duration: 3000,
-              position: 'bottom'
-            });
-            toast.present();
-          }
-        });
+        if (this.db_meetup_data.route) {
+          this.settings.getValue('stride').then((stride) => {
+            if (stride > 0) {
+              this.stride = stride;
+              this.steps = (this.db_meetup_data.route.dist * inches_in_mile) / this.stride;
+            }
+          });
+        }
         load.dismiss();
     });
 
