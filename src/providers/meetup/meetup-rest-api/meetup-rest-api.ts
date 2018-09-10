@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { backendURL } from "../../../environment/environment";
 import { Meetup } from "../../../pages/events/meetup.model";
 import { AuthService } from "../../auth/auth.service";
+import { FCM } from "../../fcm/fcm";
 
 /*
   Generated class for the MeetupRestApi provider.
@@ -39,8 +40,19 @@ export class MeetupRestApi {
 
   constructor(
     public http: HttpClient,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private fcm: FCM)
+  {
     console.log('Hello MeetupDataProvider Provider');
+    if (this.authService.getActiveUser().isMeetupAuthenticated) {
+      this.getMinProfile('self', 'id,name')
+        .then((response) => {
+          console.log(response);
+          this.fcm.storeMeetupId(response.id, response.name).then((success) => {
+            console.log('Meetup data was successfully stored in devices collection ', success);
+          });
+        });
+    }
   }
 
   // get(endpoint: string, params?: any, reqOpts?: any) {
@@ -111,6 +123,20 @@ export class MeetupRestApi {
         .set('group', this.group)
     };
     return this.http.get<any>(this.redirectURI + 'meetup/profile', httpOptions)
+      .toPromise()
+      .then(response => JSON.parse(response.body));
+  }
+
+  getMinProfile(memberId: any, only: string): Promise<any> {
+    const httpOptions = {
+      headers: this.getHeader(),
+      params: new HttpParams()
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('memberId', memberId)
+        .set('group', this.group)
+        .set('only', only)
+    };
+    return this.http.get<any>(this.redirectURI + 'meetup/profile/minimal', httpOptions)
       .toPromise()
       .then(response => JSON.parse(response.body));
   }

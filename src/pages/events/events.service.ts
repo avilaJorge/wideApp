@@ -14,7 +14,7 @@ export class EventService {
   private eventData;
   private eventDBList: DBMeetup[];
   private user: User;
-  private selfProfile: MeetupProfile;
+  private selfProfile: MeetupProfile = null;
 
   constructor(
     private meetupApi: MeetupRestApi,

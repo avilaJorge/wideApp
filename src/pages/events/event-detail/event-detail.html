@@ -149,6 +149,28 @@
     (click)="onAddrClick()"></div>
 
   <h6 *ngIf="db_meetup_data.route" class="route-text">Route Information</h6>
+  <ion-grid *ngIf="db_meetup_data.route">
+    <ion-row>
+      <ion-col col-6 class="left-col" no-padding>
+        <ion-row><ion-col class="distance-text">Distance</ion-col></ion-row>
+        <ion-row><ion-col class="distance-data">{{ db_meetup_data.route.dist | number: '1.0-2' }} mi</ion-col></ion-row>
+        <ion-row><ion-col class="gain-text">Gain</ion-col></ion-row>
+        <ion-row><ion-col class="gain-data">{{ db_meetup_data.route.gain | number: '1.0-0' }} ft</ion-col></ion-row>
+      </ion-col>
+      <ion-col col-6 no-padding>
+        <ion-row><ion-col class="max-text">Max Elevation</ion-col></ion-row>
+        <ion-row><ion-col class="max-data">{{ db_meetup_data.route.max_elevation }} ft</ion-col></ion-row>
+        <ion-row><ion-col class="min-text">Min Elevation</ion-col></ion-row>
+        <ion-row><ion-col class="min-data">{{ db_meetup_data.route.min_elevation }} ft</ion-col></ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="stride > 0">
+      <ion-col class="steps-col" no-padding>
+        <ion-row><ion-col class="step-text">Steps</ion-col></ion-row>
+        <ion-row><ion-col class="step-data">{{ steps | number: '1.0-0' }}</ion-col></ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <agm-map
     *ngIf="db_meetup_data.route"
     [latitude]="db_meetup_data.route.start_lat"

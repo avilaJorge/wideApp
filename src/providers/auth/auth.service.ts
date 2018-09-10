@@ -11,6 +11,7 @@ import { Settings } from "../settings/settings";
 import { FirebaseService } from "../firebase/firebase-integration.service";
 import { backendURL } from "../../environment/environment";
 import { FCM } from "../fcm/fcm";
+import { MeetupRestApi } from "..";
 
 @Injectable()
 export class AuthService {
@@ -36,7 +37,7 @@ export class AuthService {
           this.settings.setValue('token', token);
         });
         this.dbGetUser(user.uid)
-          .subscribe((dbUser) => {
+          .then((dbUser) => {
             console.log("OnAuthStateChanged called!");
             console.log('User data was retrieved from Firebase');
             console.log(dbUser);
@@ -110,7 +111,7 @@ export class AuthService {
           this.token = token;
           if (token) {
             this.dbGetUser(data.user.uid)
-              .subscribe((dbUser) => {
+              .then((dbUser) => {
                 console.log(dbUser);
                 console.log('User data was retrieved from Firebase');
                 this.currentlyLoggedInUser = dbUser;
@@ -214,7 +215,7 @@ export class AuthService {
     });
   }
 
-  dbGetUser(userId: string): Observable<any> {
+  dbGetUser(userId: string): Promise<any> {
     return this.firebaseService.getUser(userId);
   }
 

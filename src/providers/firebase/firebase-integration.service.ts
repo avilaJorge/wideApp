@@ -152,7 +152,9 @@ export class FirebaseService {
   }
 
   getUser(userId: string) {
-    return this.afs.collection('/users').doc(userId).valueChanges().pipe(take(1));
+    return this.afs.collection('/users').doc(userId).valueChanges().pipe(take(1))
+      .toPromise()
+      .then(data => data);
   }
 
   getMeetupIntegrationResult(userId: string): Observable<any> {
