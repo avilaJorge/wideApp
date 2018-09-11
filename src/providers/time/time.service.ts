@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-
 import { EntryDate } from "../../models/step-log.model";
+import * as moment from 'moment';
 
 export const sevenDayLimit: number = 7;
-export const totalDaysInLog: number = 91;
 export const thirtyDayLimit: number = 30;
 export const monthDateIndex: number = 5;
 export const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
@@ -20,67 +19,76 @@ export const fullDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursda
 export class TimeService {
 
   private dates: string[] = [];
-  private thirtyDates
+  private totalDaysInLog: number = 91;
   constructor() {
+    this.generateDates();
+  }
 
-    const today = new Date(Date.now());
-    let i = totalDaysInLog - 1;
+  generateDates() {
+    let i = this.totalDaysInLog - 1;
     while(i >= 0) {
-      const date = new Date();
-      date.setDate(today.getDate() - i);
-      this.dates.push(date.toISOString().substring(0,10));
+      // calling moment creates a moment object with todays date.
+      this.dates.push(moment().subtract(i, 'days').format('YYYY-MM-DD'));
       i--;
     }
     console.log(this.dates);
   }
 
-  getDates(): string[] {
+  getDates(startDate?: string): string[] {
+    if (startDate) {
+      let daysSinceFirstLog = moment().diff(startDate, 'days');
+      if (daysSinceFirstLog > this.totalDaysInLog) {
+        this.totalDaysInLog = daysSinceFirstLog;
+        this.generateDates();
+      }
+    }
     return [...this.dates];
   }
 
-
-  getEntryDate(dateStr: string): EntryDate {
-    const monthNum = parseInt(dateStr.substring(5,7), 10);
-    let entryDate: EntryDate = {
-      rawDate: dateStr,
-      month: monthNames[monthNum - 1],
-      monthNum: monthNum,
-      day: parseInt(dateStr.substring(8, 10), 10),
-      year: parseInt(dateStr.substring(0, 4), 10)
-    };
-    return entryDate;
-  }
-
-  // The return must be converted to ISO string for correct time.
-  getTodayUTC(): Date {
-    let tzoffset = (new Date()).getTimezoneOffset() * 60000;
-    return (new Date(Date.now()-tzoffset));
-  }
-
   getYesterdayStr(): string {
-    let yesterday = new Date(this.getTodayUTC().getTime() - (24 * 60 * 60000));
-    return yesterday.toISOString().substring(0,10);
+    return moment().subtract(1, 'days').format('YYYY-MM-DD');
   }
 
   getTodayStr(): string {
-    let dateStr = this.getTodayUTC().toISOString();
-    return dateStr.substring(0,10);
+    return moment().format('YYYY-MM-DD');
   }
 
-  getDateStr(date: EntryDate): string {
+  // date parameter must be in YYYY-MM-DD format
+  getDateStr(date: string): string {
     const today = this.getTodayStr();
     console.log(today);
     console.log(date);
-    if (today === date.rawDate) {
+    if (today === date) {
       return 'Today';
     }
     const yesterday = this.getYesterdayStr();
-    if (yesterday === date.rawDate) {
+    if (yesterday === date) {
       return 'Yesterday';
     }
-    const str = fullMonthNames[date.monthNum-1] + ' ' + date.day + ', ' + date.year;
+    let currYear: number = moment().year();
+    let momObj = moment(date);
+    let str: string = '';
+    if (currYear === momObj.year()) {
+      str = momObj.format('ddd, MMM Do');
+    } else {
+      str = momObj.format("ddd, MMM Do YYYY");
+    }
     return str;
   }
 
+
+  getDateInfo(date: string): {day: number, month: number, year: number, shortMonthStr: string,
+    shortDayStr: string, dayOfMonthStr: string} {
+    let dateObj = moment(date);
+    let returnDate = {
+      day: dateObj.date(),
+      month: dateObj.month()+1,
+      year: dateObj.year(),
+      shortMonthStr: dateObj.format('MMM'),
+      shortDayStr: dateObj.format('ddd'),
+      dayOfMonthStr: dateObj.format('do')
+    };
+    return returnDate;
+  }
 
 }

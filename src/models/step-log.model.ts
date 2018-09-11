@@ -8,7 +8,7 @@ export class EntryDate {
 
 export class StepEntry {
 
-  date: EntryDate;
+  date: string;
   steps: number;
   note: string;
   goal: number;

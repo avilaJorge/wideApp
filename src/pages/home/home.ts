@@ -7,7 +7,7 @@ import { monthDateIndex, TimeService } from "../../providers/time/time.service";
 import { Settings } from "../../providers/settings/settings";
 import { LogService } from "../../providers/logs/logs.service";
 import { Subscription } from "rxjs";
-import { LogEntryPage } from "../log-entry/log-entry";
+import { LogEntryPage } from "./log-entry/log-entry";
 
 export const hoverColor: string = 'rgb(0, 0, 255)';
 export const barColor: string = '#00affb';
@@ -51,9 +51,7 @@ export class HomePage {
   private currDate: string;
   private isCurrEntryToday: boolean = true;
   private todaysDate: string;
-  private log: StepEntry[] = [];
   private fullLog: {date: string, data: StepEntry}[] = [];
-  private initLogSub: Subscription;
 
   constructor(
     private modalCtrl: ModalController,
@@ -69,45 +67,17 @@ export class HomePage {
 
 
   ionViewDidLoad() {
-
-    this.log = this.logService.getLog();
-    this.fullLog = this.logService.getThirtyDatesData();
+    this.fullLog = this.logService.getDatesData();
     this.current = this.currEntry.data.steps;
     this.max = this.currEntry.data.goal;
-    this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+    this.currDate = this.timeService.getDateStr(this.currEntry.date);
     this.createBarChart();
-
-    // this.settings.getValue('log').then((log) => {
-    //   if(log) {
-    //     console.log(log);
-    //     this.log = JSON.parse(log);
-    //     if (this.log.length > 0) {
-    //       this.initChartData();
-    //       this.createBarChart();
-    //       console.log(this.log);
-    //     }
-    //   }
-    // });
-    // this.initFullLog();
-
-
     console.log('ionViewDidLoad HomePage');
   }
 
   ionViewWillEnter() {
-    // this.fullLog = this.logService.getThirtyDatesData();
-    // this.settings.getValue('log').then((log) => {
-    //   if(log) {
-    //     console.log(log);
-    //     this.log = JSON.parse(log);
-    //   }
-    // });
-    // this.initFullLog();
     this.currEntry = this.logService.getNextEntry(0);
     this.todaysDate = this.timeService.getTodayStr();
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Todays date is: ' + this.todaysDate + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Todays date is: ' + this.timeService.getTodayUTC().toISOString() + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-    console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Yesterdays date is: ' +  (new Date(this.timeService.getTodayUTC().getTime() - (24 * 60 * 60000))).toISOString()  + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
   }
 
   initFullLog() {
@@ -119,22 +89,6 @@ export class HomePage {
         console.log(this.fullLog);
       }
     });
-  }
-
-
-  initChartData() {
-    console.log(this.log);
-    //let i = this.log.length >= sevenDayLimit ? this.log.length - sevenDayLimit : 0;
-    //while(i < this.log.length) {
-    let i = 0;
-    while(i < 1) {
-      this.chartLabels.push(this.log[i].date.rawDate.substring(monthDateIndex));
-      this.chartValues.push(this.log[i].steps);
-      this.barColors.push(barColor);
-      this.hoverColors.push(hoverColor);
-      this.chartGoals.push(this.log[i].goal);
-      i++;
-    }
   }
 
   createBarChart() {

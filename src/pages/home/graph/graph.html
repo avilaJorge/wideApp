@@ -25,7 +25,7 @@
       <ion-grid>
         <ion-row class="content-row">
           <ion-col col-3 class="entry-date">
-            {{entry.data.date.month}} {{entry.data.date.day}}
+            {{entry.dateStr}}
           </ion-col>
           <ion-col col-2 class="goal-met">
             <ion-icon *ngIf="entry.data.steps >= entry.data.goal && entry.data.steps > 0" name="star"></ion-icon>

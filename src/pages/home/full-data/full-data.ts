@@ -38,8 +38,7 @@ export class FullDataPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad FullDataPage');
-    this.log = this.logService.getLog();
-    this.fullLog = this.logService.getThirtyDatesData();
+    this.fullLog = this.logService.getDatesData();
     this.initChartData();
     this.createBarChart();
   }
@@ -49,7 +48,7 @@ export class FullDataPage {
     console.log(this.fullLog);
     let i = 0;
     while(i < this.fullLog.length) {
-      this.chartLabels.push(this.fullLog[i].data.date.rawDate.substring(monthDateIndex));
+      this.chartLabels.push(this.fullLog[i].data.date.substring(monthDateIndex));
       this.chartValues.push({x: i, y: this.fullLog[i].data.steps});
       this.barColors.push(barColor);
       this.hoverColors.push(hoverColor);

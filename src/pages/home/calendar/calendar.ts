@@ -38,7 +38,7 @@ export class CalendarPage {
 
   initCalendarData() {
     this.currentDate = this.timeService.getTodayStr();
-    let logData = this.logService.getThirtyDatesData();
+    let logData = this.logService.getDatesData();
     let startIndex = this.logService.findTodayIndex();
     let i = startIndex - thirtyDayLimit + 1;
     // Continue decrementing i until we reach Sunday.
