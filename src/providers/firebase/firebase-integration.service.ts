@@ -153,6 +153,10 @@ export class FirebaseService {
     });
   }
 
+  updateUserStrideLength(stride: number) {
+
+  }
+
   getUser(userId: string) {
     return this.afs.collection('/users').doc(userId).valueChanges().pipe(take(1))
       .toPromise()

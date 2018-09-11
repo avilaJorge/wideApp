@@ -36,9 +36,7 @@ export class MyApp {
         console.log(isAuth);
         if (isAuth) {
           console.log("IsAuth");
-          // if (data.full_log) {
-          // TODO: Change this back to the above code.
-          if (isAuth) {
+          if (data.full_log) {
             console.log("We have a full log in settings");
             this.logService.setFullLog(JSON.parse(data.full_log), data.user.googleUID).then(() => {
               console.log('MAde it into the setting of rootpage');
