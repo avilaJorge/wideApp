@@ -38,7 +38,7 @@ export class MyApp {
           console.log("IsAuth");
           if (data.full_log) {
             console.log("We have a full log in settings");
-            this.logService.setFullLog(JSON.parse(data.full_log)).then(() => {
+            this.logService.setFullLog(JSON.parse(data.full_log), data.user.googleUID).then(() => {
               console.log('MAde it into the setting of rootpage');
               this.root = MainPage;
               this.statusBar.styleDefault();
@@ -47,7 +47,8 @@ export class MyApp {
           } else {
             console.log('Preparing to initialize the Users log');
             console.log(this.authService.getActiveUser());
-            this.logService.initializeUserLog(data.userId)
+            console.log(data);
+            this.logService.initializeUserLog(data.user.googleUID)
               .then(() => {
                 this.root = MainPage;
                 this.statusBar.styleDefault();

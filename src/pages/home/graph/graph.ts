@@ -30,7 +30,7 @@ export class GraphPage {
   private chartLabels: any = [];
   private chartValues: number[] = [];
   private chartGoals: number[] = [];
-  private fullChartData: {date: string, data: StepEntry}[] = [];
+  private fullChartData: {dateStr: string, date: string, data: StepEntry}[] = [];
   private todayIndex: number = 0;
 
 
@@ -57,7 +57,7 @@ export class GraphPage {
 
 
   initChartData() {
-    let logData = this.logService.getThirtyDatesData();
+    let logData = this.logService.getDatesData();
     // Find today
     let todayStr = this.timeService.getTodayStr();
     let i = logData.length - 1;
@@ -71,29 +71,37 @@ export class GraphPage {
 
     i = this.todayIndex - sevenDayLimit + 1;
     while(i <= this.todayIndex) {
-      if (i == this.todayIndex) {
-        this.chartLabels.push('Today');
-      } else {
-        this.chartLabels.push(logData[i].data.date.monthNum + '/' + logData[i].data.date.day);
-      }
+      let dateStrings = this.getDateStr(i, logData[i].date);
+      this.chartLabels.push(dateStrings.chartLabel);
+      this.fullChartData.push(Object.assign({dateStr: dateStrings.dateStr}, logData[i]));
       this.chartValues.push(logData[i].data.steps);
       this.chartGoals.push(logData[i].data.goal);
-      this.fullChartData.push(logData[i]);
       i++;
     }
-    console.log(this.chartGoals);
+    console.log(this.fullChartData);
+  }
+
+  private getDateStr(dateIndex: number, dateStr: string): {dateStr: string, chartLabel: string } {
+    if (dateIndex === this.todayIndex) {
+      return {dateStr: 'Today', chartLabel: 'Today'};
+    }
+    let dateInfo = this.timeService.getDateInfo(dateStr);
+    return {
+      dateStr: dateInfo.shortMonthStr + ' ' + dateInfo.day,
+      chartLabel: dateInfo.day + '/' + dateInfo.month
+    };
   }
 
   updateChartData() {
     this.chartValues = [];
     this.chartGoals = [];
     this.fullChartData = [];
-    let logData = this.logService.getThirtyDatesData();
+    let logData = this.logService.getDatesData();
     let i = this.todayIndex - sevenDayLimit + 1;
     while(i <= this.todayIndex) {
       this.chartValues.push(logData[i].data.steps);
       this.chartGoals.push(logData[i].data.goal);
-      this.fullChartData.push(logData[i]);
+      this.fullChartData.push(Object.assign({dateStr: this.getDateStr(i, logData[i].date).dateStr}, logData[i]));
       i++;
     }
     this.barChartEl.data.datasets[0].data = this.chartGoals;
@@ -167,30 +175,30 @@ export class GraphPage {
     console.log(array);
     this.navCtrl.push('CalendarPage');
     // if (!array[0]) {
-    //   console.log('Graph was clicked!');
-    //   this.navCtrl.push('CalendarPage');
+    //   console.log('graph was clicked!');
+    //   this.navctrl.push('calendarpage');
     // } else {
-    //   console.log('Bar was clicked!');
+    //   console.log('bar was clicked!');
     //   console.log(array[1]._index);
     //   const index = array[0]._index;
-    //   console.log(this.fullChartData[index]);
-    //   let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.fullChartData[index]}, { cssClass: 'inset-modal' });
-    //   entryModal.onDidDismiss((data) => {
+    //   console.log(this.fullchartdata[index]);
+    //   let entrymodal = this.modalctrl.create('logentrypage', {entry: this.fullchartdata[index]}, { cssclass: 'inset-modal' });
+    //   entrymodal.ondiddismiss((data) => {
     //     if (data) {
-    //       console.log('Do something here with the data');
-    //       console.log(this.fullChartData[index]);
-    //       // Need to update the current graph page.
-    //       this.fullChartData[index].data.goal = data.data.goal;
-    //       this.fullChartData[index].data.groupWalk = data.data.groupWalk;
-    //       this.fullChartData[index].data.note = data.data.note;
-    //       this.fullChartData[index].data.steps = data.data.steps;
-    //       this.chartValues[index] = data.data.steps;
-    //       this.chartGoals[index] = data.data.goal;
-    //       this.barChartEl.update();
+    //       console.log('do something here with the data');
+    //       console.log(this.fullchartdata[index]);
+    //       // need to update the current graph page.
+    //       this.fullchartdata[index].data.goal = data.data.goal;
+    //       this.fullchartdata[index].data.groupwalk = data.data.groupwalk;
+    //       this.fullchartdata[index].data.note = data.data.note;
+    //       this.fullchartdata[index].data.steps = data.data.steps;
+    //       this.chartvalues[index] = data.data.steps;
+    //       this.chartgoals[index] = data.data.goal;
+    //       this.barchartel.update();
     //     }
     //     console.log(data);
     //   });
-    //   entryModal.present();
+    //   entrymodal.present();
     // }
 
     // let label = array[0]._model.label;
@@ -198,10 +206,10 @@ export class GraphPage {
     //   console.log(log);
     //   let i = log.length - 1;
     //   while(i >= 0) {
-    //     let str = log[i].data.date.monthNum + '/' + log[i].data.date.day;
+    //     let str = log[i].data.date.monthnum + '/' + log[i].data.date.day;
     //     if (str === label) {
-    //       this.clickedEntry = log[i];
-    //       console.log(this.clickedEntry);
+    //       this.clickedentry = log[i];
+    //       console.log(this.clickedentry);
     //       return;
     //     }
     //     i--;
@@ -209,7 +217,7 @@ export class GraphPage {
     //   return;
     // }
 
-  }
+  };
 
   dismiss() {
     this.viewCtrl.dismiss();

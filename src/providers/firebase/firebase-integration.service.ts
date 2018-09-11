@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Platform } from 'ionic-angular';
 import 'rxjs/add/operator/toPromise';
-import { AngularFirestore } from 'angularfire2/firestore';
+import { AngularFirestore, QuerySnapshot } from 'angularfire2/firestore';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
 import { StepEntry } from "../../models/step-log.model";
@@ -128,18 +128,20 @@ export class FirebaseService {
 
   createStepEntry(userId: string, stepEntry: StepEntry) {
     return new Promise<any>((resolve, reject) => {
-      this.afs.collection('/users').doc(userId).collection('/step-log').add({
-        stepEntry
-      })
-      .then(
+      this.afs.collection('/users').doc(userId).collection('/step-log').doc(stepEntry.date).set(stepEntry, {merge: true})
+        .then(() => {
+          const data = Object.assign({uid: userId}, stepEntry);
+          return this.afs.collection('step-entries').doc(userId + '-' + stepEntry.date).set(data, {merge: true})
+        })
+        .then(
         res => resolve(res),
           err => reject(err)
-      );
+        );
     });
   }
 
-  getStepLog(userId: string) {
-    return this.afs.collection('/users').doc(userId).collection('/step-log').valueChanges().pipe(take(1));
+  getStepLog(userId: string): Promise<QuerySnapshot<any>> {
+    return this.afs.collection('/users').doc(userId).collection('/step-log').ref.orderBy('date', 'asc').get()
   }
 
   createUser(user: User) {
@@ -149,6 +151,10 @@ export class FirebaseService {
           (res) => resolve(res),
           (err) => reject(err));
     });
+  }
+
+  updateUserStrideLength(stride: number) {
+
   }
 
   getUser(userId: string) {

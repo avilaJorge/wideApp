@@ -74,6 +74,7 @@
     "ionicons": "3.0.0",
     "meetup-api": "^1.4.32",
     "minimist": "^1.2.0",
+    "moment": "^2.22.2",
     "ng2-charts": "^1.6.0",
     "promise-polyfill": "^8.1.0",
     "rxjs": "^6.2.2",

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
-import { StepEntry } from "../../models/step-log.model";
-import { LogService } from "../../providers/logs/logs.service";
+import { StepEntry } from "../../../models/step-log.model";
+import { LogService } from "../../../providers/logs/logs.service";
 
 /**
  * Generated class for the LogEntryPage page.
@@ -34,7 +34,7 @@ export class LogEntryPage {
     let goal = this.entry.data.goal;
     if (goal === 0) {
 
-      let logData = this.logService.getThirtyDatesData();
+      let logData = this.logService.getDatesData();
       let i = logData.length - 1;
       while (i >= 0) {
         if (logData[i].data.goal > 0) {
@@ -69,20 +69,16 @@ export class LogEntryPage {
   }
 
   onSubmit() {
-    console.log(this.logEntry.value);
-    const note = this.logEntry.value.note;
-    const steps = this.logEntry.value.steps;
-    const goal = this.logEntry.value.goal;
-    const groupWalk = this.logEntry.value.groupWalk;
-    this.logService.updateEntry(this.entry.data.date, steps, goal, note, groupWalk);
+    const data = this.logEntry.value;
+    this.logService.updateEntry(data.date, data.steps, data.goal, data.note, data.groupWalk);
     this.viewCtrl.dismiss({
-      date: this.entry.date,
+      date: data.date,
       data: {
-        date: this.entry.data.date,
-        steps: steps,
-        goal: goal,
-        note: note,
-        groupWalk: groupWalk
+        date: data.date,
+        steps: data.steps,
+        goal: data.goal,
+        note: data.note,
+        groupWalk: data.groupWalk
       }
     });
   }

@@ -82,6 +82,7 @@ export class AccountPage {
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
+      console.log(v);
       this.settings.merge(this.form.value);
     });
   }
