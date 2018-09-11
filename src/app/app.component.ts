@@ -40,7 +40,7 @@ export class MyApp {
           // TODO: Change this back to the above code.
           if (isAuth) {
             console.log("We have a full log in settings");
-            this.logService.setFullLog(JSON.parse(data.full_log)).then(() => {
+            this.logService.setFullLog(JSON.parse(data.full_log), data.user.googleUID).then(() => {
               console.log('MAde it into the setting of rootpage');
               this.root = MainPage;
               this.statusBar.styleDefault();

@@ -41,29 +41,71 @@ export class LogService {
     console.log('the user id passed it initialize user log is ', userId);
     return new Promise((resolve, reject) => {
       if (userId) {
-        this.firebaseService.getStepLog(userId)
-          .then((querySnapshot) => {
-            this.logObjects = {};
-
-            querySnapshot.docs.forEach((queryDocSnapshot) => {
-              let entry = queryDocSnapshot.data();
-              console.log(entry);
-              if (!entry.groupWalk) {
-                entry.groupWalk = false;
-              }
-              this.logObjects[entry.date] = entry;
-            });
-            console.log(this.logObjects);
-            this.initLogData(this.logObjects, querySnapshot.docs[0].data().date);
+        this.getFirestoreLogData(userId)
+          .then((data) => {
+            console.log(data.logObjs);
+            this.initLogData(data.logObjs, data.startDate);
             resolve();
           }, (error) => {
-            console.log("Error getting user log from database!");
             console.log(error);
             reject(error);
           });
       } else {
-        reject(false);
+        reject("Error initializing user log");
       }
+    });
+  }
+
+  setFullLog(fullLog: any, userId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.datesData = [];
+      for (let i = 0; i < fullLog.length; i++) {
+        console.log(fullLog[i]);
+        this.datesData.push(fullLog[i]);
+      }
+      this.currEntryIndex = this.findTodayIndex();
+      this.isTodayCurrDay = true;
+      this.settings.setValue('full_log', JSON.stringify(this.datesData));
+      console.log(this.datesData);
+      resolve();
+      this.getFirestoreLogData(userId)
+        .then((data) => {
+          console.log(data.logObjs);
+          this.mergelocalAndDBData(data.logObjs);
+        }, (error) => {
+          console.log(error);
+        });
+    });
+  }
+
+  private mergelocalAndDBData(logObjs: any) {
+    this.datesData.forEach((entry) => {
+      if (logObjs[entry.date]) {
+        entry.data = logObjs[entry.date];
+      }
+    });
+  }
+
+  getFirestoreLogData(userId: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.firebaseService.getStepLog(userId)
+        .then((querySnapshot) => {
+          this.logObjects = {};
+
+          querySnapshot.docs.forEach((queryDocSnapshot) => {
+            let entry = queryDocSnapshot.data();
+            console.log(entry);
+            if (!entry.groupWalk) {
+              entry.groupWalk = false;
+            }
+            this.logObjects[entry.date] = entry;
+          });
+          resolve({logObjs: this.logObjects, startDate: querySnapshot.docs[0].data().date});
+        }, (error) => {
+          console.log("Error getting user log from database!");
+          console.log(error);
+          reject(error);
+        });
     });
   }
 
@@ -105,20 +147,6 @@ export class LogService {
     });
   }
 
-  setFullLog(fullLog): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.datesData = [];
-      for (let i = 0; i < fullLog.length; i++) {
-        console.log(fullLog[i]);
-        this.datesData.push(fullLog[i]);
-      }
-      this.currEntryIndex = this.findTodayIndex();
-      this.isTodayCurrDay = true;
-      console.log(this.datesData);
-      resolve();
-    });
-  }
-
   getDatesData() {
     return this.datesData;
   }
@@ -154,15 +182,14 @@ export class LogService {
       i--;
     }
 
-    const day_diff = moment().diff(this.datesData[this.datesData.length-1].date, 'days');
+    let day_diff = moment().diff(this.datesData[this.datesData.length-1].date, 'days') - 1;
     console.log(day_diff);
     while(day_diff >= 0) {
       let dateStr = moment().subtract(day_diff, 'days').format('YYYY-MM-DD');
       console.log(dateStr);
       this.datesData.push({date: dateStr, data: {date: dateStr, steps: 0, goal: 0, note: '', groupWalk: false}});
+      day_diff--;
     }
     return this.datesData.length - 1;
   }
-
-
 }
