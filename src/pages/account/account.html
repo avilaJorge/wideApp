@@ -63,10 +63,25 @@
   <div *ngIf="isAuthenticated">
     <h4 text-center>Hello {{ user.userName }}!</h4>
   </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col col-6>
+        <preload-image class="fitbit-logo-img" [ratio]="{w:1, h:1}" [src]="fitbit_logo_url" title="fitbit logo"></preload-image>
+      </ion-col>
+      <ion-col col-6>
+        <button
+          ion-button
+          class="fitbit-button"
+          (click)="onIntegrateFitbit()"
+        >Integrate Fitbit</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <button
     ion-button
     class="meetup-integrate"
     block
     color="primary"
-    (click)="onMeetupIntegrate()">Integrate Meetup</button>
+    (click)="onIntegrateMeetup()">Integrate Meetup</button>
 </ion-content>

@@ -7,7 +7,7 @@ import { AuthService } from "../../providers/auth/auth.service";
 import { Settings } from "../../providers/settings/settings";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { InAppBrowser } from "@ionic-native/in-app-browser";
-import { backendURL, meetupConfig } from "../../environment/environment";
+import { backendURL, fitbitConfig, meetupConfig } from "../../environment/environment";
 import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
 
 /**
@@ -28,10 +28,14 @@ export class AccountPage {
   private authStatusSub: Subscription;
   private user: User;
   private state: string = '';
-  private scope = '&scope=ageless+event_management+group_join+rsvp+group_content_edit';
-  private redirectURI = backendURL + 'app/auth/meetup';
-  private meetupAuthURL: string = meetupConfig.authorize_uri + '?client_id=' +
-    meetupConfig.client_id + '&response_type=code&redirect_uri=' + this.redirectURI + this.scope;
+
+  private meetupAuthURL: string = meetupConfig.authorize_uri +
+    '?client_id=' + meetupConfig.client_id +
+    '&response_type=code&redirect_uri=' +
+    backendURL + 'app/auth/meetup' +
+    meetupConfig.auth_scope;
+
+  private fitbit_logo_url: string = 'assets/imgs/fitbit/logo/Fitbit_logo_RGB.png';
 
   // Our local settings object
   options: any;
@@ -89,7 +93,6 @@ export class AccountPage {
     this.isAuthenticated = this.authService.isAuth;
     this.user = this.authService.getActiveUser();
     this.state = this.user.googleUID;
-    this.meetupAuthURL += '&state=' + this.state;
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
         console.log('AuthStatusSub called in AccountPage');
@@ -132,18 +135,14 @@ export class AccountPage {
     this.authStatusSub.unsubscribe();
   }
 
-
-  // TODO: This should be done in the meetup-rest-api service.
-  onMeetupIntegrate() {
-    console.log(this.meetupAuthURL);
-    const browser = this.iab.create(this.meetupAuthURL, '_system');
+  onIntegrateMeetup() {
+    const browser = this.iab.create(this.meetupAuthURL + '&state=' + this.state, '_system');
     const load = this.loadingCtrl.create({
       content: 'Integrating with Meetup ...'
     });
     load.present();
     const fbSub = this.firebaseService.getMeetupIntegrationResult(this.user.googleUID)
       .subscribe((data) => {
-        console.log(data);
         console.log(data.payload.data());
         const userData = data.payload.data();
         if (userData.isMeetupAuthenticated) {
@@ -156,5 +155,26 @@ export class AccountPage {
         console.log(error);
       });
 
+  }
+
+  onIntegrateFitbit() {
+    const browser = this.iab.create(fitbitConfig.user_auth_url + '&state=' + this.state, '_system');
+    const load = this.loadingCtrl.create({
+      content: 'Integrating with Fitbit ...'
+    });
+    load.present();
+    const fbSub = this.firebaseService.getFitbitIntegrationResult(this.user.googleUID)
+      .subscribe((data) => {
+        console.log(data.payload.data());
+        const userData = data.payload.data();
+        if (userData.isFitbitAuthenticated) {
+          load.dismiss();
+          this.user = userData;
+          this.authService.saveAuthData(this.authService.getToken(), userData);
+          fbSub.unsubscribe();
+        }
+      }, (error) => {
+        console.log(error);
+      });
   }
 }

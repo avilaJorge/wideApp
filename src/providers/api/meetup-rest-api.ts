@@ -159,6 +159,7 @@ export class MeetupRestApi {
     return new HttpHeaders()
       .set('Authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken);
   }
+
   //getGroups() {
   //  //let resp_val = this.get(this.endpoints.find_groups, this.test_params, this.test_opts);
   //  let resp_val = this.get(this.endpoints.find_groups, this.group_params);
