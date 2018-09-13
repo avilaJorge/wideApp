@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MeetupRouteDB, Route, RouteMetaData } from "./route.model";
-import { UARestApi } from "../../providers/ua-rest-api/ua-rest-api";
+import { UARestApi } from "../../providers/api/ua-rest-api";
 import { Settings } from "../../providers/settings/settings";
 import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
 import { DBMeetup } from "../events/meetup.model";

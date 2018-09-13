@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { backendURL } from "../../../environment/environment";
-import { Meetup } from "../../../pages/events/meetup.model";
-import { AuthService } from "../../auth/auth.service";
-import { FCM } from "../../fcm/fcm";
+import { backendURL, meetupConfig } from "../../environment/environment";
+import { Meetup } from "../../pages/events/meetup.model";
+import { AuthService } from "../auth/auth.service";
+import { FCM } from "../fcm/fcm";
 
 /*
   Generated class for the MeetupRestApi provider.
@@ -13,30 +13,10 @@ import { FCM } from "../../fcm/fcm";
 */
 @Injectable()
 export class MeetupRestApi {
-  url: string = 'https://api.meetup.com/';
+  url: string = meetupConfig.api_url;
   // group: string = 'San-Diegos-plan2BFIT-Walking-Group';
   group: string = 'Meetup-API-Testing';
-  sig_id: string = '87508102';
-  sig: string = '84ea88d6b8b31e9d8c8a1bdd2a456c4b99eb9f26';
   private redirectURI = backendURL + 'app/';
-
-  //endpoints = {
-  //  find_groups: 'find/groups',
-  //  categories: '2/categories'
-  //};
-
-  //group_params = {
-  //  'sign': 'true',
-  //  'photo-host': 'public',
-  //  'zip': '92092',
-  //  'fallback_suggestions': 'true',
-  //  'text': 'walking',
-  //  'radius': '25',
-  //  'category': '9,32',
-  //  'order': 'most_active',
-  //  'page': '20',
-  //  'key': MeetupRestApi.apiKey
-  //}
 
   constructor(
     public http: HttpClient,
@@ -55,17 +35,12 @@ export class MeetupRestApi {
     }
   }
 
-  // get(endpoint: string, params?: any, reqOpts?: any) {
-  //   params['key'] = meetupConfig.apiKey;
-  //   return super.get(endpoint, params, reqOpts);
-  // }
-
   getEvents(): Promise<any> {
     const options = { params: new HttpParams()
         .set('photo-host', 'public')
         .set('page', '20')
-        .set('sig_id', this.sig_id)
-        .set('sig', this.sig)
+        .set('sig_id', meetupConfig.unauth_meetups_list_sig_id)
+        .set('sig', meetupConfig.unauth_meetups_list_sig)
         .set('fields', 'description_images, featured_photo, group_key_photo, how_to_find_us, rsvp_sample')
     };
 
@@ -83,7 +58,7 @@ export class MeetupRestApi {
         .set('event_name', eventName)
         .set('eventId', eventId)
         .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
-    }
+    };
     return this.http.get(this.redirectURI + 'meetup/event/comments', options)
       .toPromise()
       .then(response => response);

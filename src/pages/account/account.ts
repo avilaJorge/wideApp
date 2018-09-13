@@ -30,10 +30,8 @@ export class AccountPage {
   private state: string = '';
   private scope = '&scope=ageless+event_management+group_join+rsvp+group_content_edit';
   private redirectURI = backendURL + 'app/auth/meetup';
-  private meetupAuthBaseURL: string = 'https://secure.meetup.com/oauth2/authorize';
-  private meetupAuthURL: string = this.meetupAuthBaseURL + '?client_id=' +
+  private meetupAuthURL: string = meetupConfig.authorize_uri + '?client_id=' +
     meetupConfig.client_id + '&response_type=code&redirect_uri=' + this.redirectURI + this.scope;
-    // '&set_mobile=on';
 
   // Our local settings object
   options: any;

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Meetup } from '../../../models/meetup';
-import { MeetupRestApi } from '../meetup-rest-api/meetup-rest-api';
+import { MeetupRestApi } from '../../api/meetup-rest-api';
 
 /*
   Generated class for the MeetupsProvider provider.
