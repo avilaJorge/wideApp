@@ -194,8 +194,9 @@ export class HomePage {
   }
 
   onShowData() {
-    console.log('onShowData click!');
-    let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.currEntry}, { cssClass: 'inset-modal' });
+    let entryModal = this.modalCtrl.create('LogEntryPage',
+      {entry: this.currEntry, fitbit_data: this.fitbitData[this.currEntry.date]},
+      { cssClass: 'inset-modal' });
     entryModal.onDidDismiss((data) => {
       if(data) {
         console.log(data);

@@ -143,13 +143,11 @@ export class LogService {
     this.initLogListener.next(true);
   }
 
-  updateEntry(date: string, steps: string, goal: string, note: string, group: boolean) {
-    const goalNum = parseInt(goal, 10);
-    const stepsNum = parseInt(steps, 10);
+  updateEntry(date: string, steps: number, goal: number, note: string, group: boolean) {
     const stepEntry: StepEntry = {
       date: date,
-      steps: stepsNum,
-      goal: goalNum,
+      steps: steps,
+      goal: goal,
       note: note,
       groupWalk: group
     };

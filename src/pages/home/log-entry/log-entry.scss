@@ -7,11 +7,25 @@ page-log-entry {
     font-size: larger;
   }
 
-  .item-steps, .item-goal {
+  .item-steps, .item-goal, .item-date {
     font-size: x-large;
   }
 
   .item-note {
     font-size: large;
+  }
+
+  .fitbit-icon {
+    width: 30px;
+  }
+
+  .fitbit-item {
+    padding: 1rem;
+  }
+
+  .fitbit-text {
+    padding-left: 1rem;
+    font-size: x-large;
+    font-style: italic;
   }
 }
