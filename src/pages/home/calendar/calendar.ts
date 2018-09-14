@@ -3,7 +3,7 @@ import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angu
 
 import { StepEntry } from "../../../models/step-log.model";
 import { monthDateIndex, monthNames, thirtyDayLimit, TimeService } from "../../../providers/time/time.service";
-import { LogService } from "../../../providers/logs/logs.service";
+import { LogService } from "../logs.service";
 
 /**
  * Generated class for the CalendarPage page.

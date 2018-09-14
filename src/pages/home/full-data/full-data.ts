@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { LogService } from "../../../providers/logs/logs.service";
+import { LogService } from "../logs.service";
 import { monthDateIndex } from "../../../providers/time/time.service";
 import { barColor, hoverColor, lineColor } from "../home";
 import { Chart } from 'chart.js';

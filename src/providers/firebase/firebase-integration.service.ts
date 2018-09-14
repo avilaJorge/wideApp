@@ -183,4 +183,8 @@ export class FirebaseService {
       .then(data => data as DBMeetup);
   }
 
+  getDBUserDataListener(uid: string): Observable<User> {
+    return this.afs.collection('/users').doc<User>(uid).valueChanges();
+  }
+
 }

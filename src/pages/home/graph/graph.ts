@@ -7,7 +7,7 @@ import {
   sevenDayLimit,
   TimeService
 } from "../../../providers/time/time.service";
-import { LogService } from "../../../providers/logs/logs.service";
+import { LogService } from "../logs.service";
 import { StepEntry } from "../../../models/step-log.model";
 
 /**

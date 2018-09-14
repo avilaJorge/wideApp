@@ -13,6 +13,8 @@ export class User {
   meetupTokenExpiresIn: number = 0;
   meetupTokenExpirationDate: number = 0;
   isFitbitAuthenticated: boolean = false;
+  fitbit_token_expires: number = 0;
+  fitbit_access_data: any = {access_token: '', refresh_token: ''};
 
 
   constructor(fields: any) {

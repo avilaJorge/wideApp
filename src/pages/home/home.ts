@@ -1,12 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
-import { StepEntry, EntryDate } from "../../models/step-log.model";
-import { monthDateIndex, TimeService } from "../../providers/time/time.service";
+import { StepEntry } from "../../models/step-log.model";
+import { TimeService } from "../../providers/time/time.service";
 import { Settings } from "../../providers/settings/settings";
-import { LogService } from "../../providers/logs/logs.service";
-import { Subscription } from "rxjs";
+import { LogService } from "./logs.service";
 import { LogEntryPage } from "./log-entry/log-entry";
 
 export const hoverColor: string = 'rgb(0, 0, 255)';
@@ -41,26 +40,26 @@ export class HomePage {
   realCurrent: number = 0;
 
   private barChartEl: any = null;
-  private chartLabels: any = [];
-  private chartValues: number[] = [];
-  private chartGoals: number[] = [];
-  private barColors: any = [];
-  private hoverColors: any = [];
 
   private currEntry: {date: string, data: StepEntry} = null;
   private currDate: string;
   private isCurrEntryToday: boolean = true;
   private todaysDate: string;
   private fullLog: {date: string, data: StepEntry}[] = [];
+  public user = {isFitbitAuthenticated: null};
+  public fitbitSteps: number = 0;
+  public fitbitIconURL: string = 'assets/imgs/fitbit/icons/Fitbit_app_icon.png';
+  public fitbitData: any = {};
 
   constructor(
-    private modalCtrl: ModalController,
     public navCtrl: NavController,
+    private modalCtrl: ModalController,
     private settings: Settings,
     private logService: LogService,
-    private timeService: TimeService) {
+    private timeService: TimeService,) {
 
 
+    this.user = this.logService.getUser();
     this.currEntry = this.logService.getNextEntry(0);
     console.log('Homepage Constructor');
   }
@@ -72,23 +71,17 @@ export class HomePage {
     this.max = this.currEntry.data.goal;
     this.currDate = this.timeService.getDateStr(this.currEntry.date);
     this.createBarChart();
+    this.logService.getFitbitData().then((fitbitData) => {
+      if (fitbitData) {
+        this.fitbitData = fitbitData;
+      }
+    });
     console.log('ionViewDidLoad HomePage');
   }
 
   ionViewWillEnter() {
     this.currEntry = this.logService.getNextEntry(0);
     this.todaysDate = this.timeService.getTodayStr();
-  }
-
-  initFullLog() {
-    this.settings.getValue('full_log').then((data) => {
-      if(data) {
-        console.log("Printing the full log data" );
-        this.fullLog = JSON.parse(data);
-        // this.currentEntryIndex = this.fullLog.length-1;
-        console.log(this.fullLog);
-      }
-    });
   }
 
   createBarChart() {
@@ -114,12 +107,6 @@ export class HomePage {
             backgroundColor: barColor,
             hoverBackgroundColor: hoverColor
           }]
-          // }, {
-          //   data: this.chartGoals,
-          //   type: 'line',
-          //   borderColor: backColor,
-          //   fill: true
-          // }]
         },
         options: {
           maintainAspectRatio: false,
@@ -164,12 +151,7 @@ export class HomePage {
   }
 
   onChartClick() {
-    console.log("Graph was clicked!");
     this.navCtrl.push('GraphPage');
-  }
-
-  doSomethingWithCurrentValue($event: number) {
-    console.log($event);
   }
 
   getOverlayStyle() {
@@ -188,45 +170,27 @@ export class HomePage {
   }
 
   onLeftClick() {
-    console.log('Clicked left arrow');
     this.currEntry = this.logService.getNextEntry(-1);
-    console.log(this.currEntry);
     this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
-    console.log(this.currDate);
-    if (this.currDate === 'Today') {
-      this.isCurrEntryToday = true;
-    } else {
-      this.isCurrEntryToday = false;
-    }
+    this.isCurrEntryToday = this.currDate === 'Today';
     this.max = this.currEntry.data.goal;
     this.current = this.currEntry.data.steps;
     this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
     this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
     this.barChartEl.update();
-
-    console.log('made it this far');
   }
 
   onRightClick() {
     this.currEntry = this.logService.getNextEntry();
-    console.log(this.currEntry);
     if (this.currEntry) {
       this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
-      if (this.currDate === 'Today') {
-        this.isCurrEntryToday = true;
-      } else {
-        this.isCurrEntryToday = false;
-      }
+      this.isCurrEntryToday = this.currDate === 'Today';
       this.max = this.currEntry.data.goal;
       this.current = this.currEntry.data.steps;
       this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
       this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
       this.barChartEl.update();
     }
-  }
-
-  ionViewWillUnload() {
-
   }
 
   onShowData() {

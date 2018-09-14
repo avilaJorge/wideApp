@@ -69,6 +69,16 @@
         </div>
       </ion-col>
     </ion-row>
+    <ion-row *ngIf="user.isFitbitAuthenticated && fitbitData[currEntry.date]">
+      <ion-col col-5></ion-col>
+      <ion-col col-2 class="fitbit-icon-container" >
+        <preload-image class="fitbit-icon" [ratio]="{h:1, w:1}" [src]="fitbitIconURL"></preload-image>
+      </ion-col>
+      <ion-col col-5></ion-col>
+    </ion-row>
+    <ion-row *ngIf="user.isFitbitAuthenticated && fitbitData[currEntry.date]">
+      <ion-col class="fitbit-data">Fitbit Steps: {{fitbitData[currEntry.date].value}}</ion-col>
+    </ion-row>
   </ion-grid>
   <!--<div class="progress-wrapper">-->
     <!--<div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>-->

@@ -144,6 +144,19 @@ page-home {
     line-height: 1;
   }
 
+  .fitbit-icon-container {
+    height: 85px;
+    padding-top: 2rem;
+  }
+
+  .fitbit-icon {
+    width: 50px;
+  }
+
+  .fitbit-data {
+    text-align: center;
+  }
+
   round-progress {
     margin: auto;
   }

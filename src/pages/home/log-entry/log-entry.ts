@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { StepEntry } from "../../../models/step-log.model";
-import { LogService } from "../../../providers/logs/logs.service";
+import { LogService } from "../logs.service";
 
 /**
  * Generated class for the LogEntryPage page.
