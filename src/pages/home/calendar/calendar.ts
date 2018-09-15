@@ -23,6 +23,7 @@ export class CalendarPage {
   public currentMonth: string = monthNames[(new Date()).getMonth()];
   public currentYear: number = (new Date()).getFullYear();
   public currentDate: string;
+  public fitbitData: any = {};
 
   constructor(
     public navCtrl: NavController,
@@ -34,6 +35,7 @@ export class CalendarPage {
 
   ionViewDidLoad() {
     this.initCalendarData();
+    this.fitbitData = this.logService.getFitbitStepsMap();
   }
 
   initCalendarData() {
@@ -42,7 +44,7 @@ export class CalendarPage {
     let startIndex = this.logService.findTodayIndex();
     let i = startIndex - thirtyDayLimit + 1;
     // Continue decrementing i until we reach Sunday.
-    // This will make our calendar accurate.
+    // This will make the calendar line up properly with the day of the week.
     while ((new Date(logData[i].date)).getDay() != 0) {
       i--;
     }
@@ -50,7 +52,7 @@ export class CalendarPage {
     while(i <= startIndex) {
       this.attendance.push({
         date: parseInt(logData[i].date.substring(monthDateIndex + 3), 10),
-        present: logData[i].data.steps > 0 ? true : false,
+        present: logData[i].data.steps > 0,
         data: logData[i]
       });
       i++;
@@ -61,9 +63,12 @@ export class CalendarPage {
 
   onDateClick(day: { date: string; present: boolean; data: { date: string; data: StepEntry } }, index: number) {
     console.log(day);
+    console.log(day.data.date);
     console.log(index);
     console.log(this.attendance);
-    let entryModal = this.modalCtrl.create('LogEntryPage', {entry: day.data}, { cssClass: 'inset-modal' });
+    let entryModal = this.modalCtrl.create('LogEntryPage',
+      {entry: day.data, fitbit_data: this.fitbitData[day.data.date], load_fitbit: false},
+      { cssClass: 'inset-modal' });
     entryModal.onDidDismiss((data) => {
       if (data) {
         console.log('Do something here with the data');

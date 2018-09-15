@@ -107,7 +107,6 @@ export class FullDataPage {
                 autoSkip: true,
                 fontSize: 16,
                 fontColor: 'black',
-                max: 8000, //TODO: Determine the max from step data
                 userCallback: (label, index, labels) => {
                   if (label % 2500 == 0) {
                     return label;

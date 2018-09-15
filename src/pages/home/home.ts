@@ -71,11 +71,7 @@ export class HomePage {
     this.max = this.currEntry.data.goal;
     this.currDate = this.timeService.getDateStr(this.currEntry.date);
     this.createBarChart();
-    this.logService.getFitbitData().then((fitbitData) => {
-      if (fitbitData) {
-        this.fitbitData = fitbitData;
-      }
-    });
+    this.fitbitData = this.logService.getFitbitStepsMap();
     console.log('ionViewDidLoad HomePage');
   }
 
@@ -127,9 +123,8 @@ export class HomePage {
                 autoSkip: true,
                 fontSize: 16,
                 fontColor: 'black',
-                max: 6000, //TODO: Determine the max from step data
                 userCallback: (label, index, labels) => {
-                  if (label % 2500 == 0) {
+                  if (label % 2000 == 0) {
                     return label;
                   }
                 }
@@ -210,5 +205,24 @@ export class HomePage {
     });
     entryModal.present();
 
+  }
+
+  onFitbitClick() {
+    console.log('Fitbit icon clicked!');
+    let entryModal = this.modalCtrl.create('LogEntryPage',
+      {entry: this.currEntry, fitbit_data: this.fitbitData[this.currEntry.date], load_fitbit: true},
+      { cssClass: 'inset-modal' });
+    entryModal.onDidDismiss((data) => {
+      if(data) {
+        console.log(data);
+        this.currEntry = data;
+        this.max = this.currEntry.data.goal;
+        this.current = this.currEntry.data.steps;
+        this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
+        this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
+        this.barChartEl.update();
+      }
+    });
+    entryModal.present();
   }
 }

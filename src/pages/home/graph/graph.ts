@@ -32,6 +32,7 @@ export class GraphPage {
   private chartGoals: number[] = [];
   private fullChartData: {dateStr: string, date: string, data: StepEntry}[] = [];
   private todayIndex: number = 0;
+  private fitbitData: any = {};
 
 
   constructor(
@@ -45,18 +46,17 @@ export class GraphPage {
   }
 
   ionViewDidLoad() {
-    this.initChartData();
+    this.initChart();
     this.createBarChart();
   }
 
   ionViewWillEnter() {
     this.updateChartData();
+    this.fitbitData = this.logService.getFitbitStepsMap();
     console.log('ionViewWillEnter in GraphPage');
   }
 
-
-
-  initChartData() {
+  initChart() {
     let logData = this.logService.getDatesData();
     // Find today
     let todayStr = this.timeService.getTodayStr();
@@ -73,12 +73,8 @@ export class GraphPage {
     while(i <= this.todayIndex) {
       let dateStrings = this.getDateStr(i, logData[i].date);
       this.chartLabels.push(dateStrings.chartLabel);
-      this.fullChartData.push(Object.assign({dateStr: dateStrings.dateStr}, logData[i]));
-      this.chartValues.push(logData[i].data.steps);
-      this.chartGoals.push(logData[i].data.goal);
       i++;
     }
-    console.log(this.fullChartData);
   }
 
   private getDateStr(dateIndex: number, dateStr: string): {dateStr: string, chartLabel: string } {
@@ -101,7 +97,7 @@ export class GraphPage {
     while(i <= this.todayIndex) {
       this.chartValues.push(logData[i].data.steps);
       this.chartGoals.push(logData[i].data.goal);
-      this.fullChartData.push(Object.assign({dateStr: this.getDateStr(i, logData[i].date).dateStr}, logData[i]));
+      this.fullChartData.unshift(Object.assign({dateStr: this.getDateStr(i, logData[i].date).dateStr}, logData[i]));
       i++;
     }
     this.barChartEl.data.datasets[0].data = this.chartGoals;
@@ -152,7 +148,6 @@ export class GraphPage {
                 beginAtZero: true,
                 stepSize: 1000,
                 autoSkip: true,
-                max: 7000 //TODO: Determine the max from step data
               }
             }],
             xAxes: [{
@@ -170,53 +165,9 @@ export class GraphPage {
   }
 
   handleClick = (event, array) => {
-    // let log = this.logService.getThirtyDatesData();
     console.log(event);
     console.log(array);
     this.navCtrl.push('CalendarPage');
-    // if (!array[0]) {
-    //   console.log('graph was clicked!');
-    //   this.navctrl.push('calendarpage');
-    // } else {
-    //   console.log('bar was clicked!');
-    //   console.log(array[1]._index);
-    //   const index = array[0]._index;
-    //   console.log(this.fullchartdata[index]);
-    //   let entrymodal = this.modalctrl.create('logentrypage', {entry: this.fullchartdata[index]}, { cssclass: 'inset-modal' });
-    //   entrymodal.ondiddismiss((data) => {
-    //     if (data) {
-    //       console.log('do something here with the data');
-    //       console.log(this.fullchartdata[index]);
-    //       // need to update the current graph page.
-    //       this.fullchartdata[index].data.goal = data.data.goal;
-    //       this.fullchartdata[index].data.groupwalk = data.data.groupwalk;
-    //       this.fullchartdata[index].data.note = data.data.note;
-    //       this.fullchartdata[index].data.steps = data.data.steps;
-    //       this.chartvalues[index] = data.data.steps;
-    //       this.chartgoals[index] = data.data.goal;
-    //       this.barchartel.update();
-    //     }
-    //     console.log(data);
-    //   });
-    //   entrymodal.present();
-    // }
-
-    // let label = array[0]._model.label;
-    // if (label) {
-    //   console.log(log);
-    //   let i = log.length - 1;
-    //   while(i >= 0) {
-    //     let str = log[i].data.date.monthnum + '/' + log[i].data.date.day;
-    //     if (str === label) {
-    //       this.clickedentry = log[i];
-    //       console.log(this.clickedentry);
-    //       return;
-    //     }
-    //     i--;
-    //   }
-    //   return;
-    // }
-
   };
 
   dismiss() {
@@ -226,7 +177,9 @@ export class GraphPage {
   onEntryClick(entry: StepEntry, index: number) {
     console.log('Entry clicked!!!' + entry);
     console.log(entry);
-    let entryModal = this.modalCtrl.create('LogEntryPage', {entry: this.fullChartData[index]}, { cssClass: 'inset-modal' });
+    let entryModal = this.modalCtrl.create('LogEntryPage',
+      {entry: this.fullChartData[index], fitbit_data: this.fitbitData[this.fullChartData[index].date], load_fitbit: false},
+      { cssClass: 'inset-modal' });
     entryModal.onDidDismiss((data) => {
       if (data) {
         console.log('Do something here with the data');
@@ -243,8 +196,6 @@ export class GraphPage {
       console.log(data);
     });
     entryModal.present();
-    //let entryModal = this.modalCtrl.create(LogEntryPage, {entry: entry}, { cssClass: 'inset-modal' });
-    //entryModal.present();
   }
 }
 

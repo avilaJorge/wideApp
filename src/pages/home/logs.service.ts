@@ -34,9 +34,19 @@ export class LogService {
           console.log('AuthStatusChange in LogService');
           if (isAuth) {
             this.user = this.authService.getActiveUser();
+            if (this.user) {
+              if (this.user.isFitbitAuthenticated && !this.fitbitData) {
+                this.getFitbitData().then((data) => {
+                  console.log("One month of steps retrieved from Fitbit.");
+                  console.log(data);
+                });
+              }
+            }
           }
         },
         (error) => {console.log(error)});
+
+    this.user = this.authService.getActiveUser();
   }
 
   initializeUserLog(userId: string): Promise<any> {
@@ -59,6 +69,10 @@ export class LogService {
     });
   }
 
+  getFitbitStepsMap() {
+    return this.fitbitData;
+  }
+
   getFitbitData(period?: string): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       let timePeriod = period || '1m';
@@ -71,10 +85,12 @@ export class LogService {
           console.log(this.fitbitData);
           resolve(this.fitbitData);
         }).catch((err) => {
+          this.fitbitData = null;
           console.log(err);
           reject(err);
         });
       } else {
+        this.fitbitData = null;
         resolve(null);
       }
     });

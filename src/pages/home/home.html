@@ -71,7 +71,7 @@
     </ion-row>
     <ion-row *ngIf="user.isFitbitAuthenticated && fitbitData[currEntry.date]">
       <ion-col col-5></ion-col>
-      <ion-col col-2 class="fitbit-icon-container" >
+      <ion-col col-2 class="fitbit-icon-container" (click)="onFitbitClick()">
         <preload-image class="fitbit-icon" [ratio]="{h:1, w:1}" [src]="fitbitIconURL"></preload-image>
       </ion-col>
       <ion-col col-5></ion-col>

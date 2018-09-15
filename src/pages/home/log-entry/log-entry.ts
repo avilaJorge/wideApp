@@ -20,6 +20,7 @@ import { LogService } from "../logs.service";
 export class LogEntryPage {
   public entry: {date:string, data: StepEntry};
   public fitbitData: {dateTime: string, value: number} = null;
+  public loadFitbit: boolean = false;
   public logEntry: FormGroup;
   public fitbitIconURL: string = 'assets/imgs/fitbit/icons/Fitbit_app_icon.png';
 
@@ -33,6 +34,7 @@ export class LogEntryPage {
 
     this.entry = this.navParams.get('entry');
     this.fitbitData = this.navParams.get('fitbit_data');
+    this.loadFitbit = this.navParams.get('load_fitbit');
     console.log(this.entry);
     console.log(this.fitbitData);
     let goal = this.entry.data.goal;
@@ -57,7 +59,9 @@ export class LogEntryPage {
       groupWalk: ['']
     });
     this.logEntry.controls['date'].setValue(this.entry.date);
-    if (this.entry.data.steps > 0 || !this.fitbitData) {
+    if (this.loadFitbit && this.fitbitData) {
+      this.logEntry.controls['steps'].setValue(this.fitbitData.value);
+    } else if (this.entry.data.steps > 0 || !this.fitbitData) {
       this.logEntry.controls['steps'].setValue(this.entry.data.steps);
     } else {
       this.logEntry.controls['steps'].setValue(this.fitbitData.value);
