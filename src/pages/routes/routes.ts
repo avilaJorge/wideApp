@@ -67,8 +67,11 @@ export class RoutesPage {
       });
     });
 
-    this.setCurrentPosition();
-    this.updateRoutes();
+    this.setCurrentPosition().then((coord) => {
+      if (coord) {
+        this.updateRoutes();
+      }
+    });
   }
 
   ionViewWillEnter() {
@@ -111,14 +114,19 @@ export class RoutesPage {
     console.log(ev.target.value);
   }
 
-  private setCurrentPosition() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.lat = position.coords.latitude;
-        this.long = position.coords.longitude;
-        console.log('Location found is ' + this.lat + ',' + this.long);
-      });
-    }
+  private setCurrentPosition(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.lat = position.coords.latitude;
+          this.long = position.coords.longitude;
+          console.log('Location found is ' + this.lat + ',' + this.long);
+          resolve({lat: this.lat, lng: this.long});
+        });
+      } else {
+        resolve(null);
+      }
+    });
   }
 
   getMoreRoutes(infiniteScroll: InfiniteScroll) {
