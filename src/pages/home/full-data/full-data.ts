@@ -67,26 +67,7 @@ export class FullDataPage {
           datasets: [{
             label: 'Scatter Dataset',
             data: this.chartValues,
-            // type: 'line',
-            // borderColor: lineColor,
-            // fill: false,
-            // radius: 8,
-            // borderWidth: 2,
-            // pointStyle: 'circle',
-          // }, {
-          //   label: "steps",
-          //   data: [this.currEntry.data.steps],
-          //   duration: 2000,
-          //   easing: 'eastInQuart',
-          //   backgroundColor: barColor,
-          //   hoverBackgroundColor: hoverColor
           }]
-          // }, {
-          //   data: this.chartGoals,
-          //   type: 'line',
-          //   borderColor: backColor,
-          //   fill: true
-          // }]
         },
         options: {
           maintainAspectRatio: false,
@@ -130,42 +111,3 @@ export class FullDataPage {
 
 }
 
-// options: {
-//   maintainAspectRatio: false,
-//   legend: {
-//     display: false,
-//     boxWidth: 80,
-//     fontSize: 15,
-//     padding: 0
-//   },
-//   scales: {
-//     yAxes: [{
-//       gridLines: {
-//         color: 'rgba(0,0,0,0)'
-//       },
-//       ticks: {
-//         beginAtZero: true,
-//         stepSize: 500,
-//         autoSkip: true,
-//         fontSize: 16,
-//         fontColor: 'black',
-//         max: 6000, //TODO: Determine the max from step data
-//         userCallback: (label, index, labels) => {
-//           if (label % 2500 == 0) {
-//             return label;
-//           }
-//         }
-//       }
-//     }],
-//     xAxes: [{
-//       barThickness: 25,
-//       gridLines: {
-//         color: 'rgba(0,0,0,0)'
-//       },
-//       ticks: {
-//         display: false,
-//         autoSkip: false
-//       }
-//     }]
-//   }
-// }

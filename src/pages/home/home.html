@@ -80,53 +80,7 @@
       <ion-col class="fitbit-data">Fitbit Steps: {{fitbitData[currEntry.date].value}}</ion-col>
     </ion-row>
   </ion-grid>
-  <!--<div class="progress-wrapper">-->
-    <!--<div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>-->
-
-    <!--<round-progress-->
-      <!--[current]="current"-->
-      <!--[max]="max"-->
-      <!--[stroke]="stroke"-->
-      <!--[radius]="radius"-->
-      <!--[semicircle]="semicircle"-->
-      <!--[rounded]="rounded"-->
-      <!--[responsive]="responsive"-->
-      <!--[clockwise]="clockwise"-->
-      <!--[color]="gradient ? 'url(#gradient)' : color"-->
-      <!--[background]="background"-->
-      <!--[duration]="duration"-->
-      <!--[animation]="animation"-->
-      <!--[animationDelay]="animationDelay"></round-progress>-->
-  <!--</div>-->
-
-  <!--<button (click)="increment();">Increment</button>-->
-  <!--<button (click)="increment(-1);">Decrement</button>-->
-
-  <!--<button (click)="increment(10);">Increment 10</button>-->
-  <!--<button (click)="increment(-10);">Decrement 10</button>-->
-  <!--<div *ngIf="log.length > 0">-->
-    <!--<ion-list>-->
-      <!--<ion-list-header>-->
-        <!--<ion-row class="header-row">-->
-          <!--<ion-col width-30>Date</ion-col>-->
-          <!--<ion-col width-70 text-center>Step Count</ion-col>-->
-        <!--</ion-row>-->
-      <!--</ion-list-header>-->
-      <!--<button class="list-item" ion-item *ngFor="let entry of log">-->
-        <!--<ion-row class="content-row">-->
-          <!--<ion-col width-50 class="entry-date">-->
-            <!--{{entry.date.month}} {{entry.date.day}}-->
-          <!--</ion-col>-->
-          <!--<ion-col width-50 class="entry-steps">-->
-            <!--{{entry.steps}} steps-->
-          <!--</ion-col>-->
-        <!--</ion-row>-->
-      <!--</button>-->
-    <!--</ion-list>-->
-  <!--</div>-->
   <div *ngIf="fullLog.length <= 0">
     Enter a log entry to begin seeing your progress.
   </div>
-
-
 </ion-content>
