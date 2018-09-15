@@ -1,11 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Config, Platform } from 'ionic-angular';
 
 import { Settings } from "../providers/settings/settings";
 import { AuthService } from "../providers/auth/auth.service";
-import { LogService } from "../providers/logs/logs.service";
+import { LogService } from "../pages/home/logs.service";
 import { FirstRunPage, MainPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
 
@@ -39,7 +39,6 @@ export class MyApp {
           if (data.full_log) {
             console.log("We have a full log in settings");
             this.logService.setFullLog(JSON.parse(data.full_log), data.user.googleUID).then(() => {
-              console.log('MAde it into the setting of rootpage');
               this.root = MainPage;
               this.statusBar.styleDefault();
               this.splashScreen.hide();

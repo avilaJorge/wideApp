@@ -32,7 +32,7 @@ import { AddLogEntryPage } from "../pages/add-log-entry/add-log-entry";
 import { FeedService } from "../pages/feed/feed.service";
 import { ComponentsModule } from "../components/components.module";
 import { EventService } from "../pages/events/events.service";
-import { UARestApi } from '../providers/ua-rest-api/ua-rest-api';
+import { UARestApi } from '../providers/api/ua-rest-api';
 import { RouteService } from "../pages/routes/routes.service";
 import {
   Api,
@@ -44,13 +44,14 @@ import { Settings } from "../providers/settings/settings";
 import { FirebaseService } from "../providers/firebase/firebase-integration.service";
 import { AuthService } from "../providers/auth/auth.service";
 import { TimeService } from "../providers/time/time.service";
-import { LogService } from "../providers/logs/logs.service";
+import { LogService } from "../pages/home/logs.service";
 import { Items } from '../mocks/providers/items';
 import { MyApp } from './app.component';
 import { Reports } from '../providers/reports/reports';
 import { MenuPage } from "../pages/menu/menu";
 import { firebaseConfig } from "../environment/environment";
 import { FCM } from '../providers/fcm/fcm';
+import { FitbitRestApi } from '../providers/api/fitbit-rest-api';
 
 export function provideSettings(storage: Storage) {
   /**
@@ -64,7 +65,7 @@ export function provideSettings(storage: Storage) {
     option2: 'Ionitron J. Framework',
     option3: '3',
     option4: 'Hello',
-    stride: 0
+    stride: 28.0
   });
 }
 
@@ -131,6 +132,7 @@ export function provideSettings(storage: Storage) {
     Reports,
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
+    FitbitRestApi,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

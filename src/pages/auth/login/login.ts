@@ -5,7 +5,7 @@ import {User} from "../../../models/user.model";
 import {Subscription} from "rxjs";
 import { MainPage } from "../../index";
 import { AuthService } from "../../../providers/auth/auth.service";
-import { LogService } from "../../../providers/logs/logs.service";
+import { LogService } from "../../home/logs.service";
 
 @IonicPage()
 @Component({

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFireAuth } from "angularfire2/auth";
-import { Observable, Subject } from "rxjs";
+import { Subject } from "rxjs";
 import { AlertController, ToastController } from "ionic-angular";
 import * as firebase from "firebase";
 import { tap } from "rxjs/operators";
@@ -11,7 +11,6 @@ import { Settings } from "../settings/settings";
 import { FirebaseService } from "../firebase/firebase-integration.service";
 import { backendURL } from "../../environment/environment";
 import { FCM } from "../fcm/fcm";
-import { MeetupRestApi } from "..";
 
 @Injectable()
 export class AuthService {
@@ -21,6 +20,8 @@ export class AuthService {
   private isAuthenticated = false;
   private currentlyLoggedInUser: User = null;
   private authStatusListener = new Subject<boolean>();
+  private fcmSubscribed: boolean = false;
+  private dbUserSubscribed: boolean = false;
 
   constructor(private fireAuth: AngularFireAuth,
               private http: HttpClient,
@@ -51,25 +52,40 @@ export class AuthService {
           });
 
         // Get a FCM token
-       this.fcm.getToken(user.uid).then((available) => {
-         console.log("Was cordova available?  ", available);
+        if (!this.fcmSubscribed) {
+          this.fcm.getToken(user.uid).then((available) => {
+            console.log("Was cordova available?  ", available);
 
-         if (!available) {
-           console.log('FCM has been activated!');
-           this.fcm.listenToNotifications().pipe(
-             tap(msg => {
-               console.log(msg);
-               const toast = this.toastCtrl.create({
-                 message: msg.body,
-                 duration: 3000
-               });
-               toast.present();
-             })
-           ).subscribe();
-         }
-       });
+            if (!available) {
+              console.log('FCM has been activated!');
+              this.fcm.listenToNotifications().pipe(
+                tap(msg => {
+                  console.log(msg);
+                  const toast = this.toastCtrl.create({
+                    message: msg.body,
+                    duration: 3000
+                  });
+                  toast.present();
+                })
+              ).subscribe();
+            }
+          });
+          this.fcmSubscribed = true;
+        }
 
-      }
+       // Subscribe to Firestore entry for this user to capture any changes made to tokens or other api-related fields
+       if (!this.dbUserSubscribed) {
+         this.firebaseService.getDBUserDataListener(user.uid).subscribe((userData) => {
+           console.log('AUTHSERVICE: There was a change in this users database entry');
+           console.log(userData);
+           this.settings.setValue('user', userData);
+           this.currentlyLoggedInUser = userData;
+         });
+         this.dbUserSubscribed = true;
+       }
+      } else {
+       this.authStatusListener.next(false);
+     }
     });
   }
 

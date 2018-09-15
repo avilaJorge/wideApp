@@ -2,12 +2,13 @@ import { Injectable } from "@angular/core";
 import { Subject, Subscription } from "rxjs";
 import * as moment from 'moment';
 
-import { StepEntry, EntryDate } from "../../models/step-log.model";
-import { Settings } from "../settings/settings";
-import { AuthService } from "../auth/auth.service";
+import { StepEntry } from "../../models/step-log.model";
+import { Settings } from "../../providers/settings/settings";
+import { AuthService } from "../../providers/auth/auth.service";
 import { User } from "../../models/user.model";
-import { FirebaseService } from "../firebase/firebase-integration.service";
-import { TimeService } from '../time/time.service';
+import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
+import { TimeService } from '../../providers/time/time.service';
+import { FitbitRestApi } from "../../providers/api/fitbit-rest-api";
 
 @Injectable()
 export class LogService {
@@ -15,30 +16,41 @@ export class LogService {
   private currEntryIndex: number = 0;
   private isTodayCurrDay: boolean = false;
   private logObjects: any = null;
-  private currUser: User;
+  private user: User;
   private authStatusSub: Subscription;
   private datesData: {date: string, data: StepEntry}[] = [];
   private initLogListener = new Subject<boolean>();
+  private fitbitData: any = null;
 
   constructor(
     private authService: AuthService,
     private settings: Settings,
     private firebaseService: FirebaseService,
-    private timeService: TimeService
+    private timeService: TimeService,
+    private fitbitApi: FitbitRestApi,
   ) {
     this.authStatusSub = this.authService.getAuthStatusListener()
       .subscribe((isAuth) => {
           console.log('AuthStatusChange in LogService');
           if (isAuth) {
-            console.log(this.authService.getActiveUser());
-            this.currUser = this.authService.getActiveUser();
+            this.user = this.authService.getActiveUser();
+            if (this.user) {
+              if (this.user.isFitbitAuthenticated && !this.fitbitData) {
+                this.getFitbitData().then((data) => {
+                  console.log("One month of steps retrieved from Fitbit.");
+                  console.log(data);
+                });
+              }
+            }
           }
         },
         (error) => {console.log(error)});
+
+    this.user = this.authService.getActiveUser();
   }
 
   initializeUserLog(userId: string): Promise<any> {
-    console.log('the user id passed it initialize user log is ', userId);
+    console.log('the user id passed in to initializeUserLog is ', userId);
     return new Promise((resolve, reject) => {
       if (userId) {
         this.getFirestoreLogData(userId)
@@ -46,6 +58,7 @@ export class LogService {
             console.log(data.logObjs);
             this.initLogData(data.logObjs, data.startDate);
             resolve();
+
           }, (error) => {
             console.log(error);
             reject(error);
@@ -56,21 +69,45 @@ export class LogService {
     });
   }
 
+  getFitbitStepsMap() {
+    return this.fitbitData;
+  }
+
+  getFitbitData(period?: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      let timePeriod = period || '1m';
+      this.fitbitData = {};
+      if (this.user.isFitbitAuthenticated) {
+        this.fitbitApi.getSteps('today', timePeriod).then((data) => {
+          data['activities-steps'].forEach((entry) => {
+            this.fitbitData[entry.dateTime] = entry;
+          });
+          console.log(this.fitbitData);
+          resolve(this.fitbitData);
+        }).catch((err) => {
+          this.fitbitData = null;
+          console.log(err);
+          reject(err);
+        });
+      } else {
+        this.fitbitData = null;
+        resolve(null);
+      }
+    });
+  }
+
   setFullLog(fullLog: any, userId: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.datesData = [];
       for (let i = 0; i < fullLog.length; i++) {
-        console.log(fullLog[i]);
         this.datesData.push(fullLog[i]);
       }
       this.currEntryIndex = this.findTodayIndex();
       this.isTodayCurrDay = true;
       this.settings.setValue('full_log', JSON.stringify(this.datesData));
-      console.log(this.datesData);
       resolve();
       this.getFirestoreLogData(userId)
         .then((data) => {
-          console.log(data.logObjs);
           this.mergelocalAndDBData(data.logObjs);
         }, (error) => {
           console.log(error);
@@ -94,7 +131,6 @@ export class LogService {
 
           querySnapshot.docs.forEach((queryDocSnapshot) => {
             let entry = queryDocSnapshot.data();
-            console.log(entry);
             if (!entry.groupWalk) {
               entry.groupWalk = false;
             }
@@ -123,13 +159,11 @@ export class LogService {
     this.initLogListener.next(true);
   }
 
-  updateEntry(date: string, steps: string, goal: string, note: string, group: boolean) {
-    const goalNum = parseInt(goal, 10);
-    const stepsNum = parseInt(steps, 10);
+  updateEntry(date: string, steps: number, goal: number, note: string, group: boolean) {
     const stepEntry: StepEntry = {
       date: date,
-      steps: stepsNum,
-      goal: goalNum,
+      steps: steps,
+      goal: goal,
       note: note,
       groupWalk: group
     };
@@ -141,7 +175,7 @@ export class LogService {
     }
     console.log(this.datesData);
     this.settings.setValue('full_log', JSON.stringify((this.datesData)));
-    this.firebaseService.createStepEntry(this.currUser.googleUID, stepEntry).then((response) => {
+    this.firebaseService.createStepEntry(this.user.googleUID, stepEntry).then((response) => {
       console.log(response);
       console.log('log entry successfully stored in Firestore');
     });
@@ -152,7 +186,6 @@ export class LogService {
   }
 
   getNextEntry(amount = 1) {
-    console.log("The currentIndex is " + this.currEntryIndex);
     if (amount === 1) {
       if (this.currEntryIndex === this.datesData.length - 1) {
         return null;
@@ -192,4 +225,9 @@ export class LogService {
     }
     return this.datesData.length - 1;
   }
+
+  getUser() {
+    return this.user;
+  }
+
 }

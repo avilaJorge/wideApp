@@ -144,6 +144,23 @@ page-home {
     line-height: 1;
   }
 
+  .fitbit-icon-container {
+    height: 85px;
+    padding-top: 2rem;
+  }
+
+  .fitbit-icon {
+    width: 50px;
+  }
+
+  .fitbit-data {
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    font-style: italic;
+    color: #60646B;
+  }
+
   round-progress {
     margin: auto;
   }

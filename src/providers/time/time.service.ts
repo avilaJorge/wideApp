@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { EntryDate } from "../../models/step-log.model";
 import * as moment from 'moment';
 
 export const sevenDayLimit: number = 7;
@@ -9,12 +8,6 @@ export const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep'
 export const fullMonthNames = ["January","February","March","April","May","June","July", "August","September","October","November","December"];
 export const fullDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
-/*
-  Generated class for the TimeProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class TimeService {
 
@@ -27,11 +20,9 @@ export class TimeService {
   generateDates() {
     let i = this.totalDaysInLog - 1;
     while(i >= 0) {
-      // calling moment creates a moment object with todays date.
       this.dates.push(moment().subtract(i, 'days').format('YYYY-MM-DD'));
       i--;
     }
-    console.log(this.dates);
   }
 
   getDates(startDate?: string): string[] {
@@ -56,8 +47,6 @@ export class TimeService {
   // date parameter must be in YYYY-MM-DD format
   getDateStr(date: string): string {
     const today = this.getTodayStr();
-    console.log(today);
-    console.log(date);
     if (today === date) {
       return 'Today';
     }

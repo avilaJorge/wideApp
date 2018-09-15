@@ -21,7 +21,7 @@
     </ion-grid>
   </div>
   <ion-list>
-    <button class="list-item" ion-item *ngFor="let entry of fullChartData | reverse; let i = index" (click)="onEntryClick(entry, i)">
+    <button class="list-item" ion-item *ngFor="let entry of fullChartData; let i = index" (click)="onEntryClick(entry, i)">
       <ion-grid>
         <ion-row class="content-row">
           <ion-col col-3 class="entry-date">

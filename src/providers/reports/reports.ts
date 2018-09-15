@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Report } from '../../models/report';
-import { GetItDoneRestApi } from '../getitdone-rest-api/getitdone-rest-api';
+import { GetItDoneRestApi } from '../api/getitdone-rest-api';
 
 /*
   Generated class for the ReportsProvider provider.

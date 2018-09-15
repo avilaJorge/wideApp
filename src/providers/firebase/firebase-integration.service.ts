@@ -153,10 +153,6 @@ export class FirebaseService {
     });
   }
 
-  updateUserStrideLength(stride: number) {
-
-  }
-
   getUser(userId: string) {
     return this.afs.collection('/users').doc(userId).valueChanges().pipe(take(1))
       .toPromise()
@@ -164,6 +160,10 @@ export class FirebaseService {
   }
 
   getMeetupIntegrationResult(userId: string): Observable<any> {
+    return this.afs.collection('/users').doc(userId).snapshotChanges();
+  }
+
+  getFitbitIntegrationResult(userId: string): Observable<any> {
     return this.afs.collection('/users').doc(userId).snapshotChanges();
   }
 
@@ -181,6 +181,10 @@ export class FirebaseService {
     return this.afs.collection('/meetups').doc(meetup_id).valueChanges().pipe(take(1))
       .toPromise()
       .then(data => data as DBMeetup);
+  }
+
+  getDBUserDataListener(uid: string): Observable<User> {
+    return this.afs.collection('/users').doc<User>(uid).valueChanges();
   }
 
 }

@@ -12,8 +12,9 @@ export class User {
   meetupTokenType: string = '';
   meetupTokenExpiresIn: number = 0;
   meetupTokenExpirationDate: number = 0;
-  isUAAuthenticated: boolean = false;
-  underArmourAuthToken: string = '';
+  isFitbitAuthenticated: boolean = false;
+  fitbit_token_expires: number = 0;
+  fitbit_access_data: any = {access_token: '', refresh_token: ''};
 
 
   constructor(fields: any) {
