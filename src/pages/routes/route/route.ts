@@ -11,6 +11,7 @@ import { inches_in_mile, MeetupRouteDB, Route } from "../route.model";
 import { RouteService } from "../routes.service";
 import { Settings } from "../../../providers/settings/settings";
 import { DBMeetup } from "../../events/meetup.model";
+import { EventService } from "../../events/events.service";
 
 /**
  * Generated class for the RoutePage page.
@@ -30,7 +31,6 @@ export class RoutePage {
   kml_url: string = '';
   kml_file_data: string = '';
   route: Route;
-  stride: number = 0.0;
   steps: number = 0;
 
   constructor(
@@ -40,29 +40,15 @@ export class RoutePage {
     private settings: Settings,
     private loadingCtrl: LoadingController,
     private popoverCtrl: PopoverController,
-    private toastCtrl: ToastController,)
+    private toastCtrl: ToastController,
+    private eventService: EventService)
   {
 
     this.route = this.navParams.get('route');
-    // this.kml_url = 'https://developers.google.com/maps/documentation/javascript/examples/kml/westcampus.kml';
-    // this.kml_url = 'https://firebasestorage.googleapis.com/v0/b/wide-app.appspot.com/o/239802353.kml?alt=media&token=43f7a36c-b058-4553-999f-c0d10269ec38';
-    // this.kml_url = 'https://www.googleapis.com/download/storage/v1/b/wide-app.appspot.com/o/routes%2F392782210.kml?generation=1536215448574862&alt=media';
     this.route_lat = this.route.starting_location.coordinates[1];
     this.route_lng = this.route.starting_location.coordinates[0];
     console.log(this.route);
-    this.settings.getValue('stride').then((stride) => {
-      if (stride > 0) {
-        this.stride = stride;
-        this.steps = (this.route.distanceInMiles * inches_in_mile) / this.stride;
-      } else {
-        let toast = this.toastCtrl.create({
-          message: "Update your stride length in the Account tab to get approximate steps for this route.",
-          duration: 3000,
-          position: 'bottom'
-        });
-        toast.present();
-      }
-    });
+    this.steps = this.route.steps;
   }
 
   ionViewDidLoad() {
@@ -76,9 +62,6 @@ export class RoutePage {
         this.kml_url = data[1].mediaLink;
         load.dismiss();
       });
-  }
-
-  ionViewWillEnter() {
   }
 
   onShowOptions(event: MouseEvent) {
@@ -95,6 +78,7 @@ export class RoutePage {
               position: 'bottom'
             });
             toast.present();
+            this.eventService.retrieveEventDBList();
           });
       }
     });

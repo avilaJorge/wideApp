@@ -32,9 +32,9 @@
   </agm-map>
 
   <ion-grid>
-    <ion-row *ngIf="stride > 0">
+    <ion-row>
       <ion-col class="steps-col" no-padding>
-        <ion-row><ion-col class="step-text">Steps</ion-col></ion-row>
+        <ion-row><ion-col class="step-text">Approximate Steps</ion-col></ion-row>
         <ion-row><ion-col class="step-data">{{ steps | number: '1.0-0' }}</ion-col></ion-row>
       </ion-col>
     </ion-row>

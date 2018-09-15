@@ -11,6 +11,8 @@ export class RouteService {
   private routes: Route[];
   private lastCoords: {lat: number, lng: number} = {lat: 0, lng: 0};
   private routesMetaData: RouteMetaData;
+  private stride: number = 0;
+
   constructor(
     private api: UARestApi,
     private settings: Settings,
@@ -25,7 +27,8 @@ export class RouteService {
       if (value) {
         this.routesMetaData = value;
       }
-    })
+    });
+    this.settings.getValue('stride').then((value) => {this.stride = value;});
   }
 
   getRoutes(lat: number, long: number): Promise<Route[]> {
@@ -49,7 +52,7 @@ export class RouteService {
             console.log(this.routesMetaData);
             for (let route of data._embedded.routes) {
               console.log(route);
-              this.routes.push(new Route(route, lat, long));
+              this.routes.push(new Route(route, lat, long, this.stride));
             }
             this.settings.setValue('routes', this.routes);
             resolve([...this.routes]);
@@ -71,7 +74,7 @@ export class RouteService {
           console.log(this.routesMetaData);
           for (let route of data._embedded.routes) {
             console.log(route);
-            this.routes.push(new Route(route, this.lastCoords.lat, this.lastCoords.lng));
+            this.routes.push(new Route(route, this.lastCoords.lat, this.lastCoords.lng, this.stride));
           }
           this.settings.setValue('routes', this.routes);
           resolve([...this.routes]);
