@@ -8,21 +8,6 @@
 
   <ion-navbar>
     <ion-title>Meetup Info</ion-title>
-    <!--<ion-buttons end>-->
-      <!--<button-->
-        <!--ion-button-->
-        <!--icon-only-->
-        <!--(click)="likeEvent()">-->
-        <!--<ion-icon name="star-outline"></ion-icon>-->
-      <!--</button>-->
-      <!--<button-->
-        <!--ion-button-->
-        <!--icon-only-->
-        <!--full-->
-        <!--(click)="unlikeEvent()">-->
-        <!--<ion-icon name="star"></ion-icon>-->
-      <!--</button>-->
-    <!--</ion-buttons>-->
   </ion-navbar>
 
 </ion-header>
@@ -164,9 +149,9 @@
         <ion-row><ion-col class="min-data">{{ db_meetup_data.route.min_elevation }} ft</ion-col></ion-row>
       </ion-col>
     </ion-row>
-    <ion-row *ngIf="stride > 0">
+    <ion-row>
       <ion-col class="steps-col" no-padding>
-        <ion-row><ion-col class="step-text">Steps</ion-col></ion-row>
+        <ion-row><ion-col class="step-text">Approximate Steps</ion-col></ion-row>
         <ion-row><ion-col class="step-data">{{ steps | number: '1.0-0' }}</ion-col></ion-row>
       </ion-col>
     </ion-row>

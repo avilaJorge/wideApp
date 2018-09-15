@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
-import { MeetupRestApi } from "../../providers";
-import { map } from "rxjs/operators";
-import { Meetup } from "./meetup.model";
+import { DBMeetup, Meetup } from "./meetup.model";
 import { EventService } from "./events.service";
 
 /**
@@ -20,10 +18,11 @@ import { EventService } from "./events.service";
 export class EventsPage {
 
   events: Meetup[] = [];
+  eventDBMap: any = {};
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
-    public meetupApi: MeetupRestApi,
     public loadingCtrl: LoadingController,
     private eventService: EventService) {
   }
@@ -38,6 +37,9 @@ export class EventsPage {
         console.log(res);
         load.dismiss();
         this.events = res;
+        this.eventDBMap = this.eventService.getEventDBMap();
+        console.log(this.eventDBMap);
+
       });
     console.log('ionViewDidLoad EventsPage');
   }
