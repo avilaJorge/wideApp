@@ -50,4 +50,8 @@ export class EventsPage {
     console.log(item);
     this.navCtrl.push('EventDetailPage', {event: item, index: index});
   }
+
+  openCreateEventPage() {
+    this.navCtrl.push('CreateEventPage');
+  }
 }

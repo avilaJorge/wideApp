@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button clear (click)="postEvent()">POST</button>
+    </ion-buttons>
+    <ion-title>New Walk</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="forms-examples-content">
+  <div class="post-example-view">
+    <form class="sample-form post-form" [formGroup]="eventForm">
+      <section class="form-section">
+        <ion-item>
+          <ion-input type="text" placeholder="Title: e.g. Walk at La Jolla Shores" formControlName="title"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>When?</ion-label>
+          <ion-datetime displayFormat="DDD MMM D, YYYY" min="2005" formControlName="date" class="item-date"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>What time?</ion-label>
+          <ion-datetime displayFormat="hh:mm A" formControlName="time" class="item-time" ></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>How long will it be?</ion-label>
+          <ion-datetime displayFormat="hh:mm" formControlName="duration" class="item-duration"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Where?</ion-label>
+          <ion-input type="text" formControlName="where" class="item-where" autocorrect="off"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>How many people?</ion-label>
+          <ion-input type="number" formControlName="quantity" class="item-quantity"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-textarea rows="7" placeholder="Write a description ..." formControlName="details"></ion-textarea>
+        </ion-item>
+      </section>
+    </form>
+  </div>
+</ion-content>

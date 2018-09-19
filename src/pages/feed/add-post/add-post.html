@@ -14,7 +14,7 @@
     <form class="sample-form post-form" [formGroup]="post_form" (ngSubmit)="createPost()">
       <section class="form-section">
         <ion-item>
-          <ion-input type="text" placeholder="Title: e.g. Krabby Patty" formControlName="title"></ion-input>
+          <ion-input type="text" placeholder="Title: " formControlName="title"></ion-input>
         </ion-item>
         <button *ngIf="!selected_image" ion-button block large class="upload-image-button" (click)="openImagePicker()">
           <ion-icon name="camera"></ion-icon>
@@ -23,14 +23,14 @@
         <preload-image *ngIf="selected_image" [ratio]="{w:1, h:1}" [src]="selected_image" alt="this is the image" title="IMAGE!"></preload-image>
       </section>
       <ion-item>
-        <ion-textarea rows="7" placeholder="Write a description or something..." formControlName="description"></ion-textarea>
+        <ion-textarea rows="7" placeholder="Write a description ..." formControlName="description"></ion-textarea>
       </ion-item>
-      <section class="form-section">
-        <button ion-button block icon-end class="choose-category-button" (click)="chooseCategory()">
-          Choose Category
-          <ion-icon name="add"></ion-icon>
-        </button>
-      </section>
+      <!--<section class="form-section">-->
+        <!--<button ion-button block icon-end class="choose-category-button" (click)="chooseCategory()">-->
+          <!--Choose Category-->
+          <!--<ion-icon name="add"></ion-icon>-->
+        <!--</button>-->
+      <!--</section>-->
     </form>
   </div>
 </ion-content>
