@@ -91,9 +91,6 @@ export class RoutesPage {
   }
 
   onRouteClick(route: Route, i) {
-    console.log('Route clicked');
-    console.log('index is ' + i);
-    console.log(route);
     this.navCtrl.push('RoutePage', {route: route, index: i});
   }
 

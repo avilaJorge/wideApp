@@ -46,9 +46,10 @@ export class Route {
     user: {href: string, id: string}[];
     self: {href: string, id: string}[];
     thumbnail: {href:string}[];
-  }
+  };
+  steps: number;
 
-  constructor(fields: any, lat: number, long: number) {
+  constructor(fields: any, lat: number, long: number, stride: number) {
     this.total_descent = fields.total_descent;
     this.city = fields.city;
     this.starting_location = fields.starting_location;
@@ -61,6 +62,7 @@ export class Route {
     this.total_ascent = fields.total_ascent;
     this.gainInFt = this.total_ascent * m_to_ft;
     this.links = fields._links;
+    this.steps = (this.distanceInMiles * inches_in_mile) / stride;
   }
 
 

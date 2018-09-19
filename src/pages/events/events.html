@@ -1,6 +1,14 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Walks</ion-title>
+    <ion-buttons end>
+      <button
+        ion-button
+        icon-only
+        (click)="openCreateEventPage()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -15,14 +23,27 @@
           </ion-col>
           <ion-col col-1 class="item-spacer"></ion-col>
           <ion-col no-padding col-9 class="item-content">
-            <h3  class="item-title">{{item.eventName}}</h3>
-            <p *ngIf="item.venue" class="item-place" row="3">{{item.venue.name}}</p>
-            <p *ngIf="item.venue" class="item-city">{{item.venue.city}}</p>
-            <!-- You can change the rows quantity by using rows="X", where X can be any number for example: rows="4" -->
+            <ion-row>
+              <ion-col no-padding>
+                <h3  class="item-title">{{item.eventName}}</h3>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col no-padding>
+                <p *ngIf="item.venue" class="item-place" row="3">{{item.venue.name}}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col no-padding col-8>
+                <p *ngIf="item.venue" class="item-city">{{item.venue.city}}</p>
+              </ion-col>
+              <ion-col no-padding col-4>
+                <span *ngIf="eventDBMap[item.id].route" class="item-steps">
+                  {{ eventDBMap[item.id].route.steps | number: '1.0-0'}} steps
+                </span>
+              </ion-col>
+            </ion-row>
           </ion-col>
-          <!--<ion-col no-padding width-10 class="item-icon">-->
-            <!--<ion-icon name="arrow-forward"></ion-icon>-->
-          <!--</ion-col>-->
         </ion-row>
       </button>
     </ion-list>

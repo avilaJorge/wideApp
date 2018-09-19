@@ -32,7 +32,10 @@
         </ion-col>
         <ion-col col-9 class="info-col-container">
           <ion-row><ion-col class="route-name">{{ route.name }}</ion-col></ion-row>
-          <ion-row><ion-col class="route-dist">{{ route.distanceInMiles | number: '1.2-2'}} mi</ion-col></ion-row>
+          <ion-row>
+            <ion-col class="route-dist">{{ route.distanceInMiles | number: '1.2-2'}} mi</ion-col>
+            <ion-col class="route-steps">{{ route.steps | number: '1.0-0' }} steps</ion-col>
+          </ion-row>
           <ion-row>
             <ion-col class="route-city">{{ route.city }}</ion-col>
             <ion-col class="route-dist-away">{{ route.distanceFromStart | number: '1.2-2' }} mi away</ion-col>

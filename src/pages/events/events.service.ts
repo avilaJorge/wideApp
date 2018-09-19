@@ -6,6 +6,8 @@ import { DBMeetup, Meetup, MeetupComment,  MeetupProfile, MeetupRSVP, Response }
 import { AuthService } from "../../providers/auth/auth.service";
 import { User } from "../../models/user.model";
 import { FirebaseService } from "../../providers/firebase/firebase-integration.service";
+import { inches_in_mile } from "../routes/route.model";
+import { Settings } from "../../providers/settings/settings";
 
 
 @Injectable()
@@ -13,20 +15,27 @@ export class EventService {
   private events: Meetup[] = [];
   private eventData;
   private eventDBList: DBMeetup[];
+  private eventDBMap: any = {};
   private user: User;
   private selfProfile: MeetupProfile = null;
+  private stride: number;
 
   constructor(
     private meetupApi: MeetupRestApi,
     private authService: AuthService,
     private sanitizer: DomSanitizer,
     private firebaseService: FirebaseService,
+    private settings: Settings
   ) {
     this.retrieveProfile('self')
       .then((profile) => {
         this.selfProfile = profile;
       }).catch((err) => {
         console.log(err);
+    });
+    this.retrieveEventDBList();
+    this.settings.getValue('stride').then((value) => {
+      this.stride = value;
     });
   }
 
@@ -57,6 +66,7 @@ export class EventService {
   getSelfProfile() {
     return this.selfProfile;
   }
+
 
   getEvents(): Promise<any> {
     this.user = this.authService.getActiveUser();
@@ -178,12 +188,35 @@ export class EventService {
       let list = data as DBMeetup[];
       console.log(list);
       this.eventDBList = list;
+      this.createEventDBMap(data);
       return list;
+    });
+  }
+
+  private createEventDBMap(events: DBMeetup[]): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.eventDBMap = {};
+      if (events) {
+        events.forEach((event) => {
+          this.eventDBMap[event.id] = event;
+          if (event.route) {
+            // TODO: This will likely not update step counts when the user changes it in the settings page.
+            this.eventDBMap[event.id].route.steps = (event.route.dist * inches_in_mile) / this.stride;
+          }
+        });
+        resolve(true);
+      } else {
+        resolve(false);
+      }
     });
   }
 
   getEventDBList(): DBMeetup[] {
     return this.eventDBList;
+  }
+
+  getEventDBMap(): any {
+    return this.eventDBMap;
   }
 
   getRouteLinkedWithEvent(meetup_id: string): Promise<DBMeetup> {
