@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { IonicPage, NavController, ViewController, NavParams } from 'ionic-angular';
-import { Reports } from '../../../providers/index';
 
 /**
  * Generated class for the ServiceRequestPage page.
@@ -29,7 +28,7 @@ export class ServiceRequestPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController, public camera: Camera,
-    public reports: Reports, formBuilder: FormBuilder) {
+    formBuilder: FormBuilder) {
 
     this.form = formBuilder.group({
       reportPic: [''],
@@ -41,8 +40,6 @@ export class ServiceRequestPage {
       long: [''],
       requested_datetime: ['']
     });
-
-    this.services = reports.getServices();
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {

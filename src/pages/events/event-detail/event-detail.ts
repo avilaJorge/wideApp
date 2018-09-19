@@ -11,7 +11,6 @@ import {
   DBMeetup,
   Meetup,
   MeetupComment,
-  MeetupMember,
   MeetupProfile,
   MeetupRSVP,
   Response,
@@ -22,7 +21,7 @@ import { LaunchNavigator, LaunchNavigatorOptions } from "@ionic-native/launch-na
 import { DomSanitizer } from "@angular/platform-browser";
 import { AuthService } from "../../../providers/auth/auth.service";
 import { User } from "../../../models/user.model";
-import { MeetupRestApi } from "../../../providers";
+import { MeetupRestApi } from "../../../providers/api/meetup-rest-api";
 import { EventService } from "../events.service";
 import { inches_in_mile } from "../../routes/route.model";
 import { Settings } from "../../../providers/settings/settings";
