@@ -45,10 +45,15 @@ export class RoutesPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RoutesPage');
-
+    let load = this.loadingCtrl.create({content: 'Loading Routes ...'});
+    load.present();
     this.setCurrentPosition().then((coord) => {
       if (coord) {
-        this.updateRoutes();
+        this.updateRoutes().then(() => {
+          load.dismiss();
+        });
+      } else {
+        load.dismiss();
       }
     });
 
@@ -83,13 +88,10 @@ export class RoutesPage {
     });
   }
 
-  private updateRoutes() {
-    let load = this.loadingCtrl.create({content: 'Loading Routes ...'});
-    load.present();
-    this.routeService.getRoutes(this.lat, this.long).then((routes) => {
+  private updateRoutes(): Promise<any>{
+    return this.routeService.getRoutes(this.lat, this.long).then((routes) => {
       this.routes = routes;
       console.log(this.routes);
-      load.dismiss();
     });
   }
 
