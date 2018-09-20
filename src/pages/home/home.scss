@@ -177,5 +177,11 @@ page-home {
     text-align: center;
     margin: 0 5px 5px 0;
   }
+}
 
+ion-modal.inset-modal {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 10vh 10vw;
 }

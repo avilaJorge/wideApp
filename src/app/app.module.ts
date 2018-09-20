@@ -10,6 +10,7 @@ import { AngularFireStorageModule } from "angularfire2/storage";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 
 import { Camera } from '@ionic-native/camera';
+import { Geolocation } from "@ionic-native/geolocation";
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Toast } from '@ionic-native/toast';
@@ -92,6 +93,7 @@ export function provideSettings(storage: Storage) {
     Firebase,
     FirebaseService,
     FCM,
+    Geolocation,
     AuthService,
     TimeService,
     LogService,

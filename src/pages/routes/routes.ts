@@ -2,6 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { InfiniteScroll, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { FormControl } from "@angular/forms";
 import { MapsAPILoader } from "@agm/core";
+import { Geolocation } from '@ionic-native/geolocation';
 import { } from 'googlemaps';
 
 import { RouteService } from "./routes.service";
@@ -30,6 +31,7 @@ export class RoutesPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    private geolocation: Geolocation,
     private routeService: RouteService,
     private loadingCtrl: LoadingController,
     private mapsAPILoader: MapsAPILoader,
@@ -43,6 +45,12 @@ export class RoutesPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad RoutesPage');
+
+    this.setCurrentPosition().then((coord) => {
+      if (coord) {
+        this.updateRoutes();
+      }
+    });
 
     // Load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
@@ -67,11 +75,6 @@ export class RoutesPage {
       });
     });
 
-    this.setCurrentPosition().then((coord) => {
-      if (coord) {
-        this.updateRoutes();
-      }
-    });
   }
 
   ionViewWillEnter() {
@@ -113,12 +116,17 @@ export class RoutesPage {
 
   private setCurrentPosition(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
+      console.log(navigator);
       if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
+        console.log("Geolocation is in navigator");
+        this.geolocation.getCurrentPosition().then((position) => {
           this.lat = position.coords.latitude;
           this.long = position.coords.longitude;
           console.log('Location found is ' + this.lat + ',' + this.long);
           resolve({lat: this.lat, lng: this.long});
+        }).catch( (error) => {
+          console.log("There was an error get the current position");
+          console.log(error);
         });
       } else {
         resolve(null);
