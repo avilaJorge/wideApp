@@ -182,7 +182,7 @@ export class AuthService {
     return this.authStatusListener.asObservable();
   }
 
-  signInGoogle(group: string) {
+  signInGoogle(group?: string) {
     const provider = new firebase.auth.GoogleAuthProvider();
     this.fireAuth.auth.signInWithRedirect(provider)
       .then(() => { return this.fireAuth.auth.getRedirectResult(); })

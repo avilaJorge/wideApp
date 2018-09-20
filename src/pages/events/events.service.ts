@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { DomSanitizer } from "@angular/platform-browser";
 
-import { MeetupRestApi } from "../../providers";
+import { MeetupRestApi } from "../../providers/api/meetup-rest-api";
 import { DBMeetup, Meetup, MeetupComment,  MeetupProfile, MeetupRSVP, Response } from "./meetup.model";
 import { AuthService } from "../../providers/auth/auth.service";
 import { User } from "../../models/user.model";

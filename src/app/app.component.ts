@@ -30,6 +30,7 @@ export class MyApp {
       settings.load().then((data) => {
         console.log("Got settings loaded.  Now printing return from load!");
         console.log(data);
+        let user = data.user;
         // Okay, so the platform is ready and our plugins are available.
         // Here you can do any higher level native things you might need.
         const isAuth = this.authService.autoAuthUser(data);
@@ -38,7 +39,9 @@ export class MyApp {
           console.log("IsAuth");
           if (data.full_log) {
             console.log("We have a full log in settings");
-            this.logService.setFullLog(JSON.parse(data.full_log), data.user.googleUID).then(() => {
+            console.log("Currently logged in user is ", user.googleUID);
+            console.log(user);
+            this.logService.setFullLog(JSON.parse(data.full_log), user.googleUID).then(() => {
               this.root = MainPage;
               this.statusBar.styleDefault();
               this.splashScreen.hide();

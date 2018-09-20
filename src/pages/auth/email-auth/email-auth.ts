@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 /**
- * Generated class for the ReportDetailPage page.
+ * Generated class for the EmailAuthPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -10,17 +10,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-report-detail',
-  templateUrl: 'report-detail.html',
+  selector: 'page-email-auth',
+  templateUrl: 'email-auth.html',
 })
-export class ReportDetailPage {
-  report: any;
+export class EmailAuthPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ReportDetailPage');
+    console.log('ionViewDidLoad EmailAuthPage');
   }
 
 }

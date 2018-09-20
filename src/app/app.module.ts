@@ -10,6 +10,7 @@ import { AngularFireStorageModule } from "angularfire2/storage";
 import { AngularFirestoreModule } from "angularfire2/firestore";
 
 import { Camera } from '@ionic-native/camera';
+import { Geolocation } from "@ionic-native/geolocation";
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { Toast } from '@ionic-native/toast';
@@ -28,27 +29,18 @@ import {
 } from "angular-svg-round-progressbar";
 import { AgmCoreModule } from "@agm/core";
 
-import { AddLogEntryPage } from "../pages/add-log-entry/add-log-entry";
 import { FeedService } from "../pages/feed/feed.service";
 import { ComponentsModule } from "../components/components.module";
 import { EventService } from "../pages/events/events.service";
 import { UARestApi } from '../providers/api/ua-rest-api';
 import { RouteService } from "../pages/routes/routes.service";
-import {
-  Api,
-  MeetupRestApi,
-  Meetups,
-  GetItDoneRestApi,
-} from '../providers';
+import { MeetupRestApi } from '../providers/api/meetup-rest-api';
 import { Settings } from "../providers/settings/settings";
 import { FirebaseService } from "../providers/firebase/firebase-integration.service";
 import { AuthService } from "../providers/auth/auth.service";
 import { TimeService } from "../providers/time/time.service";
 import { LogService } from "../pages/home/logs.service";
-import { Items } from '../mocks/providers/items';
 import { MyApp } from './app.component';
-import { Reports } from '../providers/reports/reports';
-import { MenuPage } from "../pages/menu/menu";
 import { firebaseConfig } from "../environment/environment";
 import { FCM } from '../providers/fcm/fcm';
 import { FitbitRestApi } from '../providers/api/fitbit-rest-api';
@@ -72,8 +64,6 @@ export function provideSettings(storage: Storage) {
 @NgModule({
   declarations: [
     MyApp,
-    MenuPage,
-    AddLogEntryPage,
   ],
   imports: [
     BrowserModule,
@@ -94,8 +84,6 @@ export function provideSettings(storage: Storage) {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    MenuPage,
-    AddLogEntryPage,
   ],
   providers: [
     SplashScreen,
@@ -105,6 +93,7 @@ export function provideSettings(storage: Storage) {
     Firebase,
     FirebaseService,
     FCM,
+    Geolocation,
     AuthService,
     TimeService,
     LogService,
@@ -118,7 +107,6 @@ export function provideSettings(storage: Storage) {
     Toast,
     FeedService,
     SocialSharing,
-    Api,
     MeetupRestApi,
     UARestApi,
     EventService,
@@ -126,10 +114,6 @@ export function provideSettings(storage: Storage) {
     { provide: ROUND_PROGRESS_DEFAULTS, useValue: {color: '#f00', background: '#0f0'} },
     RoundProgressService,
     RoundProgressEase,
-    GetItDoneRestApi,
-    Items,
-    Meetups,
-    Reports,
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FitbitRestApi,

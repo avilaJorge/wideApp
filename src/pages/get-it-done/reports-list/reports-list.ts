@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, ModalController } from 'ionic-angular';
 
 import { Report } from '../../../models/report';
-import { Reports } from '../../../providers/index';
 
 /**
  * Generated class for the ReportsListPage page.
@@ -21,11 +20,8 @@ export class ReportsListPage {
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public reports: Reports,
     public modalCtrl: ModalController,
     public toastCtrl: ToastController) {
-
-    this.listReports = reports.query();
   }
 
   ionViewDidLoad() {
@@ -56,20 +52,11 @@ export class ReportsListPage {
       position: 'bottom'
     });
     toast.present();
-
-    let addModal = this.modalCtrl.create('ServiceRequestPage');
-    addModal.onDidDismiss(report => {
-      if (report) {
-        this.reports.add(report);
-      }
-    });
-    addModal.present();
   }
 
   /**
  * Delete an item from the list of items.
  */
   deleteItem(item) {
-    this.reports.delete(item);
   }
 }

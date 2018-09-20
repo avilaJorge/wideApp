@@ -14,15 +14,9 @@ import { LogService } from "../../home/logs.service";
 })
 export class LoginPage {
 
-  groups = [
-    {value: 0, name: 'Walking for Fitness, Chula Vista'},
-    {value: 1, name: 'Heart and Soles Lakeside Walkers, Lakeside'},
-    {value: 2, name: 'Glide \'N Stride, San Diego'},
-    {value: 3, name: 'Pep \'N Step, San Diego'},
-    {value: 4, name: 'Blazing Turtles, San Diego'},
-    {value: 5, name: 'H.E.A.L.T.H, Spring Valley'},
-    {value: 6, name: 'Stepping for Fitness, San Diego'}
-  ];
+  googleButtonNormal = "assets/google_signin/btn_google_signin_dark_normal_web@2x.png";
+  googleButtonPressed = "assets/google_signin/btn_google_signin_dark_pressed_web@2x.png";
+  currentGoogleButton = this.googleButtonNormal;
 
   account: User = new User({
     googleUID: '',
@@ -34,7 +28,6 @@ export class LoginPage {
   });
 
   password: string = 'puppies';
-  private selectedGroup: number = null;
   private authStatusSub: Subscription;
   private loading = this.loadingCtrl.create({
     content: 'Signing you in... ',
@@ -81,18 +74,12 @@ export class LoginPage {
   }
 
   onGoogleSignIn() {
-    console.log('The selected group is: ' + this.selectedGroup);
-
-    if (!this.selectedGroup) {
-      const toast = this.toastCtrl.create({
-        message: 'Please select a group before clicking this button.',
-        duration: 2500
-      });
-      toast.present();
-      return;
-    }
-
-    this.authService.signInGoogle(this.groups[this.selectedGroup].name);
+    this.currentGoogleButton = this.googleButtonPressed;
+    setTimeout(() => {
+      this.currentGoogleButton = this.googleButtonNormal;
+    }, 100);
+    this.authService.signInGoogle();
+    console.log('Button pressed!');
     this.loading.present();
   }
 

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { backendURL, fitbitConfig } from "../../environment/environment";
+import { backendURL } from "../../environment/environment";
 import { AuthService } from "../auth/auth.service";
 import { User } from "../../models/user.model";
 
