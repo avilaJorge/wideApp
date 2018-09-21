@@ -30,7 +30,10 @@ export class MyApp {
       settings.load().then((data) => {
         console.log("Got settings loaded.  Now printing return from load!");
         console.log(data);
-        let user = data.user;
+        let user = {googleUID: null};
+        if(data.user) {
+          user = data.user;
+        }
         // Okay, so the platform is ready and our plugins are available.
         // Here you can do any higher level native things you might need.
         const isAuth = this.authService.autoAuthUser(data);

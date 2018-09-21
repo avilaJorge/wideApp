@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LogService } from "../logs.service";
 import { monthDateIndex } from "../../../providers/time/time.service";
-import { barColor, hoverColor, lineColor } from "../home";
+import { barColor, hoverColor } from "../home";
 import { Chart } from 'chart.js';
 import { StepEntry } from "../../../models/step-log.model";
 
@@ -23,7 +23,7 @@ export class FullDataPage {
 
   private scatterChartEl: any = null;
   private chartLabels: any = [];
-  private chartValues: {x: number, y: number}[] = [];
+  private chartValues: number[] = [];
   private barColors: any = [];
   private hoverColors: any = [];
 
@@ -48,25 +48,36 @@ export class FullDataPage {
     console.log(this.fullLog);
     let i = 0;
     while(i < this.fullLog.length) {
-      this.chartLabels.push(this.fullLog[i].data.date.substring(monthDateIndex));
-      this.chartValues.push({x: i, y: this.fullLog[i].data.steps});
+      if ((i < (this.fullLog.length-10)) && (i % 20 === 0)) {
+        let dateStr: string = this.fullLog[i].data.date;
+        console.log(dateStr);
+        this.chartLabels.push(dateStr.substring(monthDateIndex));
+      } else {
+        this.chartLabels.push('');
+      }
+      this.chartValues.push(this.fullLog[i].data.steps);
       this.barColors.push(barColor);
       this.hoverColors.push(hoverColor);
       i++;
     }
+    this.chartLabels[this.chartLabels.length-1] = 'Today';
     console.log(this.chartValues);
+    console.log(this.chartLabels);
   }
 
   createBarChart() {
     const ctx = this.scatterPlot.nativeElement;
     this.scatterChartEl = new Chart(ctx,
       {
-        type: 'scatter',
+        type: 'line',
         data: {
           labels: this.chartLabels,
           datasets: [{
-            label: 'Scatter Dataset',
             data: this.chartValues,
+            pointStyle: 'line',
+            backgroundColor: barColor,
+            pointBorderWidth: 2,
+            pointBorderColor: 'rgba(0,0,0,0.9)'
           }]
         },
         options: {
@@ -86,7 +97,7 @@ export class FullDataPage {
                 beginAtZero: true,
                 stepSize: 500,
                 autoSkip: true,
-                fontSize: 16,
+                fontSize: 24,
                 fontColor: 'black',
                 userCallback: (label, index, labels) => {
                   if (label % 2500 == 0) {
@@ -100,7 +111,7 @@ export class FullDataPage {
                 color: 'rgba(0,0,0,0)'
               },
               ticks: {
-                display: false,
+                display: true,
                 autoSkip: false
               }
             }]
