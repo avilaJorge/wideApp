@@ -28,7 +28,7 @@
     "@ionic-native/core": "^4.9.2",
     "@ionic-native/crop": "^4.12.0",
     "@ionic-native/date-picker": "^4.12.0",
-    "@ionic-native/firebase": "^4.12.2",
+    "@ionic-native/firebase": "^4.14.0",
     "@ionic-native/geolocation": "^4.14.0",
     "@ionic-native/google-maps": "^4.12.0",
     "@ionic-native/image-picker": "^4.12.0",
@@ -47,6 +47,9 @@
     "angularfire2": "^5.0.0-rc.11",
     "chart.js": "^2.7.2",
     "cordova-android": "7.0.0",
+    "cordova-android-firebase-gradle-release": "^1.0.2",
+    "cordova-android-play-services-gradle-release": "^1.4.3",
+    "cordova-android-support-gradle-release": "^1.4.4",
     "cordova-browser": "5.0.4",
     "cordova-ios": "4.5.5",
     "cordova-plugin-actionsheet": "^2.3.3",
@@ -59,9 +62,10 @@
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-dialogs": "^2.0.1",
-    "cordova-plugin-firebase": "^2.0.0",
+    "cordova-plugin-firebase": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
-    "cordova-plugin-googlemaps": "^2.4.1",
+    "cordova-plugin-googlemaps": "^2.4.4",
+    "cordova-plugin-googlemaps-sdk": "https://github.com/mapsplugin/cordova-plugin-googlemaps-sdk/tarball/2.7.0",
     "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
     "cordova-plugin-ionic-webview": "^1.2.1",
@@ -83,7 +87,7 @@
     "rxjs-compat": "^6.2.2",
     "socks": "^2.2.0",
     "sw-toolbox": "3.6.0",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.2.1",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.2.2",
     "xml2js": "^0.4.19",
     "zone.js": "0.8.26"
   },
@@ -122,14 +126,24 @@
         "LOCATION_USAGE_DESCRIPTION": "This app requires access to your location for navigation purposes"
       },
       "cordova-plugin-calendar": {},
-      "cordova-plugin-firebase": {},
       "cordova-plugin-geolocation": {
         "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
-      }
+      },
+      "cordova-android-firebase-gradle-release": {
+        "FIREBASE_VERSION": "15.+"
+      },
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      },
+      "cordova-android-play-services-gradle-release": {
+        "PLAY_SERVICES_VERSION": "15.+"
+      },
+      "cordova-plugin-firebase": {}
     },
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "ios",
+      "android"
     ]
   }
 }

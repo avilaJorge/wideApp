@@ -23,4 +23,8 @@ export class WelcomePage {
   signup() {
     this.navCtrl.push('SignupPage');
   }
+
+  emailLogin() {
+    this.navCtrl.push('EmailAuthPage');
+  }
 }

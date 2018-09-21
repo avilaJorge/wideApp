@@ -152,7 +152,10 @@ export class AuthService {
         console.log("An error occured while signing in the user!");
         console.log("Error: " + error);
       });
+  }
 
+  signInWithEmailLink(email:string): Promise<any> {
+    return this.firebaseService.sendSignInLinkToEmail(email);
   }
 
   autoAuthUser(localData): boolean {

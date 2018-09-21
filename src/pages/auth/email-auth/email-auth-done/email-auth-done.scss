@@ -1,3 +1,25 @@
 page-email-auth-done {
-
+  .container {
+    text-align:center;
+    position: relative;
+    top: 40%;
+    transform: translateY(-50%);
+    line-height: 35px;
+  }
+  .message-text {
+    font-size: large;
+    font-weight: bold;
+  }
+  .email-text{
+    font-size: large;
+  }
+  .instructions-text {
+    margin-top: 2rem;
+    font-size: medium;
+    color: #60646B;
+    font-weight: bold;
+  }
+  .icon-container {
+    font-size: xx-large;
+  }
 }
