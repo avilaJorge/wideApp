@@ -84,6 +84,12 @@
             <string>We want your location! Best regards NSA</string>
         </edit-config>
     </platform>
+    <universal-links>
+        <host name="wide.page.link" scheme="https" />
+        <host name="wide-app.firebaseapp.com" scheme="https">
+            <path url="/__/auth/callback" />
+        </host>
+    </universal-links>
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
@@ -91,7 +97,7 @@
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.1.2" />
     <plugin name="cordova-plugin-x-toast" spec="^2.7.0" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
-    <plugin name="cordova-plugin-googlemaps" spec="^2.4.1">
+    <plugin name="cordova-plugin-googlemaps" spec="^2.4.4">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyCr5vlRJG60Y4pGq1ee2XKDzx5FsQnHYdU" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyCr5vlRJG60Y4pGq1ee2XKDzx5FsQnHYdU" />
         <variable name="PLAY_SERVICES_VERSION" value="15.0.1" />
@@ -99,12 +105,6 @@
     </plugin>
     <plugin name="cordova-plugin-buildinfo" spec="^2.0.2" />
     <plugin name="cordova-universal-links-plugin" spec="^1.2.1" />
-    <universal-links>
-        <host name="wide.page.link" scheme="https" />
-        <host name="wide-app.firebaseapp.com" scheme="https">
-            <path url="/__/auth/callback" />
-        </host>
-    </universal-links>
     <plugin name="cordova-plugin-browsertab" spec="^0.2.0" />
     <plugin name="cordova-plugin-telerik-imagepicker" spec="^2.2.2">
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="Research project" />
@@ -113,14 +113,14 @@
     <plugin name="cordova-plugin-datepicker" spec="^0.9.3" />
     <plugin name="cordova-plugin-calendar" spec="^5.1.2" />
     <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
-    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.2.1">
+    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="^4.2.2">
         <variable name="OKHTTP_VERSION" value="3.+" />
         <variable name="LOCATION_USAGE_DESCRIPTION" value="This app requires access to your location for navigation purposes" />
     </plugin>
-    <plugin name="cordova-plugin-firebase" spec="^2.0.0" />
+    <plugin name="cordova-plugin-firebase" spec="^2.0.2" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
-    <engine name="android" spec="7.0.0" />
     <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="7.0.0" />
 </widget>

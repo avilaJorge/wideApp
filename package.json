@@ -59,9 +59,9 @@
     "cordova-plugin-datepicker": "^0.9.3",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-dialogs": "^2.0.1",
-    "cordova-plugin-firebase": "^2.0.0",
+    "cordova-plugin-firebase": "^2.0.2",
     "cordova-plugin-geolocation": "^4.0.1",
-    "cordova-plugin-googlemaps": "^2.4.1",
+    "cordova-plugin-googlemaps": "^2.4.4",
     "cordova-plugin-inappbrowser": "^3.0.0",
     "cordova-plugin-ionic-keyboard": "^2.1.2",
     "cordova-plugin-ionic-webview": "^1.2.1",
@@ -83,7 +83,7 @@
     "rxjs-compat": "^6.2.2",
     "socks": "^2.2.0",
     "sw-toolbox": "3.6.0",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.2.1",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator": "^4.2.2",
     "xml2js": "^0.4.19",
     "zone.js": "0.8.26"
   },
@@ -128,8 +128,8 @@
       }
     },
     "platforms": [
-      "android",
-      "browser"
+      "browser",
+      "android"
     ]
   }
 }
