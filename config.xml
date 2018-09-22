@@ -45,6 +45,7 @@
         <resource-file src="resources/android/notification_icon/drawable-xhdpi/notification_icon.png" target="app/src/main/res/drawable-xhdpi/notification_icon.png" />
         <resource-file src="resources/android/notification_icon/drawable-xxhdpi/notification_icon.png" target="app/src/main/res/drawable-xxhdpi/notification_icon.png" />
         <resource-file src="resources/android/notification_icon/drawable-xxxhdpi/notification_icon.png" target="app/src/main/res/drawable-xxxhdpi/notification_icon.png" />
+        <preference name="GoogleAndroidClientId" value="1037117039704-2cnjnih43s43il237rb5j9gsm16d63br.apps.googleusercontent.com" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -83,6 +84,7 @@
         <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
             <string>We want your location! Best regards NSA</string>
         </edit-config>
+        <preference name="GoogleIOSClientId" value="1037117039704-v8a1g4kk9otdtfqij9fnfm3u79era94l.apps.googleusercontent.com" />
     </platform>
     <universal-links>
         <host name="wide.page.link" scheme="https" />
@@ -120,6 +122,12 @@
     <plugin name="cordova-plugin-firebase" spec="^2.0.2" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
+    </plugin>
+    <plugin name="cordova-plugin-firebase-dynamiclinks" spec="^1.0.1">
+        <variable name="APP_DOMAIN" value="wide-app.firebaseapp.com" />
+        <variable name="PAGE_LINK_DOMAIN" value="wide.page.link" />
+        <variable name="APP_PATH" value="/__/auth/callback" />
+        <variable name="FIREBASE_DYNAMIC_LINKS_VERSION" value="16.1.+" />
     </plugin>
     <engine name="browser" spec="5.0.4" />
     <engine name="android" spec="7.0.0" />

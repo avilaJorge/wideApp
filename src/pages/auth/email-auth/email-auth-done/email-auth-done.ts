@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angu
 
 import { AuthService } from "../../../../providers/auth/auth.service";
 import { Settings } from "../../../../providers/settings/settings";
+import { FirebaseDynamicLinks } from "@ionic-native/firebase-dynamic-links";
 
 @IonicPage()
 @Component({
@@ -18,9 +19,16 @@ export class EmailAuthDonePage {
     private authService: AuthService,
     private settings: Settings,
     private toastCtrl: ToastController,
+    private firebaseDynamicLinks: FirebaseDynamicLinks,
     ) {
 
     this.userEmail = this.navParams.get('email');
+    this.firebaseDynamicLinks.onDynamicLink()
+      .subscribe((res: any) => {
+        console.log("Firebase Dynamic Links data: ", res);
+      }, (error:any) => {
+        console.log("Firebase Dynamic Links error: ", error)
+      });
   }
 
   ionViewDidLoad() {

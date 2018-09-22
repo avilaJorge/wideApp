@@ -22,6 +22,7 @@ import { Firebase } from "@ionic-native/firebase";
 import { LaunchNavigator } from "@ionic-native/launch-navigator";
 import { Calendar } from "@ionic-native/calendar";
 import { InAppBrowser } from "@ionic-native/in-app-browser";
+import { FirebaseDynamicLinks } from "@ionic-native/firebase-dynamic-links";
 import {
   ROUND_PROGRESS_DEFAULTS,
   RoundProgressEase,
@@ -92,6 +93,7 @@ export function provideSettings(storage: Storage) {
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     Firebase,
     FirebaseService,
+    FirebaseDynamicLinks,
     FCM,
     Geolocation,
     AuthService,
