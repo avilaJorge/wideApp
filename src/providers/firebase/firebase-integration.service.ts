@@ -208,4 +208,15 @@ export class FirebaseService {
     return this.fireAuth.auth.sendSignInLinkToEmail(email, actionCodeSettings);
   }
 
+  signInWithEmailLink(email: string, deepLink: string): Promise<firebase.auth.UserCredential> {
+    if (this.fireAuth.auth.isSignInWithEmailLink(deepLink)) {
+      return this.fireAuth.auth.signInWithEmailLink(email, deepLink);
+    } else {
+      return new Promise((reject) => {
+        console.log("The link is not a sign-in with email link");
+        reject();
+      });
+    }
+  }
+
 }

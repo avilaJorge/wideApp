@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFireAuth } from "angularfire2/auth";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { AlertController, ToastController } from "ionic-angular";
+import { FirebaseDynamicLinks } from "@ionic-native/firebase-dynamic-links";
 import * as firebase from "firebase";
 import { tap } from "rxjs/operators";
 
@@ -29,7 +30,8 @@ export class AuthService {
               private settings: Settings,
               private firebaseService: FirebaseService,
               private fcm: FCM,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private firebaseDynamicLinks: FirebaseDynamicLinks) {
 
     fireAuth.auth.onAuthStateChanged((user) => {
      if (user) {
@@ -87,6 +89,19 @@ export class AuthService {
        this.authStatusListener.next(false);
      }
     });
+
+    // Subscribe to FirebaseDeepLinks to listen for Signin URL click.
+    this.firebaseDynamicLinks.onDynamicLink()
+      .subscribe((res: any) => {
+        let deepLink = res.deepLink;
+        this.signInWithLink(deepLink).then((isSuccess) => {
+          console.log("Signin with email link was a success.");
+        });
+        console.log("Firebase Dynamic Links data: ", res);
+      }, (error:any) => {
+        console.log("Firebase Dynamic Links error: ", error)
+      });
+
   }
 
   getToken() {
@@ -154,8 +169,51 @@ export class AuthService {
       });
   }
 
-  signInWithEmailLink(email:string): Promise<any> {
+  sendSigninLink(email:string): Promise<any> {
     return this.firebaseService.sendSignInLinkToEmail(email);
+  }
+
+  signInWithLink(deepLink: string): Promise<boolean> {
+    let userData: any = null;
+    return new Promise<any>((resolve, reject) => {
+      this.settings.getValue('emailForSignIn').then((email) => {
+        if (email) {
+          this.firebaseService.signInWithEmailLink(email, deepLink).then((userCredentials) => {
+            console.log(userCredentials);
+            userData = userCredentials;
+            return userCredentials.user.getIdToken();
+          }).then((token) => {
+            console.log(token);
+            this.token = token;
+            if (token) {
+              let user: User = new User({
+                googleUID: userData.user.uid,
+                userName: userData.user.displayName,
+                photoURL: userData.user.photoURL,
+                email: userData.user.email,
+                authExpires: 0,
+                groupName: '',
+                signInEmail: email
+              });
+              this.isAuthenticated = true;
+              this.dbCreateUser(user);
+              this.currentlyLoggedInUser = user;
+              this.authStatusListener.next(true);
+              this.saveAuthData(token, user);
+            } else {
+              console.log("Something went wrong getting the token");
+              resolve(false);
+            }
+          }).catch((error) => {
+            console.log("An error occured while signing in the user with link.");
+            reject(false);
+          });
+        } else {
+          console.log("User email could not be verified or was not entered.");
+          resolve(false);
+        }
+      });
+    });
   }
 
   autoAuthUser(localData): boolean {
@@ -181,7 +239,7 @@ export class AuthService {
     return this.fireAuth.auth.signOut();
   }
 
-  getAuthStatusListener() {
+  getAuthStatusListener(): Observable<boolean> {
     return this.authStatusListener.asObservable();
   }
 
@@ -265,8 +323,7 @@ export class AuthService {
   }
 
   private clearAuthData() {
-    this.settings.setValue('token', '');
-    this.settings.setValue('user', '');
+    this.settings.setAll(null);
   }
 
 }

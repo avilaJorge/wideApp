@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams, ToastController } from 'ionic-angular';
 
 import { AuthService } from "../../../../providers/auth/auth.service";
 import { Settings } from "../../../../providers/settings/settings";
-import { FirebaseDynamicLinks } from "@ionic-native/firebase-dynamic-links";
+import { Subscription } from "rxjs";
+import { LogService } from "../../../home/logs.service";
+import { MainPage } from "../../../index";
 
 @IonicPage()
 @Component({
@@ -11,7 +13,9 @@ import { FirebaseDynamicLinks } from "@ionic-native/firebase-dynamic-links";
   templateUrl: 'email-auth-done.html',
 })
 export class EmailAuthDonePage {
+
   public userEmail: string = '';
+  private authStatusSub: Subscription = null;
 
   constructor(
     public navCtrl: NavController,
@@ -19,21 +23,29 @@ export class EmailAuthDonePage {
     private authService: AuthService,
     private settings: Settings,
     private toastCtrl: ToastController,
-    private firebaseDynamicLinks: FirebaseDynamicLinks,
+    private loadingCtrl: LoadingController,
+    private logService: LogService,
     ) {
-
+    this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuth) => {
+      if (isAuth) {
+        console.log("User is authenticated via email link!");
+        let loading = this.loadingCtrl.create({
+            content: 'Signing you in... ',
+            spinner: 'dots'
+          });
+        loading.present();
+        this.logService.initializeUserLog(this.authService.getActiveUser().googleUID).then(() => {
+          loading.dismiss();
+          this.navCtrl.setRoot(MainPage);
+        });
+      }
+    });
     this.userEmail = this.navParams.get('email');
-    this.firebaseDynamicLinks.onDynamicLink()
-      .subscribe((res: any) => {
-        console.log("Firebase Dynamic Links data: ", res);
-      }, (error:any) => {
-        console.log("Firebase Dynamic Links error: ", error)
-      });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmailAuthDonePage');
-    this.authService.signInWithEmailLink(this.userEmail).then(() => {
+    this.authService.sendSigninLink(this.userEmail).then(() => {
       this.settings.setValue('emailForSignIn', this.userEmail);
     }).catch((error) => {
       console.log(error);

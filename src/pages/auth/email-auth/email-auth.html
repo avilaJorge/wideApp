@@ -5,8 +5,7 @@
   <div class="lower-content">
     <form [formGroup]="emailForm">
       <ion-item>
-        <ion-label fixed>Email</ion-label>
-        <ion-input type="email" formControlName="email"></ion-input>
+        <ion-input type="email" clearInput="true" placeholder="Email" clearOnEdit="true" formControlName="email"></ion-input>
       </ion-item>
     </form>
   </div>
