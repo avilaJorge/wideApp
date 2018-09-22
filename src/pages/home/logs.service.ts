@@ -73,7 +73,11 @@ export class LogService {
   }
 
   getFitbitStepsMap() {
-    return this.fitbitData;
+    if (this.fitbitData) {
+      return this.fitbitData;
+    } else {
+      return {};
+    }
   }
 
   getFitbitData(period?: string): Promise<any> {

@@ -165,6 +165,7 @@ export class HomePage {
   onLeftClick() {
     this.currEntry = this.logService.getNextEntry(-1);
     this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+    console.log(this.currDate);
     this.isCurrEntryToday = this.currDate === 'Today';
     this.current = this.currEntry.data.steps;
     this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
@@ -176,6 +177,7 @@ export class HomePage {
     this.currEntry = this.logService.getNextEntry();
     if (this.currEntry) {
       this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+      console.log(this.currDate);
       this.isCurrEntryToday = this.currDate === 'Today';
       this.current = this.currEntry.data.steps;
       this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
@@ -185,7 +187,6 @@ export class HomePage {
   }
 
   onShowData() {
-    console.log(this.fitbitData);
     let entryModal = this.modalCtrl.create('LogEntryPage',
       {entry: this.currEntry, fitbit_data: this.fitbitData[this.currEntry.date]},
       { cssClass: 'inset-modal' });
