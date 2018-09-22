@@ -16,6 +16,7 @@ export class EmailAuthDonePage {
 
   public userEmail: string = '';
   private authStatusSub: Subscription = null;
+  private signInSuccessful: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -27,16 +28,17 @@ export class EmailAuthDonePage {
     private logService: LogService,
     ) {
     this.authStatusSub = this.authService.getAuthStatusListener().subscribe((isAuth) => {
-      if (isAuth) {
+      if (!this.signInSuccessful && isAuth) {
         console.log("User is authenticated via email link!");
+        this.signInSuccessful = true;
         let loading = this.loadingCtrl.create({
             content: 'Signing you in... ',
             spinner: 'dots'
           });
         loading.present();
         this.logService.initializeUserLog(this.authService.getActiveUser().googleUID).then(() => {
+          window.location.reload();
           loading.dismiss();
-          this.navCtrl.setRoot(MainPage);
         });
       }
     });

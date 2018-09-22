@@ -135,10 +135,8 @@ export class LogService {
       this.firebaseService.getStepLog(userId)
         .then((querySnapshot) => {
           this.logObjects = {};
-          console.log("LOGSERVICE: querySnapshot ", querySnapshot);
           if (!querySnapshot.empty) {
             querySnapshot.docs.forEach((queryDocSnapshot) => {
-              console.log("LOGSERVICE: queryDocSnapshot ", queryDocSnapshot);
               let entry = queryDocSnapshot.data();
               if (!entry.groupWalk) {
                 entry.groupWalk = false;
