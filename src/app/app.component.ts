@@ -31,7 +31,7 @@ export class MyApp {
         console.log("Got settings loaded.  Now printing return from load!");
         console.log(data);
         let user = {googleUID: null};
-        if(data.user) {
+        if(data && data.user) {
           user = data.user;
         }
         // Okay, so the platform is ready and our plugins are available.

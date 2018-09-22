@@ -1,3 +1,32 @@
 page-email-auth {
+  .upper-content {
+    background-color: #039be5;
+    color: white;
+    height: 25%;
+    display: flex;
+  }
+  .upper-content span {
+    margin: 2rem;
+    align-self: flex-end;
+    font-size: x-large;
+  }
+  .lower-content {
+    height: 60%;
+    padding: 2rem 1rem;
+  }
+  .lower-content ion-item {
+  }
+  .lower-content ion-input {
+    font-size: x-large;
+  }
 
+  ion-footer  {
+    text-align: right;
+    background-color: #dce4ee;
+  }
+
+  .next-button {
+    color: black;
+    font-size: large;
+  }
 }

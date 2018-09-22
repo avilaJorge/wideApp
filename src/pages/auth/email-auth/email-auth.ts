@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 /**
  * Generated class for the EmailAuthPage page.
@@ -15,11 +16,33 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EmailAuthPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private emailForm: FormGroup;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private formBuilder: FormBuilder,
+    private toastCtrl: ToastController) {
+    this.emailForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+    });
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad EmailAuthPage');
   }
 
+  emailSubmit() {
+    if (this.emailForm.valid) {
+      console.log("next click!");
+      console.log(this.emailForm);
+      this.navCtrl.push('EmailAuthDonePage', {email: this.emailForm.value.email});
+    } else {
+      let toast = this.toastCtrl.create({
+        message: "Please enter a valid email address",
+        duration: 3000
+      });
+      toast.present();
+    }
+  }
 }

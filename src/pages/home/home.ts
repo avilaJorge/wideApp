@@ -23,7 +23,6 @@ export class HomePage {
   @ViewChild('barChart') barChart;
 
   current: number = 3000;
-  max: number = 6000;
   stroke: number = 15;
   radius: number = 125;
   semicircle: boolean = true;
@@ -68,7 +67,6 @@ export class HomePage {
   ionViewDidLoad() {
     this.fullLog = this.logService.getDatesData();
     this.current = this.currEntry.data.steps;
-    this.max = this.currEntry.data.goal;
     this.currDate = this.timeService.getDateStr(this.currEntry.date);
     this.createBarChart();
     this.fitbitData = this.logService.getFitbitStepsMap();
@@ -167,8 +165,8 @@ export class HomePage {
   onLeftClick() {
     this.currEntry = this.logService.getNextEntry(-1);
     this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+    console.log(this.currDate);
     this.isCurrEntryToday = this.currDate === 'Today';
-    this.max = this.currEntry.data.goal;
     this.current = this.currEntry.data.steps;
     this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
     this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
@@ -179,8 +177,8 @@ export class HomePage {
     this.currEntry = this.logService.getNextEntry();
     if (this.currEntry) {
       this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
+      console.log(this.currDate);
       this.isCurrEntryToday = this.currDate === 'Today';
-      this.max = this.currEntry.data.goal;
       this.current = this.currEntry.data.steps;
       this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
       this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
@@ -196,7 +194,6 @@ export class HomePage {
       if(data) {
         console.log(data);
         this.currEntry = data;
-        this.max = this.currEntry.data.goal;
         this.current = this.currEntry.data.steps;
         this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
         this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
@@ -216,7 +213,6 @@ export class HomePage {
       if(data) {
         console.log(data);
         this.currEntry = data;
-        this.max = this.currEntry.data.goal;
         this.current = this.currEntry.data.steps;
         this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
         this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];

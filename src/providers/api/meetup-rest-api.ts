@@ -57,7 +57,7 @@ export class MeetupRestApi {
         .set('group', this.group)
         .set('event_name', eventName)
         .set('eventId', eventId)
-        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token)
     };
     return this.http.get(this.redirectURI + 'meetup/event/comments', options)
       .toPromise()
@@ -71,7 +71,7 @@ export class MeetupRestApi {
         .set('eventId', eventId)
         .set('group', this.group)
         .set('response', responded)
-        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token)
     };
     return this.http.get(this.redirectURI + 'meetup/rsvp', httpOptions)
       .toPromise()
@@ -83,7 +83,7 @@ export class MeetupRestApi {
       headers: this.getHeader(),
       params: new HttpParams()
         .set('group', this.group)
-        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token)
     };
     return this.http.get(this.redirectURI + 'meetup/events', httpOptions)
       .toPromise()
@@ -94,7 +94,7 @@ export class MeetupRestApi {
     const httpOptions = {
       headers: this.getHeader(),
       params: new HttpParams()
-        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token)
         .set('memberId', memberId)
         .set('group', this.group)
     };
@@ -107,7 +107,7 @@ export class MeetupRestApi {
     const httpOptions = {
       headers: this.getHeader(),
       params: new HttpParams()
-        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token)
         .set('memberId', memberId)
         .set('group', this.group)
         .set('only', only)
@@ -120,7 +120,7 @@ export class MeetupRestApi {
   postComment(comment: string, replyToId: number, eventId: number): Promise<any> {
     const httpOptions = {
       headers: this.getHeader(),
-      params: new HttpParams().set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+      params: new HttpParams().set('authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token)
     };
     let body: any;
     if (replyToId > 0) {
@@ -148,7 +148,7 @@ export class MeetupRestApi {
       params: new HttpParams()
         .set('eventId', eventId)
         .set('group', this.group)
-        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken)
+        .set('authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token)
     };
     return this.http.get(this.redirectURI + 'meetup/rsvp/list', httpOptions)
       .toPromise()
@@ -157,7 +157,7 @@ export class MeetupRestApi {
 
   getHeader() {
     return new HttpHeaders()
-      .set('Authorization', 'Bearer ' + this.authService.getActiveUser().meetupAccessToken);
+      .set('Authorization', 'Bearer ' + this.authService.getActiveUser().meetup_access_data.access_token);
   }
 
   //getGroups() {

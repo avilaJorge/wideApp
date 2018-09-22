@@ -16,7 +16,7 @@ export class LogService {
   private currEntryIndex: number = 0;
   private isTodayCurrDay: boolean = false;
   private logObjects: any = null;
-  private user: User;
+  private user: User = new User();
   private authStatusSub: Subscription;
   private datesData: {date: string, data: StepEntry}[] = [];
   private initLogListener = new Subject<boolean>();
@@ -56,9 +56,12 @@ export class LogService {
         this.getFirestoreLogData(userId)
           .then((data) => {
             console.log(data.logObjs);
-            this.initLogData(data.logObjs, data.startDate);
+            if (data.startDate) {
+              this.initLogData(data.logObjs, data.startDate);
+            } else {
+              this.initLogData(data.logObjs);
+            }
             resolve();
-
           }, (error) => {
             console.log(error);
             reject(error);
@@ -70,7 +73,11 @@ export class LogService {
   }
 
   getFitbitStepsMap() {
-    return this.fitbitData;
+    if (this.fitbitData) {
+      return this.fitbitData;
+    } else {
+      return {};
+    }
   }
 
   getFitbitData(period?: string): Promise<any> {
@@ -128,15 +135,18 @@ export class LogService {
       this.firebaseService.getStepLog(userId)
         .then((querySnapshot) => {
           this.logObjects = {};
-
-          querySnapshot.docs.forEach((queryDocSnapshot) => {
-            let entry = queryDocSnapshot.data();
-            if (!entry.groupWalk) {
-              entry.groupWalk = false;
-            }
-            this.logObjects[entry.date] = entry;
-          });
-          resolve({logObjs: this.logObjects, startDate: querySnapshot.docs[0].data().date});
+          if (!querySnapshot.empty) {
+            querySnapshot.docs.forEach((queryDocSnapshot) => {
+              let entry = queryDocSnapshot.data();
+              if (!entry.groupWalk) {
+                entry.groupWalk = false;
+              }
+              this.logObjects[entry.date] = entry;
+            });
+            resolve({logObjs: this.logObjects, startDate: querySnapshot.docs[0].data().date});
+          } else {
+            resolve({logObjs: this.logObjects, startDate: null});
+          }
         }, (error) => {
           console.log("Error getting user log from database!");
           console.log(error);
@@ -145,8 +155,14 @@ export class LogService {
     });
   }
 
-  initLogData(logData: any, startDate: string) {
-    let dates = this.timeService.getDates(startDate);
+  initLogData(logData: any, startDate?: string) {
+    let dates = [];
+    if (startDate) {
+      dates = this.timeService.getDates(startDate);
+    } else {
+      dates = this.timeService.getDates();
+    }
+    console.log(dates);
     this.datesData = [];
     for(let date of dates) {
       this.datesData.push(
@@ -197,6 +213,8 @@ export class LogService {
       }
     }
     this.currEntryIndex += amount;
+    console.log(this.currEntryIndex);
+    console.log(this.datesData[this.currEntryIndex]);
     return this.datesData[this.currEntryIndex];
   }
 

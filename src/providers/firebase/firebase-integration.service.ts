@@ -10,13 +10,15 @@ import { take } from "rxjs/operators";
 import { Observable } from "rxjs";
 import { MeetupRouteDB } from "../../pages/routes/route.model";
 import { DBMeetup } from "../../pages/events/meetup.model";
+import { AngularFireAuth } from "angularfire2/auth";
 
 @Injectable()
 export class FirebaseService {
 
   constructor(
     public afs: AngularFirestore,
-    public platform: Platform
+    public platform: Platform,
+    public fireAuth: AngularFireAuth,
   ){}
 
   getAvatars(){
@@ -185,6 +187,36 @@ export class FirebaseService {
 
   getDBUserDataListener(uid: string): Observable<User> {
     return this.afs.collection('/users').doc<User>(uid).valueChanges();
+  }
+
+  sendSignInLinkToEmail(email:string): Promise<any> {
+    let actionCodeSettings = {
+      // URL you want to redirect back to. The domain (www.example.com) for this
+      // URL must be whitelisted in the Firebase Console.
+      url: 'https://wide-app.firebaseapp.com/finishSignUp?cartId=1234',
+      // This must be true.
+      handleCodeInApp: true,
+      iOS: {
+        bundleId: 'io.ionic.wide'
+      },
+      android: {
+        packageName: 'io.ionic.wide',
+        installApp: true,
+        minimumVersion: '12'
+      }
+    };
+    return this.fireAuth.auth.sendSignInLinkToEmail(email, actionCodeSettings);
+  }
+
+  signInWithEmailLink(email: string, deepLink: string): Promise<firebase.auth.UserCredential> {
+    if (this.fireAuth.auth.isSignInWithEmailLink(deepLink)) {
+      return this.fireAuth.auth.signInWithEmailLink(email, deepLink);
+    } else {
+      return new Promise((reject) => {
+        console.log("The link is not a sign-in with email link");
+        reject();
+      });
+    }
   }
 
 }

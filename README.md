@@ -94,3 +94,13 @@ code (ex: en/gb/de/es/etc.).
 
 To change the language of the app, edit `src/app/app.component.ts` and modify
 `translate.use('en')` to use the LANGCODE from `src/assets/i18n/`
+
+
+## Issues Fixed
+
+### Universal Links Plugin
+On Android: https://github.com/nordnet/cordova-universal-links-plugin/issues/134#issuecomment-358398218
+On ios: https://github.com/nordnet/cordova-universal-links-plugin/issues/131#issuecomment-387761895
+
+### Play Services Issues are related to cordova-plugin-firebase
+https://github.com/arnesson/cordova-plugin-firebase

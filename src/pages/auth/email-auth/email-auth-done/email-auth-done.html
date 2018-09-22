@@ -6,13 +6,18 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>EmailAuthDone</ion-title>
-  </ion-navbar>
+  <ion-navbar></ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-
+<ion-content no-padding>
+  <div class="container">
+    <div class="message-text">CHECK YOUR DEVICE EMAIL</div>
+    <div class="email-text">{{userEmail}}</div>
+    <div class="instructions-text">Open email, tap link, you're all set!</div>
+    <div class="icon-container">
+      <ion-icon name="mail"></ion-icon>
+    </div>
+  </div>
 </ion-content>
