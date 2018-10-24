@@ -3,7 +3,7 @@ $rsvp-button-radius: 50px;
 page-event-detail {
 
   agm-map {
-    height: 200px;
+    height: 350px;
     width: 100%;
   }
 
@@ -102,6 +102,11 @@ page-event-detail {
     padding-left: 2rem;
   }
 
+
+  .details-title {
+    padding-left: 2rem;
+  }
+
   .comment-button-container {
     padding-left: 2rem;
   }
@@ -154,24 +159,28 @@ page-event-detail {
   .step-text {
     font-size: medium;
     color: #60646B;
-    text-align: center;
+    //text-align: right;
   }
 
-  .distance-text, .max-text {
-    border-top: thin solid #bbbbbb;
-  }
+  //.distance-text, .max-text {
+  //  border-top: thin solid #bbbbbb;
+  //}
 
   .gain-data, .distance-data,
   .max-data, .min-data,
   .step-data {
     font-size: medium;
     font-weight: bold;
-    text-align: center;
+    //text-align: left;
   }
 
-  .distance-data, .max-data {
-    border-bottom: thin solid #bbbbbb;
+  .route-info {
+    margin-left: 1rem;
   }
+
+  //.distance-data, .max-data {
+  //  border-bottom: thin solid #bbbbbb;
+  //}
 
   //.max-data, .min-data {
   //  font-size: x-large;
@@ -179,15 +188,15 @@ page-event-detail {
   //  font-weight: bold;
   //}
 
-  .left-col {
-    border-right: thin solid #bbbbbb;
-  }
+  //.left-col {
+  //  border-right: thin solid #bbbbbb;
+  //}
 
   .steps-col {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-top: thin solid #bbbbbb;
-    border-bottom: thin solid #bbbbbb;
+    //padding-top: 1rem;
+    //padding-bottom: 1rem;
+    //border-top: thin solid #bbbbbb;
+    //border-bottom: thin solid #bbbbbb;
   }
 }
 
