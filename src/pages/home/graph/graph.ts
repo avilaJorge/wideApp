@@ -84,7 +84,7 @@ export class GraphPage {
     let dateInfo = this.timeService.getDateInfo(dateStr);
     return {
       dateStr: dateInfo.shortMonthStr + ' ' + dateInfo.day,
-      chartLabel: dateInfo.day + '/' + dateInfo.month
+      chartLabel: dateInfo.month + '/' + dateInfo.day
     };
   }
 

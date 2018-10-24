@@ -76,7 +76,8 @@ export class FullDataPage {
             data: this.chartValues,
             pointStyle: 'line',
             backgroundColor: barColor,
-            pointBorderWidth: 2,
+            pointBorderWidth: 0,
+            radius: 0,
             pointBorderColor: 'rgba(0,0,0,0.9)'
           }]
         },
