@@ -146,7 +146,6 @@ page-home {
 
   .fitbit-icon-container {
     height: 85px;
-    padding-top: 2rem;
   }
 
   .fitbit-icon {
@@ -155,6 +154,15 @@ page-home {
   }
 
   .fitbit-data {
+    text-align: center;
+    font-size: medium;
+    font-weight: bold;
+    font-style: italic;
+    color: #60646B;
+  }
+
+  .fitbit-sync {
+    padding-top: 2rem;
     text-align: center;
     font-size: medium;
     font-weight: bold;
