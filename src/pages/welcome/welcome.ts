@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 
+import { NetworkCheck } from "../../providers/network-check/network-check";
+
 /**
  * The Welcome Page is a splash page that quickly describes the app,
  * and then directs the user to create an account or log in.
@@ -14,17 +16,24 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController,
+              private nwCheck: NetworkCheck) { }
 
   login() {
-    this.navCtrl.push('LoginPage');
+    if (this.nwCheck.isConnected()) {
+      this.navCtrl.push('LoginPage');
+    }
   }
 
   signup() {
-    this.navCtrl.push('SignupPage');
+    if (this.nwCheck.isConnected()) {
+      this.navCtrl.push('SignupPage');
+    }
   }
 
   emailLogin() {
-    this.navCtrl.push('EmailAuthPage');
+    if (this.nwCheck.isConnected()) {
+      this.navCtrl.push('EmailAuthPage');
+    }
   }
 }

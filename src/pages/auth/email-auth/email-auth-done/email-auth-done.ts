@@ -5,7 +5,6 @@ import { AuthService } from "../../../../providers/auth/auth.service";
 import { Settings } from "../../../../providers/settings/settings";
 import { Subscription } from "rxjs";
 import { LogService } from "../../../home/logs.service";
-import { MainPage } from "../../../index";
 
 @IonicPage()
 @Component({

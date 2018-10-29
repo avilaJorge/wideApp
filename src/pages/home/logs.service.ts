@@ -39,6 +39,10 @@ export class LogService {
                 this.getFitbitData().then((data) => {
                   console.log("One month of steps retrieved from Fitbit.");
                   console.log(data);
+                }).catch((err) => {
+                  console.log("ERROR: Error occured while getting Fitbit data. " +
+                    "[logs.service:43, in AuthStatus Listener]");
+                  console.log(err);
                 });
               }
             }
@@ -96,6 +100,7 @@ export class LogService {
           resolve(this.fitbitData);
         }).catch((err) => {
           this.fitbitData = null;
+          console.log("ERROR: An error occured while retrieving Fitbit steps [logs.service.ts: 99]");
           console.log(err);
           reject(err);
         });
@@ -198,6 +203,7 @@ export class LogService {
       console.log(response);
       console.log('log entry successfully stored in Firestore');
     });
+    // TODO: [DB STEPS ISSUE] When no internet connection updated step counts are not synced at any point with the db
   }
 
   getDatesData() {

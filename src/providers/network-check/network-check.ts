@@ -22,6 +22,7 @@ export class NetworkCheck {
       console.log('network connected!');
       if (!this.connected) {
         this.toast.dismissAll();
+        window.location.reload();
       }
       this.connected = true;
     });

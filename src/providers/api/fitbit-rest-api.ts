@@ -35,12 +35,7 @@ export class FitbitRestApi {
         .set('token_expires', String(user.fitbit_token_expires))
     };
     return this.http.get(this.url + 'fitbit/steps/' + date, httpOptions)
-      .toPromise()
-      .then(response => response)
-      .catch((error) => {
-        console.log("Error getting data from Fitbit");
-        console.log(error);
-      });
+      .toPromise();
   }
 
 }

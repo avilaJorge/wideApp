@@ -29,6 +29,8 @@ export class MyApp {
   {
 
     platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
       settings.load().then((data) => {
         console.log("Got settings loaded.  Now printing return from load!");
         console.log(data);
@@ -42,8 +44,6 @@ export class MyApp {
           console.log("Connected to a network!");
           nwConnection = true;
         }
-        // Okay, so the platform is ready and our plugins are available.
-        // Here you can do any higher level native things you might need.
         const isAuth = this.authService.autoAuthUser(data);
         console.log(isAuth);
         if (isAuth) {
