@@ -103,7 +103,7 @@ export class RouteService {
   linkRouteWithMeetup(meetup_data: DBMeetup, route_data: MeetupRouteDB): Promise<any> {
     return this.firebaseService.storeRouteInMeetupDB(meetup_data, route_data)
       .then((response) => {
-        console.log(response);
+        console.log(response); //TODO: This is undefined and causing an error.
         console.log('This route was successfully added to Meetup ', meetup_data.id, ' ', meetup_data.name);
       });
   }

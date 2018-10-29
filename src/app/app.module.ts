@@ -45,6 +45,8 @@ import { MyApp } from './app.component';
 import { firebaseConfig } from "../environment/environment";
 import { FCM } from '../providers/fcm/fcm';
 import { FitbitRestApi } from '../providers/api/fitbit-rest-api';
+import { Network } from "@ionic-native/network";
+import { NetworkCheck } from '../providers/network-check/network-check';
 
 export function provideSettings(storage: Storage) {
   /**
@@ -119,6 +121,8 @@ export function provideSettings(storage: Storage) {
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     FitbitRestApi,
+    Network,
+    NetworkCheck,
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })

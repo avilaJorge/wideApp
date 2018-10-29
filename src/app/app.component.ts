@@ -8,6 +8,7 @@ import { AuthService } from "../providers/auth/auth.service";
 import { LogService } from "../pages/home/logs.service";
 import { FirstRunPage, MainPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
+import { NetworkCheck } from "../providers/network-check/network-check";
 
 @Component({
   template: `<ion-nav #content [root]="root"></ion-nav>`
@@ -23,6 +24,7 @@ export class MyApp {
               private authService: AuthService,
               private logService: LogService,
               private fireAuth: AngularFireAuth,
+              private nwCheck: NetworkCheck,
               )
   {
 
@@ -30,9 +32,15 @@ export class MyApp {
       settings.load().then((data) => {
         console.log("Got settings loaded.  Now printing return from load!");
         console.log(data);
+
         let user = {googleUID: null};
+        let nwConnection: boolean = false;
         if(data && data.user) {
           user = data.user;
+        }
+        if (this.nwCheck.isConnected()) {
+          console.log("Connected to a network!");
+          nwConnection = true;
         }
         // Okay, so the platform is ready and our plugins are available.
         // Here you can do any higher level native things you might need.

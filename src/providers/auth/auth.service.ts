@@ -12,6 +12,7 @@ import { Settings } from "../settings/settings";
 import { FirebaseService } from "../firebase/firebase-integration.service";
 import { backendURL } from "../../environment/environment";
 import { FCM } from "../fcm/fcm";
+import { NetworkCheck } from "../network-check/network-check";
 
 @Injectable()
 export class AuthService {
@@ -31,10 +32,11 @@ export class AuthService {
               private firebaseService: FirebaseService,
               private fcm: FCM,
               private toastCtrl: ToastController,
-              private firebaseDynamicLinks: FirebaseDynamicLinks) {
+              private firebaseDynamicLinks: FirebaseDynamicLinks,
+              private nwCheck: NetworkCheck) {
 
     fireAuth.auth.onAuthStateChanged((user) => {
-     if (user) {
+     if (nwCheck.isConnected() && user) {
         user.getIdToken().then((token) => {
           this.token = token;
           this.settings.setValue('token', token);
@@ -219,6 +221,9 @@ export class AuthService {
   autoAuthUser(localData): boolean {
     if (!localData) return false;
     if (!localData.token || (localData.token == '' )) {
+      return false;
+    }
+    if (!localData.user) {
       return false;
     }
     console.log('autoAuthUser(): Auth information exists');

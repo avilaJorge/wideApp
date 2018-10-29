@@ -84,8 +84,11 @@ export class LogService {
     return new Promise<any>((resolve, reject) => {
       let timePeriod = period || '1m';
       this.fitbitData = {};
-      if (this.user.isFitbitAuthenticated) {
+      console.log("Inside getFitbitData user is ", this.user);
+      if (this.user && this.user.isFitbitAuthenticated) {
         this.fitbitApi.getSteps('today', timePeriod).then((data) => {
+          console.log(data);
+          // TODO: Data is undefined when this fails.
           data['activities-steps'].forEach((entry) => {
             this.fitbitData[entry.dateTime] = entry;
           });
