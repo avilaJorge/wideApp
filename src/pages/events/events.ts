@@ -37,11 +37,14 @@ export class EventsPage {
         console.log(res);
         load.dismiss();
         this.events = res;
-        this.eventDBMap = this.eventService.getEventDBMap();
-        console.log(this.eventDBMap);
 
       });
     console.log('ionViewDidLoad EventsPage');
+  }
+
+  ionViewWillEnter() {
+    this.eventDBMap = this.eventService.getEventDBMap();
+    console.log(this.eventDBMap);
   }
 
 

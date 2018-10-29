@@ -29,6 +29,7 @@ export class RouteOptionsPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad RouteOptionsPage');
     this.meetupList = this.eventService.getEventDBList();
+    console.log(this.meetupList);
     console.log(this.route);
   }
 

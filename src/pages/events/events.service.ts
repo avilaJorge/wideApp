@@ -14,7 +14,7 @@ import { Settings } from "../../providers/settings/settings";
 export class EventService {
   private events: Meetup[] = [];
   private eventData;
-  private eventDBList: DBMeetup[];
+  private eventDBList: DBMeetup[] = [];
   private eventDBMap: any = {};
   private user: User;
   private selfProfile: MeetupProfile = null;
@@ -27,6 +27,7 @@ export class EventService {
     private firebaseService: FirebaseService,
     private settings: Settings
   ) {
+
     this.retrieveProfile('self')
       .then((profile) => {
         this.selfProfile = profile;
@@ -184,12 +185,18 @@ export class EventService {
   }
 
   retrieveEventDBList(): Promise<any> {
-    return this.firebaseService.getMeetupList().then((data) => {
-      let list = data as DBMeetup[];
-      console.log(list);
-      this.eventDBList = list;
-      this.createEventDBMap(data);
-      return list;
+    return this.firebaseService.getMeetupList().then((querySnapshot) => {
+      this.eventDBList.length = 0;
+      querySnapshot.forEach((doc) => {
+        let data = doc.data();
+        console.log("Data is ", data);
+        this.eventDBList.push(data as DBMeetup);
+
+      });
+      console.log("Retrieved EventDBList [events.service: 189]");
+      console.log("eventDBList is ", this.eventDBList);
+      this.createEventDBMap(this.eventDBList);
+      return this.eventDBList;
     });
   }
 

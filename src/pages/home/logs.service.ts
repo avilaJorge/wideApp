@@ -92,7 +92,6 @@ export class LogService {
       if (this.user && this.user.isFitbitAuthenticated) {
         this.fitbitApi.getSteps('today', timePeriod).then((data) => {
           console.log(data);
-          // TODO: Data is undefined when this fails.
           data['activities-steps'].forEach((entry) => {
             this.fitbitData[entry.dateTime] = entry;
           });

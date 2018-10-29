@@ -75,7 +75,7 @@ export class RoutePage {
             let toast = this.toastCtrl.create({
               message: `This route has been added to event ${data.meetup_data.name}`,
               duration: 3000,
-              position: 'bottom'
+              position: 'top'
             });
             toast.present();
             this.eventService.retrieveEventDBList();

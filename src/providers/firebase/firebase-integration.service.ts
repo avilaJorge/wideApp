@@ -170,9 +170,7 @@ export class FirebaseService {
   }
 
   getMeetupList(): Promise<any> {
-    return this.afs.collection('/meetups').valueChanges().pipe(take(1))
-      .toPromise()
-      .then(data => data);
+    return this.afs.collection('/meetups').ref.get()
   }
 
   storeRouteInMeetupDB(meetup_data: DBMeetup, route_data: MeetupRouteDB): Promise<any> {
