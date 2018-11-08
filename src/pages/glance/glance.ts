@@ -37,10 +37,15 @@ export class GlancePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad GlancePage');
+    this.todayData = this.logService.getTodayData();
+    console.log("Just entered HomePage, todayData is", this.todayData);
+    this.max = this.todayData.data.goal;
+    this.current = this.todayData.data.steps;
   }
 
   ionViewWillEnter() {
     this.todayData = this.logService.getTodayData();
+    console.log("Just entered HomePage, todayData is", this.todayData);
     this.max = this.todayData.data.goal;
     this.current = this.todayData.data.steps;
   }

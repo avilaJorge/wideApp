@@ -36,14 +36,10 @@ export class EventService {
         }).catch((err) => {
         console.log(err);
       });
-      this.retrieveEventDBList()
+      this.settings.getValue('stride').then((value) => this.stride = value)
+        .then(() => this.retrieveEventDBList())
         .then(() => this.getMeetups())
-        .then(() => {
-          this.settings.getValue('stride').then((value) => {
-            this.stride = value;
-          })
-            .then(() => resolve());
-        });
+        .then(() => resolve());
     });
   }
 

@@ -119,13 +119,13 @@ export class LogService {
       this.currEntryIndex = this.findTodayIndex();
       this.isTodayCurrDay = true;
       this.settings.setValue('full_log', JSON.stringify(this.datesData));
-      resolve();
       this.getFirestoreLogData(userId)
         .then((data) => {
           this.mergelocalAndDBData(data.logObjs);
+          console.log("Merged local data and DB [appcomponent : 125]");
         }, (error) => {
           console.log(error);
-        });
+        }).then(() => resolve());
     });
   }
 
