@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { LogService } from "../logs.service";
 import { monthDateIndex } from "../../../providers/time/time.service";
-import { barColor, hoverColor } from "../home";
+import { barColor, hoverColor } from "../log";
 import { Chart } from 'chart.js';
 import { StepEntry } from "../../../models/step-log.model";
 

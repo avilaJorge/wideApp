@@ -24,10 +24,10 @@ export class TabsPage {
 
   constructor(public navCtrl: NavController) {
 
-    this.tab1Title = 'Home';
+    this.tab1Title = 'Log';
     this.tab2Title = 'Discussion';
-    this.tab3Title = 'Routes';
-    this.tab4Title = 'Upcoming';
-    this.tab5Title = 'Account';
+    this.tab3Title = 'Log';
+    this.tab4Title = 'Routes';
+    this.tab5Title = 'Upcoming';
   }
 }

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonicPage, ModalController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Chart } from 'chart.js';
 
-import { barColor, hoverColor, lineColor } from "../home";
+import { barColor, hoverColor, lineColor } from "../log";
 import {
   sevenDayLimit,
   TimeService

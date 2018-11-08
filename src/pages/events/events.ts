@@ -28,17 +28,18 @@ export class EventsPage {
   }
 
   ionViewDidLoad() {
-    let load = this.loadingCtrl.create({
-      content: 'Loading Meetups ...'
-    });
-    load.present();
-    this.eventService.getEvents()
-      .then((res) => {
-        console.log(res);
-        load.dismiss();
-        this.events = res;
-
-      });
+    // let load = this.loadingCtrl.create({
+    //   content: 'Loading Meetups ...'
+    // });
+    // load.present();
+    // this.eventService.getEvents()
+    //   .then((res) => {
+    //     console.log(res);
+    //     load.dismiss();
+    //     this.events = res;
+    //
+    //   });
+    this.events = this.eventService.getEvents();
     console.log('ionViewDidLoad EventsPage');
   }
 

@@ -5,10 +5,11 @@ import { Config, Platform } from 'ionic-angular';
 
 import { Settings } from "../providers/settings/settings";
 import { AuthService } from "../providers/auth/auth.service";
-import { LogService } from "../pages/home/logs.service";
+import { LogService } from "../pages/log/logs.service";
 import { FirstRunPage, MainPage } from "../pages";
 import { AngularFireAuth } from "angularfire2/auth";
 import { NetworkCheck } from "../providers/network-check/network-check";
+import { EventService } from "../pages/events/events.service";
 
 @Component({
   template: `<ion-nav #content [root]="root"></ion-nav>`
@@ -25,6 +26,7 @@ export class MyApp {
               private logService: LogService,
               private fireAuth: AngularFireAuth,
               private nwCheck: NetworkCheck,
+              private eventService: EventService
               )
   {
 
@@ -68,6 +70,7 @@ export class MyApp {
                 this.splashScreen.hide();
               });
           }
+          this.eventService.initialize();
         } else {
           this.root = FirstRunPage;
           this.statusBar.styleDefault();

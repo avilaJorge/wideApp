@@ -26,17 +26,24 @@ export class EventService {
     private sanitizer: DomSanitizer,
     private firebaseService: FirebaseService,
     private settings: Settings
-  ) {
+  ) {}
 
-    this.retrieveProfile('self')
-      .then((profile) => {
-        this.selfProfile = profile;
-      }).catch((err) => {
+  initialize(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.retrieveProfile('self')
+        .then((profile) => {
+          this.selfProfile = profile;
+        }).catch((err) => {
         console.log(err);
-    });
-    this.retrieveEventDBList();
-    this.settings.getValue('stride').then((value) => {
-      this.stride = value;
+      });
+      this.retrieveEventDBList()
+        .then(() => this.getMeetups())
+        .then(() => {
+          this.settings.getValue('stride').then((value) => {
+            this.stride = value;
+          })
+            .then(() => resolve());
+        });
     });
   }
 
@@ -69,7 +76,7 @@ export class EventService {
   }
 
 
-  getEvents(): Promise<any> {
+  getMeetups(): Promise<any> {
     this.user = this.authService.getActiveUser();
     if (this.user.isMeetupAuthenticated) {
       console.log('User is Meetup Authenticated!');
@@ -102,6 +109,10 @@ export class EventService {
           }, (err) => reject(err));
       });
     }
+  }
+
+  getEvents(): Meetup[] {
+    return this.events;
   }
 
   updateRSVPInfo(response: Response, yesRSVPCount: number, index: number, id: string) {

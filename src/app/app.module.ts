@@ -40,7 +40,7 @@ import { Settings } from "../providers/settings/settings";
 import { FirebaseService } from "../providers/firebase/firebase-integration.service";
 import { AuthService } from "../providers/auth/auth.service";
 import { TimeService } from "../providers/time/time.service";
-import { LogService } from "../pages/home/logs.service";
+import { LogService } from "../pages/log/logs.service";
 import { MyApp } from './app.component';
 import { firebaseConfig } from "../environment/environment";
 import { FCM } from '../providers/fcm/fcm';

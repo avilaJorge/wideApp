@@ -4,7 +4,7 @@ import { IonicPage, LoadingController, NavController, NavParams, ToastController
 import { AuthService } from "../../../../providers/auth/auth.service";
 import { Settings } from "../../../../providers/settings/settings";
 import { Subscription } from "rxjs";
-import { LogService } from "../../../home/logs.service";
+import { LogService } from "../../../log/logs.service";
 
 @IonicPage()
 @Component({

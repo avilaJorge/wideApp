@@ -24,15 +24,21 @@ export class MeetupRestApi {
     private fcm: FCM)
   {
     console.log('Hello MeetupDataProvider Provider');
-    if (this.authService.getActiveUser().isMeetupAuthenticated) {
-      this.getMinProfile('self', 'id,name')
-        .then((response) => {
-          console.log(response);
-          this.fcm.storeMeetupId(response.id, response.name).then((success) => {
-            console.log('Meetup data was successfully stored in devices collection ', success);
+  }
+
+  initialize(): Promise<any> {
+    return new Promise<any> ((resolve, reject) => {
+      if (this.authService.getActiveUser().isMeetupAuthenticated) {
+        this.getMinProfile('self', 'id,name')
+          .then((response) => {
+            console.log(response);
+            this.fcm.storeMeetupId(response.id, response.name).then((success) => {
+              console.log('Meetup data was successfully stored in devices collection ', success);
+            });
           });
-        });
-    }
+      }
+      resolve();
+    });
   }
 
   getEvents(): Promise<any> {

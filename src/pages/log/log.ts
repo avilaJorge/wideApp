@@ -16,10 +16,10 @@ export const backColor: string = 'rgb(192,192,192)';
 
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+  selector: 'page-log',
+  templateUrl: 'log.html',
 })
-export class HomePage {
+export class LogPage {
   @ViewChild('barChart') barChart;
 
   current: number = 3000;
