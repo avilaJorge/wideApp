@@ -22,22 +22,6 @@ export const backColor: string = 'rgb(192,192,192)';
 export class LogPage {
   @ViewChild('barChart') barChart;
 
-  current: number = 3000;
-  stroke: number = 15;
-  radius: number = 125;
-  semicircle: boolean = true;
-  rounded: boolean = false;
-  responsive: boolean = false;
-  clockwise: boolean = true;
-  color: string = barColor;
-  background: string = '#eaeaea';
-  duration: number = 800;
-  animation: string = 'easeOutCubic';
-  animationDelay: number = 0;
-  animations: string[] = [];
-  gradient: boolean = false;
-  realCurrent: number = 0;
-
   private barChartEl: any = null;
 
   private currEntry: {date: string, data: StepEntry} = null;
@@ -66,7 +50,6 @@ export class LogPage {
 
   ionViewDidLoad() {
     this.fullLog = this.logService.getDatesData();
-    this.current = this.currEntry.data.steps;
     this.currDate = this.timeService.getDateStr(this.currEntry.date);
     this.createBarChart();
     this.fitbitData = this.logService.getFitbitStepsMap();
@@ -147,27 +130,12 @@ export class LogPage {
     this.navCtrl.push('GraphPage');
   }
 
-  getOverlayStyle() {
-    let isSemi = this.semicircle;
-    let transform = (isSemi ? '' : 'translateY(-50%) ') + 'translateX(-50%)';
-
-    return {
-      'top': isSemi ? 'auto' : '50%',
-      'bottom': isSemi ? '5%' : 'auto',
-      'left': '50%',
-      'transform': transform,
-      '-moz-transform': transform,
-      '-webkit-transform': transform,
-      'font-size': this.radius / 3.5 + 'px'
-    };
-  }
 
   onLeftClick() {
     this.currEntry = this.logService.getNextEntry(-1);
     this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
     console.log(this.currDate);
     this.isCurrEntryToday = this.currDate === 'Today';
-    this.current = this.currEntry.data.steps;
     this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
     this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
     this.barChartEl.update();
@@ -179,7 +147,6 @@ export class LogPage {
       this.currDate = this.timeService.getDateStr(this.currEntry.data.date);
       console.log(this.currDate);
       this.isCurrEntryToday = this.currDate === 'Today';
-      this.current = this.currEntry.data.steps;
       this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
       this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
       this.barChartEl.update();
@@ -194,7 +161,6 @@ export class LogPage {
       if(data) {
         console.log(data);
         this.currEntry = data;
-        this.current = this.currEntry.data.steps;
         this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
         this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
         this.barChartEl.update();
@@ -213,7 +179,6 @@ export class LogPage {
       if(data) {
         console.log(data);
         this.currEntry = data;
-        this.current = this.currEntry.data.steps;
         this.barChartEl.data.datasets[0].data = [this.currEntry.data.goal];
         this.barChartEl.data.datasets[1].data = [this.currEntry.data.steps];
         this.barChartEl.update();

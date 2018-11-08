@@ -256,4 +256,8 @@ export class LogService {
     return this.user;
   }
 
+  getTodayData(): { date: string, data: StepEntry} {
+    return this.datesData[this.datesData.length-1];
+  }
+
 }

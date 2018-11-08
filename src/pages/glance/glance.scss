@@ -1,3 +1,34 @@
 page-glance {
 
+  .progress-wrapper {
+    position: relative;
+    margin: 20px auto;
+    font-size: 40px;
+  }
+
+  round-progress {
+    margin: auto;
+  }
+
+  .current {
+    position: absolute;
+    color: #bbb;
+    font-weight: 100;
+    line-height: 1;
+  }
+
+  .splash-bg {
+    position: relative;
+    background-image: url('../assets/imgs/backgrounds/nature-landscape.jpg');
+    background-size: cover;
+    height: 100%;
+    z-index: 1;
+    background-repeat: repeat-x;
+    animation: animatedBackground 100s linear infinite;
+  }
+
+  @keyframes animatedBackground {
+    from { background-position: 0 0; }
+    to { background-position: 100% 0; }
+  }
 }
