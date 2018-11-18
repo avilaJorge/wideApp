@@ -12,7 +12,8 @@ page-glance {
 
   .current {
     position: absolute;
-    color: #bbb;
+    text-align: center;
+    color: #909090;
     font-weight: 100;
     line-height: 1;
   }
@@ -30,5 +31,45 @@ page-glance {
   @keyframes animatedBackground {
     from { background-position: 0 0; }
     to { background-position: 100% 0; }
+  }
+
+  .item-date {
+    background-color: #dce4ee;
+    border-radius: 5px;
+    border: thin solid #60646B;
+  }
+  .event-day {
+    font-weight: bold;
+    vertical-align: text-top;
+    padding-top: 1rem;
+    color: black;
+    //color: orangered;
+    font-size: large;
+  }
+  .event-month {
+    padding-bottom: 1rem;
+    font-size: small;
+    color: #60646B;
+    font-family: "Segoe UI", "Noto Sans", sans-serif;
+  }
+  .item-title {
+    font-weight: bold;
+    font-size: medium;
+  }
+  .item-title, .item-place {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .item-content {
+    padding-right: 1rem;
+    font-size: large;
+  }
+
+  .item-steps {
+    font-size: medium;
+    font-weight: bold;
+
   }
 }

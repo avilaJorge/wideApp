@@ -24,13 +24,9 @@
 
 <ion-content no-padding>
   <ion-card>
-    <ion-card-header text-center>
-     Steps for Today
-      <hr>
-    </ion-card-header>
     <ion-card-content>
       <div class="progress-wrapper">
-        <div class="current" [ngStyle]="getOverlayStyle()">{{ current }}/{{ max }}</div>
+        <div class="current" [ngStyle]="getOverlayStyle()">{{current}}<div>steps</div></div>
         <round-progress
           [current]="current"
           [max]="max"
@@ -47,6 +43,40 @@
           [animationDelay]="animationDelay">
         </round-progress>
       </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-content>
+      <ion-row no-padding class="content-row">
+        <ion-col no-padding text-center col-2 class="item-date">
+          <ion-row class="event-day"><ion-col no-padding>{{nextMeetup.eventDate.day}}</ion-col></ion-row>
+          <ion-row class="event-month"><ion-col no-padding>{{nextMeetup.eventDate.month | caps }}</ion-col></ion-row>
+        </ion-col>
+        <ion-col col-1 class="item-spacer"></ion-col>
+        <ion-col no-padding col-9 class="item-content">
+          <ion-row>
+            <ion-col no-padding>
+              <h3  class="item-title">{{nextMeetup.eventName}}</h3>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col no-padding>
+              <p *ngIf="nextMeetup.venue" class="item-place" row="3">{{nextMeetup.venue.name}}</p>
+              <p *ngIf="!nextMeetup.venue" class="item-place" row="3">No location information</p>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col no-padding col-8>
+              <p *ngIf="nextMeetup.venue" class="item-city">{{nextMeetup.venue.city}}</p>
+            </ion-col>
+            <ion-col no-padding col-4>
+              <span *ngIf="nextMeetupDB.route" class="item-steps">
+                {{ nextMeetupDB.route.steps | number: '1.0-0'}} steps
+              </span>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
     </ion-card-content>
   </ion-card>
 </ion-content>

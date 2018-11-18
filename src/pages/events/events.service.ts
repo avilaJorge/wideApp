@@ -13,6 +13,8 @@ import { Settings } from "../../providers/settings/settings";
 @Injectable()
 export class EventService {
   private events: Meetup[] = [];
+  private nextEvent: Meetup;
+  private nextEventDB: DBMeetup = null;
   private eventData;
   private eventDBList: DBMeetup[] = [];
   private eventDBMap: any = {};
@@ -31,16 +33,86 @@ export class EventService {
   initialize(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.retrieveProfile('self')
-        .then((profile) => {
-          this.selfProfile = profile;
-        }).catch((err) => {
-        console.log(err);
-      });
-      this.settings.getValue('stride').then((value) => this.stride = value)
+        .then((profile) => this.selfProfile = profile)
+        .then(() => this.settings.getValue('stride'))
+        .then((value) => this.stride = value)
         .then(() => this.retrieveEventDBList())
         .then(() => this.getMeetups())
         .then(() => resolve());
+        }).catch((err) => {
+          console.log(err);
     });
+  }
+
+  retrieveEventDBList(): Promise<any> {
+    return this.firebaseService.getMeetupList()
+      .then((querySnapshot) => {
+        this.eventDBList.length = 0;
+        querySnapshot.forEach((doc) => {
+          let data = doc.data();
+          console.log("Data is ", data);
+          this.eventDBList.push(data as DBMeetup);
+        });
+        this.nextEventDB = this.eventDBList[0];
+        console.log("Retrieved EventDBList [events.service: 189]");
+        console.log("eventDBList is ", this.eventDBList);
+      })
+      .then(() => this.createEventDBMap(this.eventDBList));
+  }
+
+  private createEventDBMap(events: DBMeetup[]): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.eventDBMap = {};
+      if (events) {
+        events.forEach((event) => {
+          this.eventDBMap[event.id] = event;
+          if (event.route) {
+            // TODO: This will likely not update step counts when the user changes it in the settings page.
+            this.eventDBMap[event.id].route.steps = (event.route.dist * inches_in_mile) / this.stride;
+          }
+        });
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    });
+  }
+
+  getMeetups(): Promise<any> {
+    this.user = this.authService.getActiveUser();
+    if (this.user.isMeetupAuthenticated) {
+      console.log('User is Meetup Authenticated!');
+      return new Promise<any>((resolve, reject) => {
+        this.meetupApi.getAuthEvents()
+          .then((res) => {
+            console.log(res);
+            this.eventData = JSON.parse(res.body);
+            console.log(this.eventData);
+            for (let entry of this.eventData) {
+              console.log(entry);
+              this.events.push(new Meetup(entry));
+            }
+            this.nextEvent = this.events[0];
+            console.log(this.events);
+            resolve(this.events);
+          }, (err) => reject(err));
+      })
+    } else {
+      console.log('User is not Meetup Authenticated!');
+      return new Promise<any>((resolve, reject) => {
+        this.meetupApi.getEvents()
+          .then((res) => {
+            console.log(res);
+            this.eventData = res;
+            for (let entry of this.eventData) {
+              console.log(entry);
+              this.events.push(new Meetup(entry));
+            }
+            this.nextEvent = this.events[0];
+            resolve(this.events);
+          }, (err) => reject(err));
+      });
+    }
   }
 
   retrieveProfile(memberId: any): Promise<any> {
@@ -71,44 +143,15 @@ export class EventService {
     return this.selfProfile;
   }
 
-
-  getMeetups(): Promise<any> {
-    this.user = this.authService.getActiveUser();
-    if (this.user.isMeetupAuthenticated) {
-      console.log('User is Meetup Authenticated!');
-      return new Promise<any>((resolve, reject) => {
-        this.meetupApi.getAuthEvents()
-          .then((res) => {
-            console.log(res);
-            this.eventData = JSON.parse(res.body);
-            console.log(this.eventData);
-            for (let entry of this.eventData) {
-              console.log(entry);
-              this.events.push(new Meetup(entry));
-            }
-            console.log(this.events);
-            resolve(this.events);
-          }, (err) => reject(err));
-      })
-    } else {
-      console.log('User is not Meetup Authenticated!');
-      return new Promise<any>((resolve, reject) => {
-        this.meetupApi.getEvents()
-          .then((res) => {
-            console.log(res);
-            this.eventData = res;
-            for (let entry of this.eventData) {
-              console.log(entry);
-              this.events.push(new Meetup(entry));
-            }
-            resolve(this.events);
-          }, (err) => reject(err));
-      });
-    }
-  }
-
   getEvents(): Meetup[] {
     return this.events;
+  }
+
+  getNextEvent(): Meetup {
+    return this.nextEvent;
+  }
+  getNextEventDB(): DBMeetup {
+    return this.nextEventDB;
   }
 
   updateRSVPInfo(response: Response, yesRSVPCount: number, index: number, id: string) {
@@ -188,40 +231,6 @@ export class EventService {
           }
           resolve([...rsvps]);
         }, (err) => reject(err));
-    });
-  }
-
-  retrieveEventDBList(): Promise<any> {
-    return this.firebaseService.getMeetupList().then((querySnapshot) => {
-      this.eventDBList.length = 0;
-      querySnapshot.forEach((doc) => {
-        let data = doc.data();
-        console.log("Data is ", data);
-        this.eventDBList.push(data as DBMeetup);
-
-      });
-      console.log("Retrieved EventDBList [events.service: 189]");
-      console.log("eventDBList is ", this.eventDBList);
-      this.createEventDBMap(this.eventDBList);
-      return this.eventDBList;
-    });
-  }
-
-  private createEventDBMap(events: DBMeetup[]): Promise<boolean> {
-    return new Promise((resolve) => {
-      this.eventDBMap = {};
-      if (events) {
-        events.forEach((event) => {
-          this.eventDBMap[event.id] = event;
-          if (event.route) {
-            // TODO: This will likely not update step counts when the user changes it in the settings page.
-            this.eventDBMap[event.id].route.steps = (event.route.dist * inches_in_mile) / this.stride;
-          }
-        });
-        resolve(true);
-      } else {
-        resolve(false);
-      }
     });
   }
 

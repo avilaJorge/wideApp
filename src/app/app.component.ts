@@ -54,23 +54,25 @@ export class MyApp {
             console.log("We have a full log in settings");
             console.log("Currently logged in user is ", user.googleUID);
             console.log(user);
-            this.logService.setFullLog(JSON.parse(data.full_log), user.googleUID).then(() => {
-              console.log("AppComponent initialization complete.");
-              this.root = MainPage;
-              this.statusBar.styleDefault();
-              this.splashScreen.hide();
-              this.eventService.initialize();
+            this.logService.setFullLog(JSON.parse(data.full_log), user.googleUID)
+              .then(() => { console.log("starting eventService init"); return this.eventService.initialize(); })
+              .then(() => {
+                  console.log("AppComponent initialization complete.");
+                  this.root = MainPage;
+                  this.statusBar.styleDefault();
+                  this.splashScreen.hide();
             });
           } else {
             console.log('Preparing to initialize the Users log');
             console.log(this.authService.getActiveUser());
             console.log(data);
-            this.logService.initializeUserLog(data.user.googleUID).then(() => {
-              console.log("AppComponent initialization complete.");
-              this.root = MainPage;
-              this.statusBar.styleDefault();
-              this.splashScreen.hide();
-              this.eventService.initialize();
+            this.logService.initializeUserLog(data.user.googleUID)
+              .then(() => { this.eventService.initialize(); })
+              .then(() => {
+                  console.log("AppComponent initialization complete.");
+                  this.root = MainPage;
+                  this.statusBar.styleDefault();
+                  this.splashScreen.hide();
             });
           }
         } else {
